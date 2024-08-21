@@ -1,14 +1,20 @@
 package mk.frizer.web.rest;
 
+import mk.frizer.domain.ImageEntity;
 import mk.frizer.domain.Salon;
 import mk.frizer.domain.dto.SalonAddDTO;
 import mk.frizer.domain.dto.SalonUpdateDTO;
 import mk.frizer.domain.dto.TagAddDTO;
 import mk.frizer.domain.dto.simple.SalonSimpleDTO;
 import mk.frizer.domain.exceptions.SalonNotFoundException;
+import mk.frizer.service.ImageService;
 import mk.frizer.service.SalonService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,10 +23,11 @@ import java.util.Optional;
 @CrossOrigin(origins = {"localhost:3000","localhost:3001"})
 public class SalonRestController {
     private final SalonService salonService;
-    private static final String UPLOAD_DIR = "src/main/resources/static/salons/";
+    private final ImageService imageService;
 
-    public SalonRestController(SalonService salonService) {
+    public SalonRestController(SalonService salonService, ImageService imageService) {
         this.salonService = salonService;
+        this.imageService = imageService;
     }
 
     @GetMapping()
@@ -49,7 +56,7 @@ public class SalonRestController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<SalonSimpleDTO> updateSalon(@PathVariable Long id, @RequestBody SalonUpdateDTO salonUpdateDTO) {
         return this.salonService.updateSalon(id, salonUpdateDTO)
                 .map(salon -> ResponseEntity.ok().body(salon.toDto()))
@@ -68,22 +75,42 @@ public class SalonRestController {
         }
     }
 
-//    @PostMapping("/{id}/uploadImage")
-//    public ResponseEntity<Salon> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile image)  {
-//        try{
-//            Optional<Salon> salon = salonService.saveImage(id, image);
-//            return ResponseEntity.ok().body(salon.get());
-//        }
-//        catch (IOException exception){
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
 
-//    @GetMapping("/images/{id}")
-//    public List<> getImages(@PathVariable Long id){
-//        return salonService.getSalons();
-//    }
-//    public ResponseEntity<Salon> getImages(@PathVariable Long id){
-//        salonService.getImagesForSalon(id)
-//    }
+    @PostMapping("/{id}/upload-image")
+    public ResponseEntity<SalonSimpleDTO> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile image){
+        try{
+            Optional<Salon> salon = imageService.saveImage(id, image);
+            if (salon.isPresent())
+                return ResponseEntity.ok().body(salon.get().toDto());
+        }
+        catch (IOException exception){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/{id}/upload-background-image")
+    public ResponseEntity<SalonSimpleDTO> uploadBackgroundImage(@PathVariable Long id,
+                              @RequestParam("image") MultipartFile image) {
+        try {
+            Optional<Salon> salon = imageService.saveBackgroundImage(id, image);
+            if (salon.isPresent())
+                return ResponseEntity.ok(salon.get().toDto());
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+//            return ResponseEntity.status(500).body("Image upload failed: ${e.message}")
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/{id}/image/{imageId}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id, @PathVariable Long imageId) {
+        byte[] image = imageService.getImage(id, imageId);
+        if (image != null) {
+            return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(image);
+        }
+            return ResponseEntity.notFound().build();
+    }
 }

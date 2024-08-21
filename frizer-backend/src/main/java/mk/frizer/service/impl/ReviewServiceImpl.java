@@ -4,6 +4,10 @@ import jakarta.transaction.Transactional;
 import mk.frizer.domain.*;
 import mk.frizer.domain.dto.ReviewAddDTO;
 import mk.frizer.domain.dto.ReviewUpdateDTO;
+import mk.frizer.domain.events.ReviewCreatedEvent;
+import mk.frizer.domain.events.ReviewDeletedEvent;
+import mk.frizer.domain.events.ReviewEditedEvent;
+import mk.frizer.domain.events.SalonCreatedEvent;
 import mk.frizer.domain.exceptions.ReviewNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.repository.BaseUserRepository;
@@ -11,6 +15,7 @@ import mk.frizer.repository.CustomerRepository;
 import mk.frizer.repository.EmployeeRepository;
 import mk.frizer.repository.ReviewRepository;
 import mk.frizer.service.ReviewService;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,12 +31,14 @@ public class ReviewServiceImpl implements ReviewService {
     private final BaseUserRepository baseUserRepository;
     private final EmployeeRepository employeeRepository;
     private final CustomerRepository customerRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, BaseUserRepository baseUserRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, BaseUserRepository baseUserRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.reviewRepository = reviewRepository;
         this.baseUserRepository = baseUserRepository;
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Override
@@ -46,17 +53,17 @@ public class ReviewServiceImpl implements ReviewService {
         return Optional.of(user);
     }
 
-    @Override
-    @Transactional
-    public Optional<Review> createReviewForCustomer(ReviewAddDTO reviewAddDTO) {
-        Employee employee = employeeRepository.findById(reviewAddDTO.getEmployeeId())
-                .orElseThrow(UserNotFoundException::new);
-        Customer customer = customerRepository.findById(reviewAddDTO.getCustomerId())
-                .orElseThrow(UserNotFoundException::new);
-
-        Review user = new Review(employee.getBaseUser(), customer.getBaseUser(), reviewAddDTO.getRating(), reviewAddDTO.getComment());
-        return Optional.of(reviewRepository.save(user));
-    }
+//    @Override
+//    @Transactional
+//    public Optional<Review> createReviewForCustomer(ReviewAddDTO reviewAddDTO) {
+//        Employee employee = employeeRepository.findById(reviewAddDTO.getEmployeeId())
+//                .orElseThrow(UserNotFoundException::new);
+//        Customer customer = customerRepository.findById(reviewAddDTO.getCustomerId())
+//                .orElseThrow(UserNotFoundException::new);
+//
+//        Review user = new Review(employee.getBaseUser(), customer.getBaseUser(), reviewAddDTO.getRating(), reviewAddDTO.getComment());
+//        return Optional.of(reviewRepository.save(user));
+//    }
 
     @Override
     @Transactional
@@ -66,7 +73,9 @@ public class ReviewServiceImpl implements ReviewService {
         Customer customer = customerRepository.findById(reviewAddDTO.getCustomerId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Review review = reviewRepository.save(new Review(customer.getBaseUser(), employee.getBaseUser(), reviewAddDTO.getRating(), reviewAddDTO.getComment()));
+        Review review = reviewRepository.save(new Review(customer.getBaseUser(), employee, reviewAddDTO.getRating(), reviewAddDTO.getComment()));
+
+        applicationEventPublisher.publishEvent(new ReviewCreatedEvent(review));
 
         return Optional.of(review);
     }
@@ -75,114 +84,25 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public Optional<Review> updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO) {
         Review review = getReviewById(id).get();
+        double oldRating = review.getRating();
 
         review.setRating(reviewUpdateDTO.getRating());
         review.setComment(reviewUpdateDTO.getComment());
         review.setDate(LocalDateTime.now());
 
-        return Optional.of(reviewRepository.save(review));
+        review = reviewRepository.save(review);
+
+        applicationEventPublisher.publishEvent(new ReviewEditedEvent(review, oldRating));
+
+        return Optional.of(review);
     }
 
     @Override
     @Transactional
     public Optional<Review> deleteReviewById(Long id) {
-        Review user = getReviewById(id).get();
+        Review review = getReviewById(id).get();
         reviewRepository.deleteById(id);
-        return Optional.of(user);
+        applicationEventPublisher.publishEvent(new ReviewDeletedEvent(review));
+        return Optional.of(review);
     }
-
-    @Override
-    public Map<Long, ReviewStats> getStatisticsForEmployee(List<Employee> employees) {
-        Map<Long, ReviewStats> map = new HashMap<>();
-        for (Employee employee : employees) {
-            Double rating = reviewRepository.findAll().stream().filter(r -> r.getUserTo().equals(employee.getBaseUser()))
-                    .mapToDouble(e -> e.getRating()).average().orElse(0.0);
-            int numberOfReviews = (int) reviewRepository.findAll().stream()
-                    .filter(r -> r.getUserTo().equals(employee.getBaseUser()))
-                    .count();
-            ReviewStats reviewStats = new ReviewStats(rating, numberOfReviews);
-            map.put(employee.getId(), reviewStats);
-        }
-        return map;
-    }
-
-    @Override
-    public ReviewStats getStatisticsForEmployee(Employee employee) {
-
-        Double rating = reviewRepository.findAll().stream().filter(r -> r.getUserTo().equals(employee.getBaseUser()))
-                .mapToDouble(e -> e.getRating()).average().orElse(0.0);
-        int numberOfReviews = (int) reviewRepository.findAll().stream()
-                .filter(r -> r.getUserTo().equals(employee.getBaseUser()))
-                .count();
-        ReviewStats reviewStats = new ReviewStats(rating, numberOfReviews);
-        return reviewStats;
-    }
-
-    @Override
-    public Map<Long, ReviewStats> getStatisticsForSalon(List<Salon> salons) {
-        Map<Long, ReviewStats> salonMap = new HashMap<>();
-        for (Salon salon : salons) {
-            Map<Long, ReviewStats> employeeMap = getStatisticsForEmployee(salon.getEmployees());
-
-            ReviewStats salonStats = employeeMap.values().stream()
-                    .collect(Collector.of(
-                            () -> new double[3],
-                            (a, rs) -> {
-                                a[0] += rs.getRating();
-                                a[1] += rs.getNumberOfReviews();
-                                a[2]++;
-                            },
-                            (a, b) -> { // combiner
-                                a[0] += b[0];
-                                a[1] += b[1];
-                                a[2] += b[2];
-                                return a;
-                            },
-                            a -> new ReviewStats(a[0] / (a[2] == 0 ? 1 : a[2]), (int) a[1]) // finisher
-                    ));
-
-            salonMap.put(salon.getId(), salonStats);
-        }
-        return salonMap;
-    }
-    @Override
-    public ReviewStats getStatisticsForSalon(Salon salon) {
-
-            Map<Long, ReviewStats> employeeMap = getStatisticsForEmployee(salon.getEmployees());
-
-            ReviewStats salonStats = employeeMap.values().stream()
-                    .collect(Collector.of(
-                            () -> new double[3],
-                            (a, rs) -> {
-                                a[0] += rs.getRating();
-                                a[1] += rs.getNumberOfReviews();
-                                a[2]++;
-                            },
-                            (a, b) -> { // combiner
-                                a[0] += b[0];
-                                a[1] += b[1];
-                                a[2] += b[2];
-                                return a;
-                            },
-                            a -> new ReviewStats(a[0] / (a[2] == 0 ? 1 : a[2]), (int) a[1]) // finisher
-                    ));
-
-
-        return salonStats;
-    }
-
-    @Override
-    public List<Review> getReviewsForEmployees(List<Employee> employees) {
-//        List<BaseUser> users = employees.stream().map(e->e.getBaseUser()).collect(Collectors.toList());;
-//        return reviewRepository.findAll().stream().filter(r->users.contains(r.getUserTo())).collect(Collectors.toList());
-        Map<Long, Boolean> emmployeeBaseUserIdMap = new HashMap<>();
-        employees.forEach(e -> {
-            emmployeeBaseUserIdMap.put(e.getBaseUser().getId(), true);
-        });
-        return reviewRepository.findAll().stream()
-                .filter(review -> emmployeeBaseUserIdMap.containsKey(review.getUserTo().getId())).toList();
-    }
-//    Comparison
-//Function 1 has a complexity of O(n + m).
-//Function 2 has a complexity of O(n + m * n).
 }

@@ -2,6 +2,7 @@ package mk.frizer.service.impl;
 
 import jakarta.transaction.Transactional;
 import mk.frizer.domain.*;
+import mk.frizer.domain.enums.Role;
 import mk.frizer.domain.exceptions.CustomerNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.repository.AppointmentRepository;
@@ -30,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll();
     }
 
-@Override
+    @Override
     public Optional<Customer> getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
         return Optional.of(customer);
@@ -50,21 +51,24 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Optional<Customer> createCustomer(Long baseUserId) {
-        BaseUser baseUser = baseUserRepository.findById(baseUserId)
-                .orElseThrow(UserNotFoundException::new);
+        return customerRepository.findByBaseUserId(baseUserId)
+                .or(() -> {
+                    BaseUser baseUser = baseUserRepository.findById(baseUserId)
+                            .orElseThrow(UserNotFoundException::new);
 
-        Customer customer = new Customer(baseUser);
-        return Optional.of(customerRepository.save(customer));
+                    Customer customer = new Customer(baseUser);
+                    return Optional.of(customerRepository.save(customer));
+                });
     }
 
     @Override
     @Transactional
     public Optional<Customer> deleteCustomerById(Long id) {
-      Optional<Customer> customer = customerRepository.findById(id);
-      if(customer.isEmpty())
-          throw new CustomerNotFoundException();
-       customerRepository.deleteById(id);
-       return customer;
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty())
+            throw new CustomerNotFoundException();
+        customerRepository.deleteById(id);
+        return customer;
     }
 
     @Override

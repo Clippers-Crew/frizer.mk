@@ -82,6 +82,7 @@ public class Appointment {
                 .treatmentId(this.treatment.getId())
                 .salonId(this.salon.getId())
                 .customerId(this.customer.getId())
+                .employeeId(this.employee.getId())
                 .attended(this.attended)
                 .build();
     }

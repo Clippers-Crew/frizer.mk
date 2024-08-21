@@ -34,8 +34,7 @@ public class EmployeeRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //TODO consume the path variable here, no need to send two things in employee DTO
-    @PostMapping("/add/{id}")
+    @PostMapping("/add")
     public ResponseEntity<EmployeeSimpleDTO> createEmployee(@RequestBody EmployeeAddDTO employeeAddDTO) {
         return this.employeeService.createEmployee(employeeAddDTO)
                 .map(employee -> ResponseEntity.ok().body(employee.toDto()))

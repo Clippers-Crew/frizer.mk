@@ -1,10 +1,6 @@
 package mk.frizer.web.rest;
 
-import mk.frizer.domain.BaseUser;
 import mk.frizer.domain.BusinessOwner;
-import mk.frizer.domain.Treatment;
-import mk.frizer.domain.dto.BaseUserAddDTO;
-import mk.frizer.domain.dto.BaseUserUpdateDTO;
 import mk.frizer.domain.dto.simple.BusinessOwnerSimpleDTO;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.service.BusinessOwnerService;

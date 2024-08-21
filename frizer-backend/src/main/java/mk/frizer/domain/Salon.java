@@ -94,4 +94,18 @@ public class Salon {
                 .longitude(this.longitude)
                 .build();
     }
+
+    public void addReview(Double grade){
+        this.rating = (this.rating * this.numberOfReviews + grade) / (this.numberOfReviews + 1);
+        this.numberOfReviews++;
+    }
+
+    public void deleteReview(Double grade){
+        this.rating = (this.rating * this.numberOfReviews - grade) / (this.numberOfReviews - 1);
+        this.numberOfReviews--;
+    }
+
+    public void updateReview(Double newGrade, Double oldGrade){
+        this.rating = (this.rating * this.numberOfReviews - oldGrade + newGrade) / (this.numberOfReviews);
+    }
 }

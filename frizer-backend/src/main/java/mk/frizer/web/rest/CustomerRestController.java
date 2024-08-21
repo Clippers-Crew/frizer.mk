@@ -41,6 +41,7 @@ public class CustomerRestController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
+    // Does this even make sense?
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<CustomerSimpleDTO> deleteCustomerById(@PathVariable Long id) {
        return this.customerService.deleteCustomerById(id)

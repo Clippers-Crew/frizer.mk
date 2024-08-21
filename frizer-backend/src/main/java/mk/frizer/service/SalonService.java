@@ -1,5 +1,6 @@
 package mk.frizer.service;
 
+import mk.frizer.domain.Review;
 import mk.frizer.domain.Salon;
 import mk.frizer.domain.Treatment;
 import mk.frizer.domain.dto.SalonAddDTO;
@@ -27,6 +28,10 @@ public interface SalonService {
     Optional<Salon> addTreatmentToSalon(Treatment treatment);
 
     Optional<Salon> editTreatmentForSalon(Treatment treatment);
+
+    Optional<Salon> addReview(Review review);
+    Optional<Salon> deleteReview(Review review);
+    Optional<Salon> updateReview(Review review, Double oldReview);
 
 //    Optional<Salon> saveImage(Long id, MultipartFile image) throws IOException;
 //    Optional<Salon> saveImageWithId(Long id, Integer imageNo, MultipartFile image) throws IOException;

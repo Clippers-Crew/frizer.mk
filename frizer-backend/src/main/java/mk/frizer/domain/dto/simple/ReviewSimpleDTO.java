@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 @Builder
 public class ReviewSimpleDTO {
     private Long id;
-    private Long userFromId;
-    private Long userToId;
+    private Long authorId;
+    private Long employeeId;
     private Double rating;
     private String comment;
     @DateTimeFormat(pattern = "yyyy-dd-MM HH:mm")

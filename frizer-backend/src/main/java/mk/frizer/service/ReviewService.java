@@ -15,19 +15,9 @@ public interface ReviewService {
 
     Optional<Review> createReviewForEmployee(ReviewAddDTO reviewAddDTO);
 
-    Optional<Review> createReviewForCustomer(ReviewAddDTO reviewAddDTO);
+//    Optional<Review> createReviewForCustomer(ReviewAddDTO reviewAddDTO);
 
     Optional<Review> updateReview(Long id, ReviewUpdateDTO reviewUpdateDTO);
 
     Optional<Review> deleteReviewById(Long id);
-
-    Map<Long, ReviewStats> getStatisticsForEmployee(List<Employee> employees);
-
-    ReviewStats getStatisticsForEmployee(Employee employee);
-
-    Map<Long, ReviewStats> getStatisticsForSalon(List<Salon> salons);
-
-    ReviewStats getStatisticsForSalon(Salon salon);
-
-    List<Review> getReviewsForEmployees(List<Employee> employees);
 }

@@ -30,7 +30,6 @@ public class SalonServiceImpl implements SalonService {
     private final TagRepository tagRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final DistanceCalculator distanceCalculator;
-    private static final String UPLOAD_DIR = "src/main/resources/static/images/salons/";
     private final CityRepository cityRepository;
     private final BaseUserRepository userRepository;
 
@@ -128,6 +127,27 @@ public class SalonServiceImpl implements SalonService {
         }).collect(Collectors.toList()));
         salonRepository.save(salon);
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Salon> addReview(Review review) {
+        Salon salon = review.getEmployee().getSalon();
+        salon.addReview(review.getRating());
+        return Optional.of(salonRepository.save(salon));
+    }
+
+    @Override
+    public Optional<Salon> deleteReview(Review review) {
+        Salon salon = review.getEmployee().getSalon();
+        salon.deleteReview(review.getRating());
+        return Optional.of(salonRepository.save(salon));
+    }
+
+    @Override
+    public Optional<Salon> updateReview(Review review, Double oldRating) {
+        Salon salon = review.getEmployee().getSalon();
+        salon.updateReview(review.getRating(), oldRating);
+        return Optional.of(salonRepository.save(salon));
     }
 
 //    @Override

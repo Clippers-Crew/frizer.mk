@@ -104,8 +104,8 @@ public class DataInitializer {
 
             Customer customer = customerService.getCustomers().getFirst();
 
-            reviewService.createReviewForCustomer(new ReviewAddDTO(employee1.getId(), customer.getId(), 4.4, "Very nice customer"));
-            reviewService.createReviewForCustomer(new ReviewAddDTO(employee2.getId(), customer.getId(), 5.0, "The nicest customer"));
+//            reviewService.createReviewForCustomer(new ReviewAddDTO(employee1.getId(), customer.getId(), 4.4, "Very nice customer"));
+            reviewService.createReviewForEmployee(new ReviewAddDTO(employee2.getId(), customer.getId(), 5.0, "The nicest employee"));
             reviewService.createReviewForEmployee(new ReviewAddDTO(employee1.getId(), customer.getId(), 4.9, "Very nice employee"));
 
         }

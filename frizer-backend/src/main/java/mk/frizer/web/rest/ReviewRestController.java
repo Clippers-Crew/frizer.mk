@@ -1,16 +1,12 @@
 package mk.frizer.web.rest;
 
-import mk.frizer.domain.BaseUser;
 import mk.frizer.domain.Review;
-import mk.frizer.domain.Salon;
 import mk.frizer.domain.dto.ReviewAddDTO;
 import mk.frizer.domain.dto.ReviewUpdateDTO;
-import mk.frizer.domain.dto.SalonAddDTO;
-import mk.frizer.domain.dto.SalonUpdateDTO;
 import mk.frizer.domain.dto.simple.ReviewSimpleDTO;
+import mk.frizer.domain.exceptions.ReviewNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.service.ReviewService;
-import mk.frizer.service.SalonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,23 +35,23 @@ public class ReviewRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add-for-employee")
+//    @PostMapping("/add-for-employee")
+    @PostMapping("/add")
     public ResponseEntity<ReviewSimpleDTO> createReviewForEmployee(@RequestBody ReviewAddDTO reviewAddDto) {
-        System.out.println(reviewAddDto);
         return this.reviewService.createReviewForEmployee(reviewAddDto)
                 .map(review -> ResponseEntity.ok().body(review.toDto()))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PostMapping("/add-for-customer")
-    public ResponseEntity<ReviewSimpleDTO> createReviewForCustomer(@RequestBody ReviewAddDTO reviewAddDto) {
-        System.out.println(reviewAddDto);
-        return this.reviewService.createReviewForCustomer(reviewAddDto)
-                .map(review -> ResponseEntity.ok().body(review.toDto()))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
-    }
+//    @PostMapping("/add-for-customer")
+//    public ResponseEntity<ReviewSimpleDTO> createReviewForCustomer(@RequestBody ReviewAddDTO reviewAddDto) {
+//        System.out.println(reviewAddDto);
+//        return this.reviewService.createReviewForCustomer(reviewAddDto)
+//                .map(review -> ResponseEntity.ok().body(review.toDto()))
+//                .orElseGet(() -> ResponseEntity.badRequest().build());
+//    }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public ResponseEntity<ReviewSimpleDTO> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateDTO reviewUpdateDTO) {
         return this.reviewService.updateReview(id, reviewUpdateDTO)
                 .map(review -> ResponseEntity.ok().body(review.toDto()))
@@ -69,7 +65,7 @@ public class ReviewRestController {
             this.reviewService.getReviewById(id);
             return ResponseEntity.badRequest().build();
         }
-        catch(UserNotFoundException exception){
+        catch(ReviewNotFoundException exception){
             return ResponseEntity.ok().body(review.get().toDto());
         }
     }

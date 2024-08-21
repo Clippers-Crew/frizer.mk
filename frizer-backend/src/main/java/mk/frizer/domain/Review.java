@@ -21,19 +21,19 @@ public class Review {
     private Long id;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    private BaseUser userFrom;
+    private BaseUser author;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private BaseUser userTo;
+    private Employee employee;
     private Double rating;
     private String comment;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     @DateTimeFormat(pattern = "yyyy-dd-MM HH:mm")
     private LocalDateTime date;
 
-    public Review(BaseUser userFrom, BaseUser userTo, Double rating, String comment) {
-        this.userFrom = userFrom;
-        this.userTo = userTo;
+    public Review(BaseUser author, Employee employee, Double rating, String comment) {
+        this.author = author;
+        this.employee = employee;
         this.rating = rating;
         this.comment = comment;
         this.date = LocalDateTime.now();
@@ -42,8 +42,8 @@ public class Review {
     public ReviewSimpleDTO toDto(){
         return ReviewSimpleDTO.builder()
                 .id(this.id)
-                .userFromId(userFrom.getId())
-                .userToId(userTo.getId())
+                .authorId(author.getId())
+                .employeeId(employee.getId())
                 .rating(this.rating)
                 .comment(this.comment)
                 .date(this.date)

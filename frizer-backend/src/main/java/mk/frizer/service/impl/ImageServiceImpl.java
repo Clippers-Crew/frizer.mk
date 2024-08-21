@@ -24,9 +24,10 @@ public class ImageServiceImpl implements ImageService {
         Optional<Salon> salon = salonRepository.findById(id);
         if (salon.isPresent()) {
             byte[] imageBytes = file.getBytes();
-            ImageEntity imageEntity = new ImageEntity(imageBytes);
+            ImageEntity imageEntity = new ImageEntity(imageBytes, salon.get().getId());
             imageEntity = imageRepository.save(imageEntity);
 
+            // TODO Create an event here for the next functionallity?
             salon.get().getImages().add(imageEntity.getId());
             return Optional.of(salonRepository.save(salon.get()));
         }
@@ -35,15 +36,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional
     public Optional<Salon> saveBackgroundImage(Long id, MultipartFile file) throws IOException {
-        // TODO CHECK USER LATER?
-//        if(fitnessCenter != null && fitnessCenter.owner?.id != currentUser.id){
-//            throw UsersDoNotMatchException()
-//        }
         Optional<Salon> salon = salonRepository.findById(id);
         if (salon.isPresent()) {
             Long oldImageId = salon.get().getBackgroundImage();
             byte[] imageBytes = file.getBytes();
-            ImageEntity imageEntity = new ImageEntity(imageBytes);
+            ImageEntity imageEntity = new ImageEntity(imageBytes, salon.get().getId(), true);
             imageEntity = imageRepository.save(imageEntity);
 
             salon.get().setBackgroundImage(imageEntity.getId());

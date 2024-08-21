@@ -45,7 +45,7 @@ public class AppointmentRestController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @PostMapping("/attended/{id}")
+    @PutMapping("/attended/{id}")
     public ResponseEntity<AppointmentSimpleDTO> changeAttendanceForAppointment(@PathVariable Long id) {
         return this.appointmentService.changeUserAttendanceAppointment(id)
                 .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
