@@ -41,6 +41,11 @@ public class BaseUserServiceImpl implements BaseUserService {
     }
 
     @Override
+    public Optional<BaseUser> getBaseUserByEmail(String email) {
+        return baseUserRepository.findByEmail(email);
+    }
+
+    @Override
     @Transactional
     public Optional<BaseUser> createBaseUser(BaseUserAddDTO baseUserAddDTO) {
         BaseUser user = baseUserRepository.save(new BaseUser(baseUserAddDTO.getEmail(), passwordEncoder.encode(baseUserAddDTO.getPassword()), baseUserAddDTO.getFirstName(), baseUserAddDTO.getLastName(), baseUserAddDTO.getPhoneNumber()));

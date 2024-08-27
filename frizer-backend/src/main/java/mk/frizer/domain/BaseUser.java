@@ -1,11 +1,12 @@
 package mk.frizer.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mk.frizer.domain.dto.simple.BaseUserSimpleDTO;
 import mk.frizer.domain.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
 @Data
 @Entity
 @NoArgsConstructor
-public class BaseUser{// implements UserDetails {
+public class BaseUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,10 +28,6 @@ public class BaseUser{// implements UserDetails {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    private boolean isAccountNonExpired = true;
-    private boolean isAccountNonLocked = true;
-    private boolean isCredentialsNonExpired =  true;
-    private boolean isEnabled = true;
 
     public BaseUser(String email, String password, String firstName, String lastName, String phoneNumber) {
         this.email = email;
@@ -51,37 +48,6 @@ public class BaseUser{// implements UserDetails {
 
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return roles;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
-//
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return isAccountNonExpired;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return isAccountNonLocked;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return isCredentialsNonExpired;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return isEnabled;
-//    }
-
     public BaseUserSimpleDTO toDto(){
         return BaseUserSimpleDTO.builder()
                 .id(this.id)
@@ -91,5 +57,35 @@ public class BaseUser{// implements UserDetails {
                 .phoneNumber(this.phoneNumber)
                 .roles(roles.stream().map(Enum::name).toList())
                 .build();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;//UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;//UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;//UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;//UserDetails.super.isEnabled();
     }
 }

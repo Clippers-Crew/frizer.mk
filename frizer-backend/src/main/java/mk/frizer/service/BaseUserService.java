@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface BaseUserService {
     List<BaseUser> getBaseUsers();
     Optional<BaseUser> getBaseUserById(Long id);
+    Optional<BaseUser> getBaseUserByEmail(String email);
     Optional<BaseUser> createBaseUser(BaseUserAddDTO baseUserAddDTO);
     Optional<BaseUser> updateBaseUser(Long id, BaseUserUpdateDTO baseUserUpdateDTO);
     Optional<BaseUser> changeBaseUserPassword(Long id, String password);
