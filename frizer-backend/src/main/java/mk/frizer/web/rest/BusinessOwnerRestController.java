@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping({"/api/owners", "/api/owner"})
-@CrossOrigin(origins = {"localhost:3000","localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class BusinessOwnerRestController {
     private final BusinessOwnerService businessOwnerService;
 

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping({"/api/treatments", "/api/treatment"})
-@CrossOrigin(origins = {"localhost:3000","localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class TreatmentRestController {
     private final TreatmentService treatmentService;
 

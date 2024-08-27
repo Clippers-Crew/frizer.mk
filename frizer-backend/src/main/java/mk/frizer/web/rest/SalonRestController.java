@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping({"/api/salons", "/api/salon"})
-@CrossOrigin(origins = {"localhost:3000","localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class SalonRestController {
     private final SalonService salonService;
     private final ImageService imageService;

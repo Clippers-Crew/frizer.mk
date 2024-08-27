@@ -4,17 +4,15 @@ import mk.frizer.domain.Customer;
 import mk.frizer.domain.Employee;
 import mk.frizer.domain.dto.EmployeeAddDTO;
 import mk.frizer.domain.dto.simple.EmployeeSimpleDTO;
-import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping({"/api/employees", "/api/employee" })
-@CrossOrigin(origins = {"localhost:3000","localhost:3001"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class EmployeeRestController {
     private final EmployeeService employeeService;
 
