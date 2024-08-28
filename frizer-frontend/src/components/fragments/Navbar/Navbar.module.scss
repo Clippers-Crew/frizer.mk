@@ -1,0 +1,130 @@
+.nav {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background-color: var(--off-white);
+    color: var(--darkColor);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    z-index: 1;
+    font-size: var(--smallFont);
+    backdrop-filter: blur(0.2em);
+}
+
+.homeButton {
+    margin-left: 10vw;
+    height: 3rem;
+    justify-self: flex-start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: var(--darkColor);
+    font-weight: bold;
+}
+
+.navlinks {
+    justify-self: flex-end;
+    display: flex;
+}
+
+.navlink {
+    padding: 1rem 1.5rem;
+    list-style: none;
+    transition: all 200ms ease;
+    font-weight: bold;
+    color: currentColor;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navlink svg {
+    margin-left: 0.5em;
+}
+
+.navlinks a {
+    text-decoration: none;
+    font-weight: bold;
+    color: currentColor;
+    transition: all 200ms ease;
+}
+
+.logout_button {
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    color: currentColor;
+    transition: all 200ms ease;
+    font-size: 1em;
+}
+
+.toggleButton {
+    margin-right: 10vw;
+    border: none;
+    display: none;
+    justify-self: flex-end;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.toggleButton svg {
+    fill: var(--darkColor);
+    height: 3rem;
+    width: 3rem;
+}
+
+@media only screen and (min-width: 650px) {
+    .navlinks {
+        margin-right: 10vw;
+    }
+
+    .navlink:hover {
+        background-color: var(--darkColor);
+        color: var(--lightColor);
+    }
+
+    .navlinks a:hover {
+        color: var(--lightColor);
+    }
+}
+
+@media only screen and (max-width: 651px) {
+    :root {
+        font-size: 14px;
+    }
+
+    .nav {
+        backdrop-filter: blur(0.5em);
+    }
+
+    .toggleButton {
+        display: block;
+    }
+
+    .navlinks {
+        width: 100%;
+        z-index: 1;
+        top: 66%;
+        text-align: center;
+        grid-column: 1/3;
+        flex-direction: column;
+        margin-top: 1rem;
+    }
+
+    .navlinks a:first-child li {
+        padding-top: 0;
+    }
+
+    .navlinks a {
+        font-size: calc(var(--smallFont) + 0.5vmin);
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .navlinks a {
+        font-size: calc(var(--smallFont) + 1vmin);
+    }
+}
