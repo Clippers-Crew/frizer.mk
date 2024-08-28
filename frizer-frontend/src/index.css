@@ -1,3 +1,31 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --font-color: #20232e;
+  --black-color: hsl(0, 0%, 0%);
+  --background-color: #ececec;
+  --darker-color: #c0c0c0;
+  --lighter-color: #d9d9d9;
+  --off-white: #f7f7f7;
+  --dark-color: #20232e;
+  --star-color: rgb(205, 205, 0);
+  --primary-color: #ff0b23;
+  --secondary-color: #333;
+  --secondary-accent-color: #757575;
+  --accent-color: #ff5669;
+  --coin-color: #b2ba54;
+  --upload-button-color: #4CAF50;
+  --upload-button-accent-color: #7ebb80;
+  --active-color: #4CAF50;
+  --inactive-color: #ff0b23;
+
+  --border-radius: 0.5em;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +39,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.primaryButton {
+  padding: 1em;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  color: var(--off-white);
+  font-weight: bold;
+  cursor: pointer;
+}
+.primaryButton:hover{
+  background-color: var(--accent-color);
+}
+
