@@ -26,6 +26,10 @@ public class TreatmentRestController {
     public List<TreatmentSimpleDTO> getTreatments(){
         return treatmentService.getTreatments().stream().map(Treatment::toDto).toList();
     }
+    @GetMapping("/ids")
+    public List<TreatmentSimpleDTO> getTreatmentsByIds(@RequestParam  List<Long> ids){
+        return treatmentService.getTreatmentsByIds(ids).stream().map(Treatment::toDto).toList();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<TreatmentSimpleDTO> getTreatment(@PathVariable Long id){

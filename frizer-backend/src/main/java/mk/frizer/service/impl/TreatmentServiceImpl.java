@@ -96,4 +96,9 @@ public class TreatmentServiceImpl implements TreatmentService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public List<Treatment> getTreatmentsByIds(List<Long> ids) {
+        return treatmentRepository.findAllById(ids);
+    }
 }

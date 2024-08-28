@@ -28,7 +28,10 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/salons",
-                                "/api/salons/{id}"
+                                "/api/salons/{id}",
+                                "/api/salons/**",
+                                "/api/treatments/**",
+                                "/api/treatments/ids/**"
                         )
                         .permitAll()
                         .anyRequest()

@@ -18,4 +18,6 @@ public interface TreatmentService{
 
     @Transactional
     Optional<Treatment> deleteTreatmentByIdFromSalon(Long id, Long salonId);
+
+    List<Treatment> getTreatmentsByIds(List<Long> ids);
 }

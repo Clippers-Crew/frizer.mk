@@ -1,0 +1,28 @@
+.salonProfile {
+    margin-top: 10vh;
+  }
+  
+  .row {
+    display: flex;
+    gap: 1em;
+    align-items: center; /* Ensures icons and text are aligned */
+  }
+  
+  .salonProfile .salonImage img {
+    border-radius: var(--border-radius);
+    height: 5em;
+  }
+  
+  .salonName {
+    display: flex;
+    align-items: center;
+    gap: 2em; /* Adjust the spacing between the salon name and heart icon */
+  }
+  
+  .salonInfoRow {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+  }
+  

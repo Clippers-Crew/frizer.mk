@@ -34,7 +34,10 @@ public class SalonRestController {
     public List<SalonSimpleDTO> getAllSalons(){
         return salonService.getSalons().stream().map(Salon::toDto).toList();
     }
-
+    @GetMapping("/ids")
+    public List<SalonSimpleDTO> getAllSalonsByIds(@RequestParam List<Long> ids) {
+        return salonService.getSalonsByIds(ids).stream().map(Salon::toDto).toList();
+    }
     @GetMapping("/{id}")
     public ResponseEntity<SalonSimpleDTO> getSalon(@PathVariable Long id){
         return this.salonService.getSalonById(id)
