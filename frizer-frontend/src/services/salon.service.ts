@@ -14,8 +14,13 @@ const SalonService = {
         
         return axios.get<Salon[]>('/salons/ids', { params });
       },
-  
+  getTopNSalons: (n: number) => {
+        return axios.get<Salon[]>(`/salons/top?count=${n}`);
+    },
+    searchSalons: (queryParams: string) => {
+        return axios.get<Salon[]>(`/salons?${queryParams}`);
+    }
 };
-
+    
 export default SalonService;
 

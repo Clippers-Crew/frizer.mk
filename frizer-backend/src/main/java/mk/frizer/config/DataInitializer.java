@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DataInitializer {
@@ -77,6 +78,24 @@ public class DataInitializer {
             salonService.createSalon(new SalonAddDTO("Nenko", "Berber", "kaj komsiite", "Скопје", "broj1", businessOwner1.getId(), (float) 42.0586418, (float) 21.3176565));
             salonService.createSalon(new SalonAddDTO("Kaj Shekspiro", "Frizerski salon za mazhi", "prilep", "Прилеп", "broj2", businessOwner2.getId(), (float) 41.4360468, (float) 22.0048696));
             salonService.createSalon(new SalonAddDTO("Frizerski salon Asim", "Frizerski salon za mazhi", "veles", "Велес", "broj3", businessOwner1.getId(), (float) 41.4676689, (float) 22.0844239));
+
+            List<BaseUser> baseUsers = baseUserService.getBaseUsers();
+            List<BusinessOwner> businessOwners = businessOwnerService.getBusinessOwners();
+
+            for (int i = 1; i <= 20; i++) {
+                BusinessOwner businessOwner = businessOwners.get(i % businessOwners.size());
+                String city = all_cities.get(i % all_cities.size());
+                salonService.createSalon(new SalonAddDTO(
+                        "Salon " + i,
+                        "Description for Salon " + i,
+                        "Address " + i,
+                        city,
+                        "Contact " + i,
+                        businessOwner.getId(),
+                        (float) (40 + Math.random()),
+                        (float) (20 + Math.random())
+                ));
+            }
 
             Salon salon1 = salonService.getSalons().get(1);
             Salon salon2 = salonService.getSalons().get(2);

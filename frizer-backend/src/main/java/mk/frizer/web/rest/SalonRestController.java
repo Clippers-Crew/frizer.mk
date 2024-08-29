@@ -31,13 +31,27 @@ public class SalonRestController {
     }
 
     @GetMapping()
-    public List<SalonSimpleDTO> getAllSalons(){
+    public List<SalonSimpleDTO> getAllSalons(@RequestParam(required = false) String name,
+                                             @RequestParam(required = false) String city,
+                                             @RequestParam(required = false) Float distance,
+                                             @RequestParam(required = false) Float rating,
+                                             @RequestParam(required = false) Double latitude,
+                                             @RequestParam(required = false) Double longitude){
+        if (name != null || city != null || distance!=null || rating!=null || latitude != null || longitude != null) {
+            return salonService.filterSalons(name, city, distance, rating, latitude, longitude).stream().map(Salon::toDto).toList();
+        }
         return salonService.getSalons().stream().map(Salon::toDto).toList();
     }
     @GetMapping("/ids")
     public List<SalonSimpleDTO> getAllSalonsByIds(@RequestParam List<Long> ids) {
         return salonService.getSalonsByIds(ids).stream().map(Salon::toDto).toList();
     }
+
+    @GetMapping("/top")
+    public List<SalonSimpleDTO> getTopNSalons(@RequestParam Integer count){
+        return salonService.getTopNSalons(count).stream().map(Salon::toDto).toList();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SalonSimpleDTO> getSalon(@PathVariable Long id){
         return this.salonService.getSalonById(id)

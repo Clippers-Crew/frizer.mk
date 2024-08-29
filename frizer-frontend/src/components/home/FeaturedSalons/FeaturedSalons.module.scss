@@ -1,7 +1,8 @@
 .featuredSalons{
+  padding: 0 8vw 10vh;
     margin-top: 5em;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15em, 20%));
+    grid-template-columns: repeat(auto-fit, minmax(15em, 24%));
     justify-content: center;
     gap: 1em;
   

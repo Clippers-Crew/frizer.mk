@@ -9,17 +9,17 @@ function FeaturedSalons() {
     const [salons, setSalons] = useState<Salon[]>([]);
 
     useEffect(() => {
-      // const getSalons = async () => {
-      //   try {
-      //     const response = await SalonService.getSalons();
-      //     setSalons(response.data);
-      //   } catch (error) {
-      //     console.error("Failed to fetch salons:", error);
-      //   }
-      // };
+      const getSalons = async () => {
+        try {
+          const response = await SalonService.getTopNSalons(8);
+          setSalons(response.data);
+        } catch (error) {
+          console.error("Failed to fetch salons:", error);
+        }
+      };
   
-      // getSalons();
-    setSalons(SALONS_MOCK);
+      getSalons();
+    // setSalons(SALONS_MOCK);
     }, []);
 
   return (

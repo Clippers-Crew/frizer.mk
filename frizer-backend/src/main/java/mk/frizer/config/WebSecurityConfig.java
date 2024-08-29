@@ -32,14 +32,7 @@ public class WebSecurityConfig {
                                 "/api/auth/**",
                                 "/api/salons",
                                 "/api/salons/{id}"
-//                                "/api/salons/**"
-//                                "/api/treatments/**",
-//                                "/api/treatments/ids/**",
-//                                "/api/employees/**",
-//                                "/api/employees/ids/**",
-//                                "/api/reviews/**",
-//                                "/api/reviews/ids/**",
-//                                "api/**"
+
                         )
                         .permitAll()
                         .anyRequest()

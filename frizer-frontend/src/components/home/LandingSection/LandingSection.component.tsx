@@ -2,20 +2,42 @@ import React, { useEffect, useState } from 'react'
 import Search from '../../fragments/Search/Search.component';
 import { Link } from 'react-router-dom';
 import styles from './LandingSection.module.scss';
-import { SalonsPerCity } from '../../../interfaces/SalonsPerCity.interface';
-import { SALONS_PER_CITY_MOCK } from '../../../mock/salonsPerCity.mock';
+import CityService from '../../../services/city.service';
+import { City } from '../../../interfaces/City.interface';
 
 function LandingSection() {
-    const [salonsPerCities, setsalonsPerCities] = useState<SalonsPerCity[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
 
     useEffect(() => {
-        // fetchsalonsPerCities();
-        setsalonsPerCities(SALONS_PER_CITY_MOCK);
+        const getTop6Cities = async () => {
+            try {
+              const response = await CityService.getTopNCitiesBySalonsCount(6);
+              setCities(response.data);
+            } catch (error) {
+              console.error("Failed to fetch salons:", error);
+            }
+          };
+      
+          getTop6Cities();
+        //   setcities(SALONS_PER_CITY_MOCK);
     }, [])
+
+    function getCitySearchUrl(city: string){
+        const queryParams = new URLSearchParams({
+            name: '',    
+            city: city,
+            distance: '0',
+            rating: '0',
+            latitude: '',
+            longitude: ''
+          }).toString();
+
+          return `/salons?${queryParams}`;
+    }
 
   return (
     <div className={`${styles.landingPage}`}>
-        <img src="./background-image.png" alt="Background" />
+        <img src="./assets/images/background-image.png" alt="Background" />
         <div className={`${styles.blackOverlay}`}></div>
         <h1 className={`${styles.title}`}>Само еден клик оддалечени од <br/>
         вашиот омилен салон за убавина</h1>
@@ -25,12 +47,12 @@ function LandingSection() {
 
         <div className={`${styles.tags}`}>
         <h4>Фитнес центри по градови</h4>
-        {salonsPerCities.map(entry => {
+        {cities.map((city, i) => {
             return (
-            <Link to={`/salons/${entry.city}`} className={`${styles.tag}`}>
+            <Link to={getCitySearchUrl(city.name)} className={`${styles.tag}`} key={i}>
                 <div>
-                    <h5>{entry.city}</h5>
-                    <p>{entry.count} {entry.count > 0 ? 'салони': 'салон' }</p>
+                    <h5>{city.name}</h5>
+                    <p>{city.salonsIdsInCity?.length} {city.salonsIdsInCity && city.salonsIdsInCity?.length > 0 ? 'салони': 'салон' }</p>
                 </div>
             </Link>
             );

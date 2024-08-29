@@ -31,10 +31,10 @@
 
     .location{
         margin-top: 0.5em;
-    }
-
-    .location > :first-child{
-        margin-right: 0.5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5em;
     }
     
     .primaryButton {
@@ -44,15 +44,13 @@
 
 
 @media (max-width: 50em) {
-    .card {
-        min-height: 350px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    
-        .primaryButton {
-            width: 200px;
-            margin-bottom: 10px;
+    .card{
+        .image{
+            margin-top: 1em;
         }
-    }    
+        .primaryButton{
+            margin-top: 2em;
+            width: 70%;
+        }  
+    }
 }

@@ -6,9 +6,12 @@ import Register from './pages/Register.page';
 import SalonDetails from './pages/SalonDetails.page';
 import { GlobalContext, GlobalContextProvider } from './context/Context'; 
 import PrivateRoute from './guard/PrivateRoute'; 
-
+import SalonSearchResults from './pages/SalonSearchResults.page';
+import ScrollToTop from './utils/ScrollToTop';
 function App() {
   return (
+    <>
+      <ScrollToTop />
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -23,9 +26,11 @@ function App() {
                   />
               }
           />
+          <Route path="/salons" element={<SalonSearchResults/>} />
           <Route path="*" element={<div>Error: Page not found</div>} />
       </Routes>
-  );
+  </>
+      );
+   
 }
-
 export default App;
