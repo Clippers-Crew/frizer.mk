@@ -11,7 +11,7 @@ export const SALON_MOCK: Salon = {
         1,
         2
     ],
-    salonTreatmentIds: [
+    salonTreatmentsIds: [
         2
     ],
     tagsIds: [

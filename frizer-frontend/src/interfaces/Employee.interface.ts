@@ -8,5 +8,8 @@ export interface Employee{
     firstName: string,
     lastName: string,
     phoneNumber: string,
-    roles: string[]
+    roles: string[],
+    rating: number,
+    numberOfReviews : number,
+    employmentDate: Date
 }

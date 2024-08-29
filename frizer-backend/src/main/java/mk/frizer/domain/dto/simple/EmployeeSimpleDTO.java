@@ -3,6 +3,7 @@ package mk.frizer.domain.dto.simple;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -20,4 +21,7 @@ public class EmployeeSimpleDTO {
     private String lastName;
     private String phoneNumber;
     private List<String> roles;
+    private Double rating;
+    private Integer numberOfReviews;
+    private LocalDate employmentDate;
 }

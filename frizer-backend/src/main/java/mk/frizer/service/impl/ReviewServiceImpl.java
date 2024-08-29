@@ -47,6 +47,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<Review> getReviewsBySalon(Long id) {
+        return reviewRepository.findByEmployee_Salon_Id(id);
+    }
+
+    @Override
+    public List<Review> getReviewsById(List<Long> ids) {
+        return reviewRepository.findByIdsWithAssociations(ids);
+    }
+
+    @Override
     public Optional<Review> getReviewById(Long id) {
         Review user = reviewRepository.findById(id)
                 .orElseThrow(ReviewNotFoundException::new);

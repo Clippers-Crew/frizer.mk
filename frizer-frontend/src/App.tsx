@@ -4,44 +4,31 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.page';
 import Register from './pages/Register.page';
 import SalonDetails from './pages/SalonDetails.page';
-import SalonService from './services/salon.service';
-import { useEffect, useState } from 'react';
-import { Salon } from './interfaces/Salon.interface';
+import { GlobalContext, GlobalContextProvider } from './context/Context'; 
+import PrivateRoute from './PrivateRoute'; 
 
-function App() {
-  const [salon, setSalon] = useState<Salon | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchSalon = async () => {
-      try {
-        const response = await SalonService.getSalon(1);
-        setSalon(response.data);
-      } catch (error) {
-        console.error('Error fetching salon:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSalon();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+interface AppProps {
+  isAuth: boolean;
+}
+function App({ isAuth }:AppProps) {
   return (
-    <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {salon && <Route path="/salons/1" element={<SalonDetails salon={salon} />} />}
-        <Route path="*" element={<div>Error: Page not found</div>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+              path="/salons/:id"
+              element={
+                  <PrivateRoute
+                      element={<SalonDetails />}
+                      path="/salons/:id"
+                      isAuth={isAuth}
+                  />
+              }
+          />
+          <Route path="*" element={<div>Error: Page not found</div>} />
       </Routes>
-    </Router>
   );
 }
 

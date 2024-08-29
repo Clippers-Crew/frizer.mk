@@ -5,7 +5,7 @@ import { FaRegHeart, FaStar } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 interface SalonBaseInfoProps {
-  salon: Salon;
+  salon?: Salon;
 }
 
 function SalonBaseInfo({ salon }: SalonBaseInfoProps) {
@@ -16,17 +16,17 @@ function SalonBaseInfo({ salon }: SalonBaseInfoProps) {
           <img src='/assets/salons/salon_image.png' alt="Salon image" />
         </div>
         <div className={styles.salonName}>
-          <h1>{salon.name}</h1>
+          <h1>{salon?.name}</h1>
           <FaRegHeart />
         </div>
       </div>
 
       <div className={styles.salonInfoRow}>
         <FaLocationDot />
-        <span>{salon.location}</span>
+        <span>{salon?.location}</span>
         <FaStar />
-        <span>{salon.rating.toPrecision(2)}
-          {salon.numberOfReviews > 1 ? `(${salon.numberOfReviews} рецензии)` : `(${salon.numberOfReviews} рецензија)`}</span>
+        <span>{salon?.rating.toPrecision(2)}
+          {salon && salon.numberOfReviews > 1 ? `(${salon?.numberOfReviews} рецензии)` : `(${salon?.numberOfReviews} рецензија)`}</span>
       </div>
     </div>
   );

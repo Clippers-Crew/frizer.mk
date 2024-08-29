@@ -34,6 +34,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> getEmployeesByIds(List<Long> ids) {
+        return employeeRepository.findAllById(ids);
+    }
+
+    @Override
     public Optional<Employee> getEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(EmployeeNotFoundException::new);
@@ -117,6 +122,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = appointment.getEmployee();
         employee.getAppointmentsActive().remove(appointment);
         employee.getAppointmentsHistory().add(appointment);
+        return Optional.of(employeeRepository.save(employee));
+    }
+    @Override
+    public Optional<Employee> addReview(Review review) {
+        Employee employee = review.getEmployee();
+        employee.addReview(review.getRating());
+        return Optional.of(employeeRepository.save(employee));
+    }
+
+    @Override
+    public Optional<Employee> deleteReview(Review review) {
+        Employee employee = review.getEmployee();
+        employee.deleteReview(review.getRating());
+        return Optional.of(employeeRepository.save(employee));
+    }
+
+    @Override
+    public Optional<Employee> updateReview(Review review, Double oldRating) {
+        Employee employee = review.getEmployee();
+        employee.updateReview(review.getRating(), oldRating);
         return Optional.of(employeeRepository.save(employee));
     }
 }

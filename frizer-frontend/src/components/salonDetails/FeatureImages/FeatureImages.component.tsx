@@ -3,15 +3,15 @@ import styles from './FeatureImages.module.scss';
 import { Salon } from "../../../interfaces/Salon.interface";
 import SalonService from "../../../services/salon.service";
 interface FeatureImagesProps {
-  salon: Salon;
+  salon?: Salon;
 }
 
 function FeatureImages({ salon }: FeatureImagesProps) {
   const [image, setImage] = useState<string>('');
 
-  function getSalonImageUrl(salonId: number, imageNumber: number): string {
-    if(salon.images != null && salon.images.length > 0 && salon.images[imageNumber-1]!= null) {
-      return `http://localhost:8080/api/salons/${salonId}/image/${imageNumber}`;
+  function getSalonImageUrl( imageNumber: number): string {
+    if(salon?.images != null && salon?.images.length > 0 && salon?.images[imageNumber-1]!= null) {
+      return `http://localhost:8080/api/salons/${salon.id}/image/${imageNumber}`;
 
     }
     else {
@@ -23,16 +23,16 @@ function FeatureImages({ salon }: FeatureImagesProps) {
   return (
     <div className={styles.featuredImages}>
       <div className={styles.primaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(salon.id,1)} />
+        <img alt="Salon image" src={getSalonImageUrl(1)} />
       </div>
       <div className={styles.secondaryImage}>
-      <img alt="Salon image" src={getSalonImageUrl(salon.id,2)} />
+      <img alt="Salon image" src={getSalonImageUrl(2)} />
       </div>
       <div className={styles.secondaryImage}>
-      <img alt="Salon image" src={salon.images!= null && salon.images.length>0 ? getSalonImageUrl(salon.id,3) : '/assets/salons/default_salon_3.jpg'} />
+      <img alt="Salon image" src={getSalonImageUrl(3)} />
       </div>
       <div className={styles.teritaryImage}>
-      <img alt="Salon image" src={salon.images!= null && salon.images.length>0 ? getSalonImageUrl(salon.id,4) : '/assets/salons/default_salon_4.jpg'} />
+      <img alt="Salon image" src={getSalonImageUrl(4)} />
       </div>
     </div>
   );

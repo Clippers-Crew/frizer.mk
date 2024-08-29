@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.frizer.domain.dto.simple.ReviewJoinDTO;
 import mk.frizer.domain.dto.simple.ReviewSimpleDTO;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -47,6 +48,19 @@ public class Review {
                 .rating(this.rating)
                 .comment(this.comment)
                 .date(this.date)
+                .build();
+    }
+    public ReviewJoinDTO toJoinedDto(){
+        return ReviewJoinDTO.builder()
+                .id(this.id)
+                .authorId(author.getId())
+                .employeeId(employee.getId())
+                .rating(this.rating)
+                .comment(this.comment)
+                .date(this.date)
+                .authorFirstName(author.getFirstName())
+                .authorLastName(author.getLastName())
+                .employeeFullName(employee.getFullName())
                 .build();
     }
 }

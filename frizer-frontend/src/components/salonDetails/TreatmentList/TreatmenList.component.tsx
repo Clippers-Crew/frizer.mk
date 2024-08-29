@@ -4,9 +4,11 @@ import { Salon } from '../../../interfaces/Salon.interface';
 import { Treatment } from '../../../interfaces/Treatment.interface';
 import TreatmentService from '../../../services/treatment.service';
 import TreatmentItem from '../TreatmentItem/TreatmentItem.component';
+import TreatmentDetailsItem from '../TreatmentDetailsItem/TreatmentDetailsItem.component';
+import ReserveAppointmentForm from '../ReserveAppointmentForm/ReserveAppointmentForm.component';
 
 interface TreatmentListProps {
-  salon: Salon;
+  salon?: Salon;
 }
 
 function TreatmentList({ salon }: TreatmentListProps) {
@@ -14,19 +16,17 @@ function TreatmentList({ salon }: TreatmentListProps) {
 
   useEffect(() => {
     const fetchTreatments = async () => {
-      if (salon.salonTreatmentsIds && salon.salonTreatmentsIds.length > 0) {
+      if (salon?.salonTreatmentsIds && salon?.salonTreatmentsIds.length > 0) {
         try {
-          const response = await TreatmentService.getTreatmentsByIds(salon.salonTreatmentsIds);
-          console.log(response);
+          const response = await TreatmentService.getTreatmentsByIds(salon?.salonTreatmentsIds);
           setTreatments(response.data);
         } catch (error) {
-          console.error('Error fetching treatments:', error);
         }
       }
     };
 
     fetchTreatments();
-  }, [salon.salonTreatmentsIds]);
+  }, [salon?.salonTreatmentsIds]);
 
   return (
     <div className={styles.services}>
@@ -34,14 +34,30 @@ function TreatmentList({ salon }: TreatmentListProps) {
       {treatments.length === 0 ? (
         <p>Нема третмани</p>
       ) : (
-        <div>
+        <>
           {treatments.map((treatment, index) => (
-            <div key={index} className={styles.column}>
+            <div key={treatment.id} className={styles.column}>
               <TreatmentItem treatment={treatment} />
             </div>
           ))}
+ 
+          <div className={styles.column}>
+          {treatments.map((treatment, index) => (
+           <>
+            <div key={index} className={styles.serviceType}>
+              <TreatmentDetailsItem treatment={treatment} />
+              <ReserveAppointmentForm treatmentId={treatment.id} salonId={salon?.id}/>
+            </div>
+          <hr/>
+           </>
+          ))}
+
         </div>
-      )}
+       </> 
+      )
+      
+      }
+
     </div>
   );
 }

@@ -1,0 +1,50 @@
+.loginForm {
+    margin: auto;
+    /*width: 100%;*/
+    max-width: 500px;
+    padding: 20px;
+}
+
+.formBox {
+    margin-top: 100px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.formBox{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+h2  {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+    display: block;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"]
+{
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #d9d9d9;
+}
+.primaryButton {
+    text-align: center;
+}

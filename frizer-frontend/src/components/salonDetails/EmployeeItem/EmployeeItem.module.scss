@@ -1,0 +1,49 @@
+.card {
+    background-color: var(--lighter-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+    padding: 1em;
+
+    .image {
+        aspect-ratio: 1/1;
+        width: 6em;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        justify-self: center;
+    }
+
+    .title {
+        margin-top: 1em;
+        font-weight: normal;
+    }
+
+    .rating {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+    }
+
+    .rating > :first-child{
+        margin-right: 0.5em;
+    }
+    
+    .rating svg {
+        color: var(--star-color);
+    }
+    
+    .primaryButton {
+        margin-top: 1em;
+    }
+}
+@media (max-width: 50em) {
+    .card {
+        min-height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    
+        .primaryButton {
+            width: 200px;
+            margin-bottom: 10px;
+        }
+    }    
+}

@@ -12,7 +12,7 @@ const SalonService = {
         const params = new URLSearchParams();
         ids.forEach(id => params.append('ids', id.toString()));
         
-        return axios.get<Salon[]>('/api/salons/ids', { params });
+        return axios.get<Salon[]>('/salons/ids', { params });
       },
   
 };

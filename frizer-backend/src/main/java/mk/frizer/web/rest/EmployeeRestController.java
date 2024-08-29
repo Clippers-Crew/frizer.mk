@@ -24,6 +24,10 @@ public class EmployeeRestController {
     public List<EmployeeSimpleDTO> getAllEmployees() {
         return employeeService.getEmployees().stream().map(Employee::toDto).toList();
     }
+    @GetMapping("/ids")
+    public List<EmployeeSimpleDTO> getAllEmployeesByIds(@RequestParam List<Long> ids) {
+        return employeeService.getEmployees().stream().map(Employee::toDto).toList();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeSimpleDTO> getEmployee(@PathVariable Long id){
