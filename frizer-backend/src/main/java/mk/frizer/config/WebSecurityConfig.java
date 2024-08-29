@@ -31,15 +31,15 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/salons",
-                                "/api/salons/{id}",
-                                "/api/salons/**",
-                                "/api/treatments/**",
-                                "/api/treatments/ids/**",
-                                "/api/employees/**",
-                                "/api/employees/ids/**",
-                                "/api/reviews/**",
-                                "/api/reviews/ids/**",
-                                "api/**"
+                                "/api/salons/{id}"
+//                                "/api/salons/**"
+//                                "/api/treatments/**",
+//                                "/api/treatments/ids/**",
+//                                "/api/employees/**",
+//                                "/api/employees/ids/**",
+//                                "/api/reviews/**",
+//                                "/api/reviews/ids/**",
+//                                "api/**"
                         )
                         .permitAll()
                         .anyRequest()
@@ -51,16 +51,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
 }

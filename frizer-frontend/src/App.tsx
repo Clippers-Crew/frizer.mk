@@ -5,12 +5,9 @@ import Login from './pages/Login.page';
 import Register from './pages/Register.page';
 import SalonDetails from './pages/SalonDetails.page';
 import { GlobalContext, GlobalContextProvider } from './context/Context'; 
-import PrivateRoute from './PrivateRoute'; 
+import PrivateRoute from './guard/PrivateRoute'; 
 
-interface AppProps {
-  isAuth: boolean;
-}
-function App({ isAuth }:AppProps) {
+function App() {
   return (
       <Routes>
           <Route path="/" element={<Home />} />
@@ -23,7 +20,6 @@ function App({ isAuth }:AppProps) {
                   <PrivateRoute
                       element={<SalonDetails />}
                       path="/salons/:id"
-                      isAuth={isAuth}
                   />
               }
           />

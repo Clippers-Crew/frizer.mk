@@ -16,12 +16,6 @@ export default function LoginForm() {
     return /\S+@\S+\.\S+/.test(email) && !/\s/.test(email) && email.length > 2 && email.length < 50;
   }
 
-  function isValidPassword(password: string) {
-    const specialChars = /[!@#$%^&*(),.?":{}|<>]/;
-    return /\d/.test(password) && /[A-Z]/.test(password) && /[a-z]/.test(password) &&
-      specialChars.test(password) && password.length >= 8 && password.length <= 50 && !/\s/.test(password);
-  }
-
   function handleChangeEmail(event: React.ChangeEvent<HTMLInputElement>) {
     const newEmail = event.target.value;
     const newErrors: string[] = [];
@@ -29,7 +23,7 @@ export default function LoginForm() {
     if (!isValidEmail(newEmail)) {
       if (/\s/.test(newEmail)) newErrors.push('Username must not contain whitespaces!');
       if (!newEmail.includes('@')) newErrors.push('Username must include @!');
-      if (newEmail.length > 50) newErrors.push('Username is too long!');
+      if (newEmail.length > 30) newErrors.push('Username is too long!');
     }
 
     setErrorMsgs(newErrors);
@@ -43,12 +37,10 @@ export default function LoginForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (true) {
+    if (isValidEmail(email)) {
       try {
         const response = await AuthService.authenticate(email, password);
         const token = response.token;
-        console.log(response)
-        console.log("valid token",token)
         if (!token || token.split('.').length !== 3) {
           console.log("Invalid token",token)
           throw new Error('Invalid token structure');
@@ -76,9 +68,6 @@ export default function LoginForm() {
         dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
         dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
       }
-    } else {
-      setIsValid(false);
-      setErrorMsgs(['Invalid email or password format.']);
     }
   }
 
@@ -90,6 +79,7 @@ export default function LoginForm() {
         {errorMsgs.length > 0 && errorMsgs.map((error, index) => (
           <span key={index} className="errorMsg">{error}</span>
         ))}
+        <label htmlFor="username">Корисничко име</label>
         <div className={styles.formGroup}>
           <input
             type="text"
@@ -100,6 +90,7 @@ export default function LoginForm() {
             onChange={handleChangeEmail}
           />
       </div>
+      <label htmlFor="password">Лозинка</label>
       <div className={styles.formGroup}>
         <input
           type="password"

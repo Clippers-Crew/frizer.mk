@@ -13,5 +13,22 @@ export class AuthService {
     } catch (error) {
       throw new Error('Authentication failed');
     }
+  };
+  
+  static async register(userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  }): Promise<string> {
+    try {
+      const response = await instance.post(`/auth/register`, {
+        userData
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error('Authentication failed');
+    }
   }
 }
