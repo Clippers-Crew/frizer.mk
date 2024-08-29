@@ -15,6 +15,8 @@ import mk.frizer.service.SalonService;
 import mk.frizer.utilities.DistanceCalculator;
 import mk.frizer.utilities.SalonAdapter;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -150,78 +152,14 @@ public class SalonServiceImpl implements SalonService {
         return Optional.of(salonRepository.save(salon));
     }
 
-//    @Override
-//    @Transactional
-//    public Optional<Salon> saveImage(Long id, MultipartFile image) throws IOException {
-//        String dirPath = String.format("%s/salon_%d", UPLOAD_DIR, id);
-//
-//        File directory = new File(dirPath);
-//        if (!directory.exists()) {
-//            directory.mkdirs();
-//        }
-//
-//        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-//        Path filePath = Paths.get(dirPath, fileName);
-//        Files.write(filePath, image.getBytes());
-//
-//        Optional<Salon> salon = getSalonById(id);
-//        if (salon.isPresent()) {
-//            String fullPath = filePath.toString().replace("templates/", "");
-//            String pathAfterStatic = fullPath.substring(fullPath.indexOf("static") + 6);
-//            salon.get().getImagePaths().add(pathAfterStatic);
-//            salonRepository.save(salon.get());
-//            return salon;
-//        }
-//        return Optional.empty();
-//    }
-
-//    @Override
-//    @Transactional
-//    public Optional<Salon> saveImageWithId(Long id, Integer imageNo, MultipartFile image) throws IOException {
-//        String dirPath = String.format("%s/salon_%d", UPLOAD_DIR, id);
-//
-//        File directory = new File(dirPath);
-//        if (!directory.exists()) {
-//            directory.mkdirs();
-//        }
-//
-//        Optional<Salon> salon = getSalonById(id);
-//        if (salon.isPresent()) {
-//            List<String> imagePaths = salon.get().getImagePaths();
-//
-//            //delete the old one
-//            if (!imagePaths.get(imageNo).contains("/images/salons/default")) {
-//                String oldImagePath = String.format("%s%s", "src\\main\\resources\\static", imagePaths.get(imageNo));
-//                File oldImageFile = new File(oldImagePath);
-//                if (oldImageFile.exists()) {
-//                    oldImageFile.delete();
-//                }
-//            }
-//
-//            //save the new one
-//            String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-//            Path filePath = Paths.get(dirPath, fileName);
-//            Files.write(filePath, image.getBytes());
-//
-//            String fullPath = filePath.toString().replace("templates/", "");
-//            String pathAfterStatic = fullPath.substring(fullPath.indexOf("static") + 6);
-//
-//            imagePaths.set(imageNo, pathAfterStatic);
-//
-//            salonRepository.save(salon.get());
-//            return salon;
-//        }
-//        return Optional.empty();
-//    }
-
     @Override
-    public List<Salon> filterSalons(String name, String city, Float distance, Float rating, String userLocation) {
+    public List<Salon> filterSalons(String name, String city, Float distance, Float rating, Double userLatitude, Double userLongitude) {
         List<Salon> salonByName = salonRepository.findAll()
                 .stream().filter(salon -> salon.getName().toLowerCase().contains(name.toLowerCase()))
                 .toList();
         List<Salon> salonsByRating = salonRepository.findAllByRatingGreaterThanEqual(rating);
         List<Salon> salonsByLocation = new ArrayList<>();
-        if (!city.equals("Цела Македонија")) {
+        if (!city.isEmpty() && !city.equals("Цела Македонија")) {
             Optional<City> city1 = cityRepository.findByNameEqualsIgnoreCase(city);
             if (city1.isPresent()) {
                 salonsByLocation = city1.get().getSalonsInCity();
@@ -232,7 +170,7 @@ public class SalonServiceImpl implements SalonService {
         List<Salon> salonsByDistance = this
                 .getSalons()
                 .stream()
-                .filter(salon -> distance >= distanceCalculator.getDistance(userLocation, salon.getLatitude(), salon.getLongitude()))
+                .filter(salon -> (distance == null || userLatitude == null || userLongitude == null) || distance == 0 || distance >= distanceCalculator.getDistance(userLatitude, userLongitude, salon.getLatitude(), salon.getLongitude()))
                 .toList();
 
         List<Salon> interceptSalons = new ArrayList<>(salonByName);
@@ -243,15 +181,9 @@ public class SalonServiceImpl implements SalonService {
     }
 
     @Override
-    public List<String> getSalonsAsString(List<Salon> salons) {
-        return salons.stream()
-                .map(SalonAdapter::convertToString)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getSalonAsString(Salon salon) {
-        return SalonAdapter.convertToString(salon);
+    public List<Salon> getTopNSalons(Integer n) {
+        Pageable pageable = PageRequest.of(0, n);
+        return salonRepository.findAllByOrderByRatingDesc(pageable);
     }
 
     @Override
