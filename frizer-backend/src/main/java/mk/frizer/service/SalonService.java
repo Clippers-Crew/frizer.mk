@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface SalonService {
     List<Salon> getSalons();
-
+    List<Salon> getSalonsByIds(List<Long> ids);
     Optional<Salon> getSalonById(Long id);
 
     Optional<Salon> createSalon(SalonAddDTO salonAddDTO);

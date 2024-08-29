@@ -6,7 +6,7 @@ export interface Salon{
     city: string,
     phoneNumber: string,
     employeesIds: number[],
-    salonTreatmentIds: number[],
+    salonTreatmentsIds: number[],
     tagsIds: number[],
     ownerId: number,
     backgroundImage: number | null,

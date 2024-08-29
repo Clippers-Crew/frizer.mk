@@ -3,6 +3,7 @@ package mk.frizer.web.rest;
 import mk.frizer.domain.Review;
 import mk.frizer.domain.dto.ReviewAddDTO;
 import mk.frizer.domain.dto.ReviewUpdateDTO;
+import mk.frizer.domain.dto.simple.ReviewJoinDTO;
 import mk.frizer.domain.dto.simple.ReviewSimpleDTO;
 import mk.frizer.domain.exceptions.ReviewNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping({"/api/reviews", "/api/review"})
@@ -28,11 +30,25 @@ public class ReviewRestController {
         return reviewService.getReviews().stream().map(Review::toDto).toList();
     }
 
+    @GetMapping("/ids")
+    public ResponseEntity<List<ReviewJoinDTO>> getReviews(@RequestParam List<Long> ids) {
+        List<Review> reviews = reviewService.getReviewsById(ids);
+        List<ReviewJoinDTO> reviewDtos = reviews.stream()
+                .map(Review::toJoinedDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(reviewDtos);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ReviewSimpleDTO> getReview(@PathVariable Long id){
         return this.reviewService.getReviewById(id)
                 .map(review -> ResponseEntity.ok().body(review.toDto()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @GetMapping("/for-salon/{id}")
+    public List<ReviewSimpleDTO> getReviewBySalonId(@PathVariable Long id){
+        return this.reviewService.getReviewsBySalon(id)
+                .stream().map(Review::toDto).toList();
     }
 
 //    @PostMapping("/add-for-employee")

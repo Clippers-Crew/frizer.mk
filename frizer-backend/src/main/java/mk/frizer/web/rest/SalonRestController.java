@@ -42,6 +42,10 @@ public class SalonRestController {
         }
         return salonService.getSalons().stream().map(Salon::toDto).toList();
     }
+    @GetMapping("/ids")
+    public List<SalonSimpleDTO> getAllSalonsByIds(@RequestParam List<Long> ids) {
+        return salonService.getSalonsByIds(ids).stream().map(Salon::toDto).toList();
+    }
 
     @GetMapping("/top")
     public List<SalonSimpleDTO> getTopNSalons(@RequestParam Integer count){

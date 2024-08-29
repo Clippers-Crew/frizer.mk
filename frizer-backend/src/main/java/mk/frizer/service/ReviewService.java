@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface ReviewService {
     List<Review> getReviews();
+    List<Review> getReviewsBySalon(Long id);
+    List<Review> getReviewsById(List<Long> ids);
 
     Optional<Review> getReviewById(Long id);
 

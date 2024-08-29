@@ -1,12 +1,16 @@
 import styles from './Navbar.module.scss';
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { ACTION_TYPE, GlobalContext } from '../../../context/Context';
 
 function Navbar() {
+  const { state, dispatch } = useContext(GlobalContext);
+  const [isAuth, setIsAuth] = useState(!!state?.token);
   let [menuState, setMenuState] = useState(false);
   let [rotation, setRotation] = useState(0);
+  const navigate = useNavigate();
 
   const showMenu = () => {
     window.innerWidth <= 650 ? setMenuState(false) : setMenuState(true);
@@ -24,9 +28,24 @@ function Navbar() {
   useEffect(() => {
     showMenu();
   }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuth(!!token);
+  }, [state?.token]);
 
   window.addEventListener("resize", showMenu);
+  function handlelogout() {
+    dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
+    dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
+    localStorage.setItem('token', '');
+  }
+  const handleLogout = () => {
+    dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
+    dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
+    localStorage.removeItem('token'); 
 
+    navigate('/home');
+  };
   return (
     <nav className={styles.nav}>
       <Link to={"/"} className={styles.homeButton}>
@@ -65,14 +84,12 @@ function Navbar() {
                 <span>Appointments</span>
               </li>
             </NavLink>
-            <NavLink to="/login" onClick={closeMenu}>
+
+              <NavLink to={isAuth ? '#' : '/login'} onClick={isAuth ? handleLogout : closeMenu}>
               <li className={styles.navlink}>
-                <span>Login</span>
+                {isAuth ? 'Logout' : <>Login <FaArrowRightLong/></>}
               </li>
             </NavLink>
-            {/* <NavLink to={user ? '/logout': '/login'} onClick={closeMenu}>
-              <li className={styles.navlink}>{user ? 'Logout' : <>Login <FaArrowRightLong/></>}</li>
-            </NavLink> */}
           </motion.ul>
         )}
       </AnimatePresence>
