@@ -6,6 +6,7 @@
 
 :root{
   --font-color: #20232e;
+  --accent-font-color: #464c62;
   --black-color: hsl(0, 0%, 0%);
   --background-color: #ececec;
   --darker-color: #c0c0c0;
@@ -24,6 +25,12 @@
   --inactive-color: #ff0b23;
 
   --border-radius: 0.5em;
+
+  --small-font: 1em;
+}
+
+html{
+  scroll-behavior: smooth;
 }
 
 body {

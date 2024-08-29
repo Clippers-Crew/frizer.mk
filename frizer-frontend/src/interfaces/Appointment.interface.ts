@@ -1,4 +1,4 @@
-export default interface Appointment{
+export interface Appointment{
     id: number,
     dateFrom: Date,
     dateTo: Date,

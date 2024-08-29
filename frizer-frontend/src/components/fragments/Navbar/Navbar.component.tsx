@@ -56,16 +56,22 @@ function Navbar() {
             exit={{ y: -25, opacity: 0 }}
           >
             <NavLink to="/" onClick={closeMenu}>
-              <li className={styles.navlink}>Home</li>
+              <li className={styles.navlink}>
+                <span>Home</span>
+              </li>
             </NavLink>
             <NavLink to="/appointments" onClick={closeMenu}>
-              <li className={styles.navlink}>Appointments</li>
+              <li className={styles.navlink}>
+                <span>Appointments</span>
+              </li>
             </NavLink>
             <NavLink to="/login" onClick={closeMenu}>
-              <li className={styles.navlink}>Login</li>
+              <li className={styles.navlink}>
+                <span>Login</span>
+              </li>
             </NavLink>
-            {/* <NavLink to={movieverseUser ? '/logout': '/login'} onClick={closeMenu}>
-              <li className={styles.navlink}>{movieverseUser ? 'Logout' : <>Login <FaArrowRightLong/></>}</li>
+            {/* <NavLink to={user ? '/logout': '/login'} onClick={closeMenu}>
+              <li className={styles.navlink}>{user ? 'Logout' : <>Login <FaArrowRightLong/></>}</li>
             </NavLink> */}
           </motion.ul>
         )}

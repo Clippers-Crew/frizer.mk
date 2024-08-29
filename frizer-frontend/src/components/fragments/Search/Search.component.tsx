@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { CYRILLIC_CITIES } from '../../../data/cyrilic-cities';
-import { City } from '../../../interfaces/City.interface';
-import styles from './Search.module.scss';
+import React, { useEffect, useState } from "react";
+import { CYRILLIC_CITIES } from "../../../data/cyrilic-cities";
+import { City } from "../../../interfaces/City.interface";
+import styles from "./Search.module.scss";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cities, setCities] = useState<City[]>([]);
   const [formValues, setFormValues] = useState({
-    name: '',
-    city: '',
-    distance: '',
+    name: "",
+    city: "",
+    distance: "",
     rating: 0,
+    latitude: "",
+    longitude: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setFormValues({
@@ -26,17 +30,53 @@ function Search() {
   };
 
   const handleSubmit = (e: any) => {
-      e.preventDefault();
-  }
+    if(menuOpen) toggleMenu();
+    e.preventDefault();
+    const queryParams = new URLSearchParams();
+
+    Object.keys(formValues).forEach((key) => {
+      const value = formValues[key as keyof typeof formValues];
+        queryParams.append(key, value.toString());
+    });
+
+    navigate('/salons?' + queryParams.toString());
+
+    setFormValues({
+      name: "",
+      city: "",
+      distance: "",
+      rating: 0,
+      latitude: "",
+      longitude: "",
+    });
+  };
 
   const requestUserLocation = () => {
-    // Logic to request user location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          setFormValues({
+            ...formValues,
+            latitude: latitude + "",
+            longitude: longitude + "",
+          });
+        },
+
+        (error) => {
+          console.error("Error obtaining location", error);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   };
 
   useEffect(() => {
     setCities(CYRILLIC_CITIES);
-  }, [])
-
+  }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -52,12 +92,17 @@ function Search() {
         Пребарај
       </button>
       <a className={`${styles.advancedToggle}`} onClick={toggleMenu}>
-        Напредно {menuOpen ? <FaArrowUp/>: <FaArrowDown/>}
+        Напредно {menuOpen ? <FaArrowUp /> : <FaArrowDown />}
       </a>
       {menuOpen && (
         <div className={`${styles.advancedMenu}`}>
           <label htmlFor="city">Град</label>
-          <select id="city" name="city" value={formValues.city} onChange={handleChange}>
+          <select
+            id="city"
+            name="city"
+            value={formValues.city}
+            onChange={handleChange}
+          >
             {cities.map((city, index) => (
               <option key={index} value={city.name}>
                 {city.name}
@@ -67,9 +112,10 @@ function Search() {
           <label htmlFor="distance">Далечина</label>
           <div className={`${styles.distanceInputContainer}`}>
             <input
-              type="text"
+              type="number"
               name="distance"
               id="distance"
+              min="1"
               value={formValues.distance}
               onClick={requestUserLocation}
               onChange={handleChange}
@@ -88,7 +134,7 @@ function Search() {
         </div>
       )}
     </form>
-  )
+  );
 }
 
 export default Search;

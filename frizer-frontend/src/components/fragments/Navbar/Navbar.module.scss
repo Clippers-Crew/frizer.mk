@@ -3,12 +3,12 @@
     position: fixed;
     width: 100%;
     background-color: var(--off-white);
-    color: var(--darkColor);
+    color: var(--font-color);
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     z-index: 1;
-    font-size: var(--smallFont);
+    font-size: var(--small-font);
     backdrop-filter: blur(0.2em);
 }
 
@@ -20,7 +20,7 @@
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color: var(--darkColor);
+    color: var(--font-color);
     font-weight: bold;
 }
 
@@ -39,6 +39,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+        
+    span{
+        position: relative;
+
+        &:hover{
+            color: var(--accent-font-color);
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0.1em;
+            background-color: var(--accent-font-color);
+            transition: width 0.3s ease;
+            position: absolute;
+            bottom: -0.5em;
+            left: -10%;
+          }
+        
+          &:hover::after {
+            width: 120%;
+          }
+    }
 }
 
 .navlink svg {
@@ -71,7 +95,7 @@
 }
 
 .toggleButton svg {
-    fill: var(--darkColor);
+    fill: var(--font-color);
     height: 3rem;
     width: 3rem;
 }
@@ -80,15 +104,15 @@
     .navlinks {
         margin-right: 10vw;
     }
+    
+    // .navlink:hover {
+    //     background-color: var(--dark-color);
+    //     color: var(--off-white);
+    // }
 
-    .navlink:hover {
-        background-color: var(--darkColor);
-        color: var(--lightColor);
-    }
-
-    .navlinks a:hover {
-        color: var(--lightColor);
-    }
+    // .navlinks a:hover {
+    //     color: var(--off-white);
+    // }
 }
 
 @media only screen and (max-width: 651px) {
@@ -119,12 +143,12 @@
     }
 
     .navlinks a {
-        font-size: calc(var(--smallFont) + 0.5vmin);
+        font-size: calc(var(--small-font) + 0.5vmin);
     }
 }
 
 @media only screen and (max-width: 400px) {
     .navlinks a {
-        font-size: calc(var(--smallFont) + 1vmin);
+        font-size: calc(var(--small-font) + 1vmin);
     }
 }
