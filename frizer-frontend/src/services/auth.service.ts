@@ -1,9 +1,10 @@
 import  instance   from './config/axios';
 import { AuthResponse } from '../context/Context';
 import { DecodedToken } from '../interfaces/DecodedToken.interface';
+import { BaseUserCreate } from '../interfaces/BaseUserCreate.interface';
 
-export class AuthService {
-  static async authenticate(email: string, password: string): Promise<AuthResponse> {
+const AuthService =  {
+   async authenticate(email: string, password: string): Promise<AuthResponse> {
     try {
       const response = await instance.post(`/auth/login`, {
         email,
@@ -13,22 +14,15 @@ export class AuthService {
     } catch (error) {
       throw new Error('Authentication failed');
     }
-  };
+  },
   
-  static async register(userData: {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-  }): Promise<string> {
+  async register(userCreate: BaseUserCreate) {
     try {
-      const response = await instance.post(`/auth/register`, {
-        userData
-      });
+      const response = await instance.post('/auth/register', userCreate);
       return response.data;
     } catch (error) {
-      throw new Error('Authentication failed');
+      throw new Error('Failed to create user');
     }
   }
 }
+export default AuthService; 

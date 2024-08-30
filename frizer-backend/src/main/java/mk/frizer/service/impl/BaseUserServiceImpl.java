@@ -5,6 +5,7 @@ import mk.frizer.domain.BaseUser;
 import mk.frizer.domain.Customer;
 import mk.frizer.domain.dto.BaseUserAddDTO;
 import mk.frizer.domain.dto.BaseUserUpdateDTO;
+import mk.frizer.domain.exceptions.UserAlreadyExistsException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.repository.BaseUserRepository;
 import mk.frizer.repository.CustomerRepository;
@@ -48,6 +49,13 @@ public class BaseUserServiceImpl implements BaseUserService {
     @Override
     @Transactional
     public Optional<BaseUser> createBaseUser(BaseUserAddDTO baseUserAddDTO) {
+        if (baseUserRepository.existsByEmail(baseUserAddDTO.getEmail())) {
+            throw new UserAlreadyExistsException("User with this email already exists.");
+        }
+
+        if (baseUserRepository.existsByPhoneNumber(baseUserAddDTO.getPhoneNumber())) {
+            throw new UserAlreadyExistsException("User with this phone number already exists.");
+        }
         BaseUser user = baseUserRepository.save(new BaseUser(baseUserAddDTO.getEmail(), passwordEncoder.encode(baseUserAddDTO.getPassword()), baseUserAddDTO.getFirstName(), baseUserAddDTO.getLastName(), baseUserAddDTO.getPhoneNumber()));
         Customer customer = customerRepository.save(new Customer(user));
         return Optional.of(user);

@@ -58,7 +58,7 @@ function SalonDetails() {
 }
 
 const PageContainer = styled.div`
-  padding: 10vw 5em;
+  padding: 5em 8vw 0;
 `;
 
 export default SalonDetails;
