@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { GlobalContext, ACTION_TYPE, DecodedToken } from "../context/Context";
 import App from "../App";
-import Login from "../pages/Login.page";
 import { jwtDecode } from "jwt-decode";
 
 function ProtectedWrapper() {
   const { state, dispatch } = useContext(GlobalContext);
-  const [isAuth, setIsAuth] = useState<boolean>(!!state?.token);
 
   useEffect(() => {
     const token = localStorage.getItem("token");

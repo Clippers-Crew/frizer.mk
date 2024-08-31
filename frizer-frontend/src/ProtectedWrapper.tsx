@@ -6,7 +6,6 @@ import { jwtDecode } from 'jwt-decode';
 
 function ProtectedWrapper() {
     const { state, dispatch } = useContext(GlobalContext);
-    const [isAuth, setIsAuth] = useState<boolean>(!!state?.token);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -30,25 +29,19 @@ function ProtectedWrapper() {
 
                 dispatch({ type: ACTION_TYPE.SET_USER, payload: currentUser });
                 dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: token });
-                setIsAuth(true);
             } catch (error) {
                 console.error('Error decoding token:', error);
-                // Clear invalid token and reset authentication state
                 localStorage.removeItem('token');
                 dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
                 dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
-                setIsAuth(false);
             }
-        } else {
-            setIsAuth(false);
         }
     }, [dispatch]);
 
     useEffect(() => {
-        setIsAuth(!!state?.token);
     }, [state?.token]);
 
-    return <App isAuth={isAuth} />;
+    return <App />;
 }
 
 export default ProtectedWrapper;

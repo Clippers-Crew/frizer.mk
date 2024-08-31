@@ -1,6 +1,5 @@
 import  instance   from './config/axios';
 import { AuthResponse } from '../context/Context';
-import { DecodedToken } from '../interfaces/DecodedToken.interface';
 
 export class AuthService {
   static async authenticate(email: string, password: string): Promise<AuthResponse> {

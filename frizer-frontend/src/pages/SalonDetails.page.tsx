@@ -12,9 +12,6 @@ import SalonMap from "../components/salonDetails/SalonMap/SalonMap.component";
 import EmployeeList from "../components/salonDetails/EmployeeList/EmployeeList.component";
 import ReviewList from "../components/salonDetails/ReviewList/ReviewList.component";
 
-interface SalonDetailsProps {
-  salon: Salon;
-}
 function SalonDetails() {
   const { id } = useParams();
   const [salon, setSalon] = useState<Salon>();

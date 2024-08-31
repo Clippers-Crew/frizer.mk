@@ -42,7 +42,6 @@ export default function LoginForm() {
         const response = await AuthService.authenticate(email, password);
         const token = response.token;
         if (!token || token.split('.').length !== 3) {
-          console.log("Invalid token",token)
           throw new Error('Invalid token structure');
         }
 

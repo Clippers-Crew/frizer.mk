@@ -60,3 +60,34 @@ code {
   background-color: var(--accent-color);
 }
 
+.secondaryButton {
+  padding: 0.8em 1em;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+  color: var(--off-white);
+  font-weight: bold;
+  cursor: pointer;
+}
+.secondaryButton a{
+  color: var(--off-white);
+  text-decoration: none;
+}
+.secondaryButton:hover {
+  background-color: var(--secondary-accent-color);
+}
+
+.borderedButton {
+  margin-top: 2em;
+  border-radius: var(--border-radius);
+  border: 0.125em solid #20232e;
+  color: var(--dark-color);
+  padding: 0.5em 2em;
+  font-weight: bold;
+  background: none;
+  cursor: pointer;
+  transition: background-color 200ms ease-in-out;
+}
+.borderedButton:hover {
+  background-color: #c7c7c7;
+}

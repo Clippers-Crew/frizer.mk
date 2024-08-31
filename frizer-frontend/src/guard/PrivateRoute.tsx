@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import { GlobalContext } from '../context/Context';
+import { Navigate } from 'react-router-dom';
 
 interface PrivateRouteProps {
   element: React.ReactElement;
@@ -10,6 +8,7 @@ interface PrivateRouteProps {
 
 function PrivateRoute({ element, path, isAuth }: PrivateRouteProps) {
   const auth = localStorage.getItem("token") != null;
+  
   return (
     <>
       {auth ? element : <Navigate to="/login" />}
