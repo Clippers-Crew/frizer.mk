@@ -1,94 +1,94 @@
-.registerForm {
-    margin: auto;
-    padding: 20px;
-}
+// .registerForm {
+//     margin: auto;
+//     padding: 20px;
+// }
 
-.formBox {
-    margin-top: 3em;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+// .formBox {
+//     margin-top: 3em;
+//     background-color: #fff;
+//     padding: 20px;
+//     border-radius: 10px;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
-    form {
-        display: grid;
-        grid-template-columns: 1fr;
-        margin-top: 2.5em;
-    }
-}
+//     form {
+//         display: grid;
+//         grid-template-columns: 1fr;
+//         margin-top: 2.5em;
+//     }
+// }
 
-h2  {
-    text-align: center;
-    margin-bottom: 1.5em;
-    font-size: 24px;
-    color: #333;
-}
+// h2  {
+//     text-align: center;
+//     margin-bottom: 1.5em;
+//     font-size: 24px;
+//     color: #333;
+// }
 
-.formGroup {
-    margin-bottom: 15px;
-    display: block;
-}
+// .formGroup {
+//     margin-bottom: 15px;
+//     display: block;
+// }
 
-input[type="text"],
-input[type="password"]
-{
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #d9d9d9;
-}
-.toggleButtonContainer {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
+// input[type="text"],
+// input[type="password"]
+// {
+//     width: 100%;
+//     padding: 10px;
+//     font-size: 14px;
+//     border: 1px solid #ccc;
+//     border-radius: 5px;
+//     box-sizing: border-box;
+//     background-color: #d9d9d9;
+// }
+// .toggleButtonContainer {
+//     display: flex;
+//     justify-content: center;
+//     margin-bottom: 20px;
+// }
 
-.toggleButtonContainer {
-    display: flex;
-    justify-content: center;
-    margin-top: 2em;
+// .toggleButtonContainer {
+//     display: flex;
+//     justify-content: center;
+//     margin-top: 2em;
 
-}
+// }
 
-.toggleButton {
-    width: 30%;
-    height: 5vh;
-    padding: 0;
-    font-size: 1em;
-    border: 1px solid #dc3545;
-    border-radius: 1em;
-    background-color: #dc3545;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0;
+// .toggleButton {
+//     width: 30%;
+//     height: 5vh;
+//     padding: 0;
+//     font-size: 1em;
+//     border: 1px solid #dc3545;
+//     border-radius: 1em;
+//     background-color: #dc3545;
+//     color: white;
+//     cursor: pointer;
+//     transition: background-color 0.3s ease, transform 0.3s ease;
+//     margin: 0;
     
-    &:hover {
-        background-color: #c82333;
-        transform: scale(1.05);
-    }
+//     &:hover {
+//         background-color: #c82333;
+//         transform: scale(1.05);
+//     }
     
-    &:active {
-        background-color: #bd2130;
-        transform: scale(1);
-    }
+//     &:active {
+//         background-color: #bd2130;
+//         transform: scale(1);
+//     }
 
-    &:first-of-type {
-        border-radius: 5px 0 0 5px;
-    }
+//     &:first-of-type {
+//         border-radius: 5px 0 0 5px;
+//     }
 
-    &:last-of-type {
-        border-radius: 0 5px 5px 0;
-    }
+//     &:last-of-type {
+//         border-radius: 0 5px 5px 0;
+//     }
     
-    &.active {
-        background-color: #c82333;
-    }
-}
+//     &.active {
+//         background-color: #c82333;
+//     }
+// }
 
-.toggleButton + .toggleButton {
-    margin-left: -1px; 
-}
+// .toggleButton + .toggleButton {
+//     margin-left: -1px; 
+// }

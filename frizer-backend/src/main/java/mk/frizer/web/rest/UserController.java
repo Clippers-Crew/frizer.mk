@@ -1,11 +1,15 @@
 package mk.frizer.web.rest;
 
 import mk.frizer.domain.BaseUser;
+import mk.frizer.domain.Employee;
+import mk.frizer.domain.Salon;
 import mk.frizer.domain.dto.BaseUserAddDTO;
 import mk.frizer.domain.dto.BaseUserUpdateDTO;
 import mk.frizer.domain.dto.simple.BaseUserSimpleDTO;
+import mk.frizer.domain.enums.Role;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.service.BaseUserService;
+import mk.frizer.service.SalonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +21,11 @@ import java.util.Optional;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class UserController {
     private final BaseUserService baseUserService;
+    private final SalonService salonService;
 
-    public UserController(BaseUserService baseUserService) {
+    public UserController(BaseUserService baseUserService, SalonService salonService) {
         this.baseUserService = baseUserService;
+        this.salonService = salonService;
     }
 
     @GetMapping()
@@ -67,4 +73,11 @@ public class UserController {
             return ResponseEntity.ok().body(user.get().toDto());
         }
     }
+    @GetMapping("/available")
+    public List<BaseUserSimpleDTO> getAvailableEmployeesForSalon() {
+        return baseUserService.getBaseUsers().stream()
+                .filter(user -> !user.getRoles().contains(Role.ROLE_EMPLOYEE) && !user.getRoles().contains(Role.ROLE_OWNER))
+                .map(BaseUser::toDto).toList();
+         }
+
 }

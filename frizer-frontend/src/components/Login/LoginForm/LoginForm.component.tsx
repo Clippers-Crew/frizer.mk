@@ -52,15 +52,12 @@ export default function LoginForm() {
         const response = await AuthService.authenticate(email, password);
         const token = response.token;
         if (!token || token.split(".").length !== 3) {
-          console.log("Invalid token", token);
           throw new Error("Invalid token structure");
         }
 
         localStorage.setItem("token", token);
 
         const decodedToken = jwtDecode<DecodedToken>(token);
-        console.log("Decoded Token:", decodedToken);
-
         const currentUser = {
           id: decodedToken.id,
           name: decodedToken.firstName,
@@ -87,54 +84,41 @@ export default function LoginForm() {
     navigate("/login");
   }
   return (
-    <div className={styles.loginForm}>
-      <div className={styles.formBox}>
-        <h2>Login</h2>
-        <div className={styles.toggleButtonContainer}>
-          <button className={styles.toggleButton} onClick={onSwitchToLogin}>
-            Login
-          </button>
-          <button className={styles.toggleButton} onClick={onSwitchToRegister}>
-            Register
-          </button>
-        </div>
-        <form onSubmit={handleSubmit}>
-          {errorMsgs.length > 0 &&
-            errorMsgs.map((error, index) => (
-              <span key={index} className="errorMsg">
-                {error}
-              </span>
-            ))}
-          <label htmlFor="username">Корисничко име</label>
-          <div className={styles.formGroup}>
-            <input
-              type="text"
-              name="username"
-              value={email}
-              required
-              placeholder="Username"
-              onChange={handleChangeEmail}
-            />
-          </div>
-          <label htmlFor="password">Лозинка</label>
-          <div className={styles.formGroup}>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              required
-              placeholder="Password"
-              onChange={handleChangePassword}
-            />
-          </div>
-          <a href="#">Заборавена лозинка?</a>
-          <div className={styles.formGroup}>
-            <button className="primaryButton" type="submit">
-              Login
-            </button>
-          </div>
-        </form>
+    <form onSubmit={handleSubmit} className={styles.LoginForm}>
+      {errorMsgs.length > 0 &&
+        errorMsgs.map((error, index) => (
+          <span key={index} className="errorMsg">
+            {error}
+          </span>
+        ))}
+      <label htmlFor="username">Корисничко име</label>
+      <div className={styles.formGroup}>
+        <input
+          type="text"
+          name="username"
+          value={email}
+          required
+          placeholder="Username"
+          onChange={handleChangeEmail}
+        />
       </div>
-    </div>
+      <label htmlFor="password">Лозинка</label>
+      <div className={styles.formGroup}>
+        <input
+          type="password"
+          name="password"
+          value={password}
+          required
+          placeholder="Password"
+          onChange={handleChangePassword}
+        />
+      </div>
+      <a href="#">Заборавена лозинка?</a>
+      <div className={styles.formGroup}>
+        <button className="primaryButton" type="submit">
+          Login
+        </button>
+      </div>
+    </form>
   );
 }

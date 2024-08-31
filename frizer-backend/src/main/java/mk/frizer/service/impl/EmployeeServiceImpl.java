@@ -91,7 +91,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee.isEmpty())
             throw new EmployeeNotFoundException();
 //        appointmentRepository.deleteAll(employee.get().getAppointmentsActive());
+        BaseUser baseUser = employee.get().getBaseUser();
+        baseUser.getRoles().remove(Role.ROLE_EMPLOYEE);
+        baseUserRepository.save(baseUser);
         employeeRepository.deleteById(id);
+
         return employee;
     }
 

@@ -19,7 +19,6 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ salon }) => {
         const response = await EmployeeService.getEmployeesByIds(employeesIds);
         setEmployees(response.data);
       } catch (error) {
-        console.error("Failed to get employees")
     }
     };
 

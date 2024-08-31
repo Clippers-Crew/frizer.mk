@@ -79,7 +79,7 @@ function Search() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.searchForm}>
       <input
         className={`${styles.searchByNameInput}`}
         name="name"
