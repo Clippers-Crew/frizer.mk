@@ -52,6 +52,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public static ResponseEntity<Object> handlePasswordsDoNotMatch(PasswordsDoNotMatchException e) {
         return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
     }
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public static ResponseEntity<Object> handleUserAlreadyExists(UserAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
+    }
 
 
     @ExceptionHandler(CityNotFoundException.class)

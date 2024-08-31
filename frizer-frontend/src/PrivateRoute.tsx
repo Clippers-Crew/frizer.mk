@@ -5,10 +5,10 @@ import { GlobalContext } from './context/Context';
 interface PrivateRouteProps {
   element: React.ReactElement;
   path: string;
-  isAuth?: boolean;
 }
 
-function PrivateRoute({ element, path, isAuth }:PrivateRouteProps) {
-  return isAuth ? element : <Navigate to="/login" />;
+function PrivateRoute({ element, path }:PrivateRouteProps) {
+  const auth = localStorage.getItem("token")!=null;
+  return auth ? element : <Navigate to="/login" />;
 }
 export default PrivateRoute;

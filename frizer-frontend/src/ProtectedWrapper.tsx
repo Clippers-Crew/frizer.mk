@@ -16,7 +16,6 @@ function ProtectedWrapper() {
                 }
 
                 const decodedToken = jwtDecode<DecodedToken>(token);
-                console.log('Decoded Token:', decodedToken);
 
                 const currentUser = {
                     id: decodedToken.id,
@@ -35,11 +34,9 @@ function ProtectedWrapper() {
                 dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
                 dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
             }
-        }
+        } 
     }, [dispatch]);
 
-    useEffect(() => {
-    }, [state?.token]);
 
     return <App />;
 }

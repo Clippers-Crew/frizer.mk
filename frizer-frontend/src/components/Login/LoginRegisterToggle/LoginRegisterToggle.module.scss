@@ -1,0 +1,10 @@
+.toggleContainer{
+  margin-top: 5em;
+
+  button{
+    transition: all 200ms ease;
+  }
+  .activeButton{
+    background-color: red;
+  }
+}

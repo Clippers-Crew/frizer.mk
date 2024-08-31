@@ -19,13 +19,16 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route
               path="/salons/:id"
+              element={<SalonDetails />}/>
+          {/* <Route
+              path="/salons/:id"
               element={
                   <PrivateRoute
                       element={<SalonDetails />}
                       path="/salons/:id"
                   />
               }
-          />
+          /> */}
           <Route path="/salons" element={<SalonSearchResults/>} />
           <Route path="*" element={<div>Error: Page not found</div>} />
       </Routes>

@@ -37,7 +37,6 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
  if(reviewIds.length > 0) {
   const fetchReviews = async () => {
     try {
-      console.log("Review ids are: ", reviewIds);
       
       const response = await ReviewService.getReviewsByIds(
         reviewIds.map((r) => r.id)
