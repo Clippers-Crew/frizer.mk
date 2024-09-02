@@ -7,7 +7,7 @@ interface EmployeeItemProps {
 }
 function EmployeeItem({employee} :EmployeeItemProps) {
     const formattedDate = employee?.employmentDate
-    ? new Date(employee.employmentDate).toLocaleDateString()
+    ? new Date(employee.employmentDate).getFullYear()
     : '/';
   return (
     <div className= {`${styles.card}`}>

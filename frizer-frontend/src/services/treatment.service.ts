@@ -1,4 +1,5 @@
 import { Treatment } from '../interfaces/Treatment.interface';
+import { TreatmentCreateRequest } from '../interfaces/TreatmentCreateRequest.interface';
 import axios from './config/axios';
 
 const TreatmentService = {
@@ -11,6 +12,24 @@ const TreatmentService = {
     getTreatmentsByIds: (salonTreatmentIds: number[]) => {
         const params = salonTreatmentIds.join(',');
         return axios.get(`/treatments/ids?ids=${params}`);
+      },
+    
+    async createTreatment(treatment: TreatmentCreateRequest) {
+    try {
+        const response = await axios.post('/treatments/add', treatment);
+        console.log(response)
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to create treatment');
+    }
+    },
+    async deleteTreatment(id: number) {
+        try {
+          const response = await axios.delete(`/treatments/delete/${id}`);
+          return response.data;
+        } catch (error) {
+          throw new Error('Failed to delete treatment');
+        }
       }
   
 };

@@ -35,11 +35,13 @@ function TreatmentList({ salon }: TreatmentListProps) {
         <p>Нема третмани</p>
       ) : (
         <>
-          {treatments.map((treatment, index) => (
+       <div className={styles.column} >
+       {treatments.map((treatment, index) => (
             <div key={treatment.id} className={styles.column}>
               <TreatmentItem treatment={treatment} />
             </div>
           ))}
+       </div>
  
           <div className={styles.column}>
           {treatments.map((treatment, index) => (

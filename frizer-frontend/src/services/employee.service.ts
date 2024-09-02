@@ -1,4 +1,5 @@
 import { Employee } from '../interfaces/Employee.interface';
+import { EmployeeCreate } from '../interfaces/EmployeeCreateRequest.interface';
 import axios from './config/axios';
 
 const EmployeeService = {
@@ -14,6 +15,22 @@ const EmployeeService = {
         
         return axios.get<Employee[]>('/employees/ids', { params });
       },
+    async createEmployee(employeeCreate: EmployeeCreate) {
+        try {
+          const response = await axios.post('/employees/add', employeeCreate);
+          return response.data;
+        } catch (error) {
+          throw new Error('Failed to create employee');
+        }
+      },
+      async deleteEmployee(id: number) {
+        try {
+          const response = await axios.delete(`/employees/delete/${id}`);
+          return response.data;
+        } catch (error) {
+          throw new Error('Failed to delete employee');
+        }
+      }
   
 };
 
