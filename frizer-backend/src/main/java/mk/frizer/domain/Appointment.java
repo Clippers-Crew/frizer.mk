@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mk.frizer.domain.dto.simple.AppointmentJoinDTO;
 import mk.frizer.domain.dto.simple.AppointmentSimpleDTO;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -84,6 +85,22 @@ public class Appointment {
                 .customerId(this.customer.getId())
                 .employeeId(this.employee.getId())
                 .attended(this.attended)
+                .build();
+    }
+
+    public AppointmentJoinDTO toJoinDto(){
+        return AppointmentJoinDTO
+                .builder()
+                .id(this.id)
+                .dateFrom(this.dateFrom)
+                .dateTo(this.dateTo)
+                .treatmentName(this.treatment.getName())
+                .salonName(this.salon.getName())
+                .customerName(this.customer.getFullName())
+                .employeeName(this.employee.getFullName())
+                .attended(this.attended)
+                .customerBaseUserId(this.customer.getBaseUser().getId())
+                .employeeBaseUserId(this.employee.getBaseUser().getId())
                 .build();
     }
 }

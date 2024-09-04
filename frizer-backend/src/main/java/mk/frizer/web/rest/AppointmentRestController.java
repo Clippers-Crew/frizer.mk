@@ -1,6 +1,7 @@
 package mk.frizer.web.rest;
 
 import mk.frizer.domain.Appointment;
+import mk.frizer.domain.dto.simple.AppointmentJoinDTO;
 import mk.frizer.domain.dto.simple.AppointmentSimpleDTO;
 import mk.frizer.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,22 @@ public class AppointmentRestController {
     public List<AppointmentSimpleDTO> getAllAppointments() {
         return appointmentService.getAppointments().stream().map(Appointment::toDto).toList();
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<AppointmentSimpleDTO> getAppointmentById(@PathVariable Long id) {
-        return this.appointmentService.getAppointmentById(id)
-                .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/for-customer/{id}")
+    public List<AppointmentJoinDTO> getAllAppointmentsForCustomer(@PathVariable Long id) {
+        return appointmentService.getAllAppointmentsForCustomer(id)
+                .stream().map(Appointment::toJoinDto).toList();
     }
+    @GetMapping("/for-employee/{id}")
+    public List<AppointmentJoinDTO> getAllAppointmentsForEmployee(@PathVariable Long id) {
+        return appointmentService.getAllAppointmentsForEmployee(id)
+                .stream().map(Appointment::toJoinDto).toList();
+    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<AppointmentSimpleDTO> getAppointmentById(@PathVariable Long id) {
+//        return this.appointmentService.getAppointmentById(id)
+//                .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
+//                .orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
     @PostMapping("/add")
     public ResponseEntity<AppointmentSimpleDTO> createAppointment(@RequestBody AppointmentAddDTO appointmentAddDTO) {

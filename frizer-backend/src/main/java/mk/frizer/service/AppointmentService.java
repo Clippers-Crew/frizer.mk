@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppointmentService {
-    List<Appointment> getAppointments();
+    List<Appointment> getAppointments();;
+    List<Appointment> getAllAppointmentsForCustomer(Long id);
+    List<Appointment> getAllAppointmentsForEmployee(Long id);
+
     Optional<Appointment> getAppointmentById(Long id);
     Optional<Appointment> createAppointment(AppointmentAddDTO appointmentAddDTO);
     Optional<Appointment> updateAppointment(Long id, LocalDateTime from, LocalDateTime to, Long treatment, Long salon, Long employee, Long customer);

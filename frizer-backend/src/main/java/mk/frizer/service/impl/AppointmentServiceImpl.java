@@ -43,6 +43,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    public List<Appointment> getAllAppointmentsForCustomer(Long id) {
+        return appointmentRepository.getAllAppointmentsForCustomer(id);
+    }
+
+    @Override
+    public List<Appointment> getAllAppointmentsForEmployee(Long id) {
+        return appointmentRepository.getAllAppointmentsForEmployee(id);
+    }
+
+    @Override
     public Optional<Appointment> getAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(AppointmentNotFoundException::new);

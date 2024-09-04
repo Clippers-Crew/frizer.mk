@@ -11,12 +11,12 @@ import { Employee } from "../../../interfaces/Employee.interface";
 interface EmployeeAddFormProps {
   salon?: Salon;
   onEmployeeAdd: (employee: Employee) => void;
+  user?: User
 }
 
-function EmployeeAddForm({ salon, onEmployeeAdd }: EmployeeAddFormProps) {
+function EmployeeAddForm({ salon, onEmployeeAdd, user }: EmployeeAddFormProps) {
   const [selectedUserId, setSelectedUserId] = useState("");
   const [users, setUsers] = useState<BaseUser[]>([]);
-  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -27,13 +27,6 @@ function EmployeeAddForm({ salon, onEmployeeAdd }: EmployeeAddFormProps) {
     };
 
     fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    const response = UserService.getCurrentUser();
-    if (response) {
-      setUser(response);
-    }
   }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

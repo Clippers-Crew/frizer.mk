@@ -4,11 +4,24 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.page';
 import Register from './pages/Register.page';
 import SalonDetails from './pages/SalonDetails.page';
-import { GlobalContext, GlobalContextProvider } from './context/Context'; 
+import { GlobalContext, GlobalContextProvider, User } from './context/Context'; 
 import PrivateRoute from './guard/PrivateRoute'; 
 import SalonSearchResults from './pages/SalonSearchResults.page';
 import ScrollToTop from './utils/ScrollToTop';
+import Appointments from './pages/Appointments.page';
+import { useEffect, useState } from 'react';
+import UserService from './services/user.service';
+
+
 function App() {
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const response = UserService.getCurrentUser();
+        if (response) {
+          setUser(response);
+        }
+      }, []);
   return (
     <>
       <ScrollToTop />
@@ -20,15 +33,15 @@ function App() {
           <Route
               path="/salons/:id"
               element={<SalonDetails />}/>
-          {/* <Route
-              path="/salons/:id"
-              element={
-                  <PrivateRoute
-                      element={<SalonDetails />}
-                      path="/salons/:id"
-                  />
-              }
-          /> */}
+             <Route
+          path="/appointments"
+          element={
+            <PrivateRoute
+              element={<Appointments userId={user?.id} />}
+             
+            />
+          }
+        />
           <Route path="/salons" element={<SalonSearchResults/>} />
           <Route path="*" element={<div>Error: Page not found</div>} />
       </Routes>

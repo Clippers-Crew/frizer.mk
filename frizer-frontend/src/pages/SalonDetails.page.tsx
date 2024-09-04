@@ -17,11 +17,21 @@ import EmployeeRemoveForm from "../components/salonDetails/EmployeeRemoveForm/Em
 import TreatmentAddForm from "../components/salonDetails/TreatmentAddForm/TreatmentAddForm.component";
 import { Treatment } from "../interfaces/Treatment.interface";
 import TreatmentRemoveForm from "../components/salonDetails/TreatmentRemoveForm/TreatmentRemoveForm.module";
+import { User } from "../context/Context";
+import UserService from "../services/user.service";
 
 function SalonDetails() {
   const { id } = useParams();
   const [salon, setSalon] = useState<Salon>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    const response = UserService.getCurrentUser();
+    if (response) {
+      setUser(response);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchSalon = async () => {
@@ -42,8 +52,11 @@ function SalonDetails() {
   const handleEmployeeAdd = async (newEmployee: Employee) => {
     if (salon) {
       try {
-        const updatedSalon = { ...salon, employeesIds: [...salon.employeesIds, newEmployee.id] };
-       setSalon(updatedSalon);
+        const updatedSalon = {
+          ...salon,
+          employeesIds: [...salon.employeesIds, newEmployee.id],
+        };
+        setSalon(updatedSalon);
       } catch (error) {
         console.error("Error updating salon:", error);
       }
@@ -52,36 +65,46 @@ function SalonDetails() {
   const handleEmployeeRemove = async (employeeId: number) => {
     if (salon) {
       try {
-        const updatedEmployeeIds = salon.employeesIds.filter(e => e !== employeeId);
+        const updatedEmployeeIds = salon.employeesIds.filter(
+          (e) => e !== employeeId
+        );
         const updatedSalon = { ...salon, employeesIds: updatedEmployeeIds };
         setSalon(updatedSalon);
       } catch (error) {
         console.error("Error updating salon:", error);
       }
     }
-    };
-    const handleTreatmentAdd = async (newTreatment: Treatment) => {
-      if (salon) {
-        try {
-          console.log("In salon details page",newTreatment.id)
-          const updatedSalon = { ...salon, salonTreatmentsIds: [...salon.salonTreatmentsIds, newTreatment.id] };
-         setSalon(updatedSalon);
-        } catch (error) {
-          console.error("Error updating salon:", error);
-        }
-      }
   };
-  const handleTreatmentRemove = async (treatmentId: number) => {
+  const handleTreatmentAdd = async (newTreatment: Treatment) => {
     if (salon) {
       try {
-        const updatedSalonTreatmentIds = salon.salonTreatmentsIds.filter(e => e !== treatmentId);
-        const updatedSalon = { ...salon, salonTreatmentsIds: updatedSalonTreatmentIds };
+        console.log("In salon details page", newTreatment.id);
+        const updatedSalon = {
+          ...salon,
+          salonTreatmentsIds: [...salon.salonTreatmentsIds, newTreatment.id],
+        };
         setSalon(updatedSalon);
       } catch (error) {
         console.error("Error updating salon:", error);
       }
     }
-    };
+  };
+  const handleTreatmentRemove = async (treatmentId: number) => {
+    if (salon) {
+      try {
+        const updatedSalonTreatmentIds = salon.salonTreatmentsIds.filter(
+          (e) => e !== treatmentId
+        );
+        const updatedSalon = {
+          ...salon,
+          salonTreatmentsIds: updatedSalonTreatmentIds,
+        };
+        setSalon(updatedSalon);
+      } catch (error) {
+        console.error("Error updating salon:", error);
+      }
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -95,11 +118,24 @@ function SalonDetails() {
         <SalonBaseInfo salon={salon} />
         <TreatmentList salon={salon} />
         <ReviewList salon={salon} />
-        <EmployeeList salon={salon}/>
-        <EmployeeAddForm salon={salon} onEmployeeAdd={handleEmployeeAdd}  />
-        <EmployeeRemoveForm salon={salon} onEmployeeRemove={handleEmployeeRemove}/>
-        <TreatmentAddForm salon={salon} onTreatmentAdd={handleTreatmentAdd}/>
-        <TreatmentRemoveForm salon={salon} onTreatmentRemove={handleTreatmentRemove} />
+        <EmployeeList salon={salon} />
+        <EmployeeAddForm
+          salon={salon}
+          onEmployeeAdd={handleEmployeeAdd}
+          user={user}
+        />
+        <EmployeeRemoveForm
+          salon={salon}
+          onEmployeeRemove={handleEmployeeRemove}
+          user={user}
+        />
+        <TreatmentAddForm salon={salon} onTreatmentAdd={handleTreatmentAdd}
+         user={user} />
+        <TreatmentRemoveForm
+          salon={salon}
+          onTreatmentRemove={handleTreatmentRemove}
+          user={user}
+        />
         <SalonMap salon={salon} />
       </PageContainer>
       <Footer />

@@ -12,14 +12,14 @@ import { Employee } from "../../../interfaces/Employee.interface";
 interface TreatmentAddFormProps {
   salon?: Salon;
   onTreatmentAdd: (treatment: Treatment) => void;
+  user?: User
 }
-function TreatmentAddForm({ salon, onTreatmentAdd }: TreatmentAddFormProps) {
+function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | undefined>(undefined);
   const [durationMultiplier, setDurationMultiplier] = useState<
     number | undefined>(undefined);
   const durationOptions = Array.from({ length: 6 }, (_, i) => i + 1);
-  const [user, setUser] = useState<User>();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds =  salon?.employeesIds || [];
   
@@ -43,13 +43,6 @@ function TreatmentAddForm({ salon, onTreatmentAdd }: TreatmentAddFormProps) {
     }
     console.log(durationMultiplier);
   };
-  useEffect(() => {
-    const response = UserService.getCurrentUser();
-    if (response) {
-      setUser(response);
-    }
-  }, []);
-
 
   useEffect(() => {
     const fetchEmployees = async () => {

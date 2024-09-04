@@ -9,16 +9,17 @@ import UserService from "../../../services/user.service";
 interface EmployeeRemoveFormProps {
   salon?: Salon;
   onEmployeeRemove: (employee: number) => void;
+  user?: User
 }
 
 const EmployeeRemoveForm: React.FC<EmployeeRemoveFormProps> = ({
   salon,
   onEmployeeRemove,
+  user
 }) => {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<number | "">("");
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds = salon?.employeesIds || [];
-  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -30,13 +31,6 @@ const EmployeeRemoveForm: React.FC<EmployeeRemoveFormProps> = ({
 
     fetchEmployees();
   }, [employeesIds]);
-
-  useEffect(() => {
-    const response = UserService.getCurrentUser();
-    if (response) {
-      setUser(response);
-    }
-  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

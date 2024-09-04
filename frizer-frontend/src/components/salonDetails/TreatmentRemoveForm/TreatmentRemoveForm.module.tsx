@@ -11,10 +11,10 @@ import { Employee } from "../../../interfaces/Employee.interface";
 interface TreatmentRemoveFormProps {
   salon?: Salon;
   onTreatmentRemove: (treatmentId: number) => void;
+  user?: User
 }
-function TreatmentRemoveForm({ salon, onTreatmentRemove }: TreatmentRemoveFormProps) {
+function TreatmentRemoveForm({ salon, onTreatmentRemove, user }: TreatmentRemoveFormProps) {
   const [treatmentId, setTreatmentId] = useState<number | string>("");
-  const [user, setUser] = useState<User>();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds =  salon?.employeesIds || [];
   const [treatments, setTreatments] = useState<Treatment[]>([]);
@@ -45,13 +45,6 @@ function TreatmentRemoveForm({ salon, onTreatmentRemove }: TreatmentRemoveFormPr
           }
     }
   };
-  useEffect(() => {
-    const response = UserService.getCurrentUser();
-    if (response) {
-      setUser(response);
-    }
-  }, []);
-
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -64,6 +57,7 @@ function TreatmentRemoveForm({ salon, onTreatmentRemove }: TreatmentRemoveFormPr
 
     fetchEmployees();
   }, [employeesIds]);
+  
   return (
     <>
       {user && (user.id === salon?.ownerId ||

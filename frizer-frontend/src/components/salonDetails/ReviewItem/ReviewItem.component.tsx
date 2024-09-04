@@ -2,18 +2,14 @@ import React from 'react';
 import styles from './ReviewItem.module.scss';
 import { ReviewDetails } from '../../../interfaces/ReviewDetails.interface';
 import { FaStar } from 'react-icons/fa';
+import { DateUtils } from '../../../utils/dateUtils';
 
 interface ReviewItemProps {
   review: ReviewDetails;
 }
 
 const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
-  const formatDate = (date: string | Date) => {
-    const parsedDate = new Date(date); // Convert string or Date object to Date
-    return parsedDate.toLocaleDateString(); // Format date as a readable string
-  };
-
-  return (
+    return (
     <div className={styles.review}>
       <div className={styles.row}>
         <div className={styles.reviewName}>
@@ -32,7 +28,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
         </div>
       </div>
         <div className={styles.reviewDate}>
-          {formatDate(review.date)}
+          {DateUtils.formatDate(review.date)}
         </div>
     
       <div className={styles.row}>
