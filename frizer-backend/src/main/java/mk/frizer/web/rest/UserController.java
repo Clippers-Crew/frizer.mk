@@ -11,6 +11,7 @@ import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.service.BaseUserService;
 import mk.frizer.service.SalonService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class UserController {
     @GetMapping()
     public List<BaseUserSimpleDTO> getUsers(){
         return baseUserService.getBaseUsers().stream().map(BaseUser::toDto).toList();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<BaseUserSimpleDTO> getUserDetails() {
+        Optional<BaseUser> user = baseUserService.getUserFromAuthentication(SecurityContextHolder.getContext().getAuthentication());
+        return user.map(baseUser -> ResponseEntity.ok(baseUser.toDto()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
@@ -54,7 +62,6 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    //TODO send encrypted password from frontend, and decrypt it here with same key...
     @PostMapping("/edit-password/{id}")
     public ResponseEntity<BaseUserSimpleDTO> updatePasswordForUser(@PathVariable Long id, @RequestParam String password){
         return this.baseUserService.changeBaseUserPassword(id, password)

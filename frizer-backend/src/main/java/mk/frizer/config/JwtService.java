@@ -35,9 +35,9 @@ public class JwtService {
             BaseUser baseUser = (BaseUser) userDetails;
             extraClaims.put("id", baseUser.getId());
             extraClaims.put("email", baseUser.getEmail());
-            extraClaims.put("firstName", baseUser.getFirstName());
-            extraClaims.put("lastName", baseUser.getLastName());
-            extraClaims.put("phoneNumber", baseUser.getPhoneNumber());
+//            extraClaims.put("firstName", baseUser.getFirstName());
+//            extraClaims.put("lastName", baseUser.getLastName());
+//            extraClaims.put("phoneNumber", baseUser.getPhoneNumber());
             extraClaims.put("roles", baseUser.getRoles());
         }
         return generateToken(extraClaims, userDetails);
@@ -50,7 +50,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

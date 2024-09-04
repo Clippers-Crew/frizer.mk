@@ -11,9 +11,11 @@ import mk.frizer.repository.BaseUserRepository;
 import mk.frizer.repository.CustomerRepository;
 import mk.frizer.service.BaseUserService;
 import mk.frizer.utilities.FormValidator;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +78,10 @@ public class BaseUserServiceImpl implements BaseUserService {
             user.setPhoneNumber(baseUserUpdateDTO.getPhoneNumber());
         }
 
+        user.setFirstName(baseUserUpdateDTO.getFirstName());
+        user.setLastName(baseUserUpdateDTO.getLastName());
+        user.setPhoneNumber(baseUserUpdateDTO.getPhoneNumber());
+
         return Optional.of(baseUserRepository.save(user));
     }
 
@@ -94,5 +100,12 @@ public class BaseUserServiceImpl implements BaseUserService {
         BaseUser user = getBaseUserById(id).get();
         baseUserRepository.deleteById(id);
         return Optional.of(user);
+    }
+
+    @Transactional
+    public Optional<BaseUser> getUserFromAuthentication(Authentication authentication){
+        if (authentication != null && authentication.getPrincipal() != null)
+            return Optional.of((BaseUser) authentication.getPrincipal());
+        return Optional.empty();
     }
 }

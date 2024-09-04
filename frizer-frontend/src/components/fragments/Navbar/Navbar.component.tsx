@@ -1,15 +1,18 @@
-import styles from './Navbar.module.scss';
+import styles from "./Navbar.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { ACTION_TYPE, GlobalContext } from '../../../context/Context';
+import { ACTION_TYPE, GlobalContext, User } from "../../../context/Context";
+import AuthService from "../../../services/auth.service";
+import UserService from "../../../services/user.service";
 
 function Navbar() {
   const { state, dispatch } = useContext(GlobalContext);
-  const [isAuth, setIsAuth] = useState(!!state?.token);
-  let [menuState, setMenuState] = useState(false);
-  let [rotation, setRotation] = useState(0);
+  // const [ isAuth, setIsAuth ] = useState(!!state?.token);
+  const [currentUser, setCurrentUser] = useState<User | null>();
+  const [menuState, setMenuState] = useState(false);
+  const [rotation, setRotation] = useState(0);
   const navigate = useNavigate();
 
   const showMenu = () => {
@@ -25,26 +28,35 @@ function Navbar() {
     rotation === 0 ? setRotation(180) : setRotation(0);
   };
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   setIsAuth(!!token);
+  // }, [state?.token]);
+
   useEffect(() => {
     showMenu();
-  }, []);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuth(!!token);
+
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await UserService.getCurrentUser();
+        setCurrentUser(response);
+      } catch (error) {
+        console.error("Failed to fetch salons:", error);
+      }
+    };
+
+    fetchCurrentUser();
   }, [state?.token]);
 
   window.addEventListener("resize", showMenu);
-  function handlelogout() {
-    dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
-    dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
-    localStorage.setItem('token', '');
-  }
+
   const handleLogout = () => {
     dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
     dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
-    localStorage.removeItem('token'); 
+    AuthService.logout();
+    UserService.removeUser();
 
-    navigate('/home');
+    navigate("/home");
   };
   return (
     <nav className={styles.nav}>
@@ -85,9 +97,30 @@ function Navbar() {
               </li>
             </NavLink>
 
-              <NavLink to={isAuth ? '#' : '/login'} onClick={isAuth ? handleLogout : closeMenu}>
+            {/* <NavLink to={isAuth ? '#' : '/login'} onClick={isAuth ? handleLogout : closeMenu}>
+                <li className={styles.navlink}>
+                  {isAuth ? 'Logout' : <>Login <FaArrowRightLong/></>}
+                </li>
+              </NavLink> */}
+            {currentUser && (
+              <NavLink to={"/profile"} onClick={closeMenu}>
+                <li className={styles.navlink}>
+                  <span>Здраво, {currentUser.firstName}</span>
+                </li>
+              </NavLink>
+            )}
+            <NavLink
+              to={currentUser ? "#" : "/login"}
+              onClick={currentUser ? handleLogout : closeMenu}
+            >
               <li className={styles.navlink}>
-                {isAuth ? 'Logout' : <>Login <FaArrowRightLong/></>}
+                {currentUser ? (
+                  "Logout"
+                ) : (
+                  <>
+                    Login <FaArrowRightLong />
+                  </>
+                )}
               </li>
             </NavLink>
           </motion.ul>

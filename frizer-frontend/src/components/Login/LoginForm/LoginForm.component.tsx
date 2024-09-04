@@ -8,6 +8,8 @@ import {
 import { jwtDecode } from "jwt-decode";
 import styles from "./LoginForm.module.scss";
 import AuthService from "../../../services/auth.service";
+import UserService from "../../../services/user.service";
+
 export default function LoginForm() {
   const nav = useNavigate();
   const [email, setEmail] = useState("");
@@ -56,6 +58,7 @@ export default function LoginForm() {
         }
 
         localStorage.setItem("token", token);
+        UserService.setUserWithToken();
 
         const decodedToken = jwtDecode<DecodedToken>(token);
         const currentUser = {
@@ -74,6 +77,7 @@ export default function LoginForm() {
         setErrorMsgs(["Wrong username or password."]);
         dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
         dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
+        UserService.removeUser();
       }
     }
   }

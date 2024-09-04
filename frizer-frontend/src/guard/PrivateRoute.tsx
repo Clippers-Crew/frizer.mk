@@ -2,11 +2,9 @@ import { Navigate } from 'react-router-dom';
 
 interface PrivateRouteProps {
   element: React.ReactElement;
-  path: string;
-  isAuth?: boolean;
 }
 
-function PrivateRoute({ element, path, isAuth }: PrivateRouteProps) {
+function PrivateRoute({ element }: PrivateRouteProps) {
   const auth = localStorage.getItem("token") != null;
   
   return (
