@@ -11,9 +11,6 @@ interface ReviewListProps {
 }
 
 const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString();
-  };
   const [reviews, setReviews] = useState<ReviewDetails[]>([]);
   const [reviewIds, setReviewIds] = useState<Review[]>([]);
 
@@ -43,7 +40,6 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
       );
       setReviews(response.data);
     } catch (err) {
-      console.error("Failed to fetch reviews details");
     } 
   };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Salon } from '../../../interfaces/Salon.interface';
-import { Employee } from '../../../interfaces/Employee.interface'; // Assuming you have this interface
+import { Employee } from '../../../interfaces/Employee.interface';
 import EmployeeService from '../../../services/employee.service';
 import styles from './EmployeeList.module.scss'
 import EmployeeItem from '../EmployeeItem/EmployeeItem.component';
@@ -9,7 +9,6 @@ interface EmployeeListProps {
 }
 
 const EmployeeList: React.FC<EmployeeListProps> = ({ salon }) => {
-  const [error, setError] = useState<string | null>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds =  salon?.employeesIds || [];
 

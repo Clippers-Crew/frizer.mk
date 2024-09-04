@@ -1,6 +1,6 @@
 import  instance   from './config/axios';
 import { AuthResponse } from '../context/Context';
-import { BaseUserCreate } from '../interfaces/BaseUserCreate.interface';
+import { BaseUserCreate } from '../interfaces/BaseUserCreateRequest.interface';
 
 const AuthService =  {
    async authenticate(email: string, password: string): Promise<AuthResponse> {
