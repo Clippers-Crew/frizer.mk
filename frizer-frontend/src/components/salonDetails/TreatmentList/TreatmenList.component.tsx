@@ -6,7 +6,7 @@ import TreatmentService from "../../../services/treatment.service";
 import TreatmentItem from "../TreatmentItem/TreatmentItem.component";
 import TreatmentDetailsItem from "../TreatmentDetailsItem/TreatmentDetailsItem.component";
 import ReserveAppointmentForm from "../ReserveAppointmentForm/ReserveAppointmentForm.component";
-import TreatmentTimeAndEmployeeForm from "../TreatmentTimeAndEmployeeChooseForm/TreatmentTimeAndEmployeeChooseForm.module";
+import AppointmentAddForm from "../AppointmentAddForm/AppointmentAddForm.module";
 import { Employee } from "../../../interfaces/Employee.interface";
 import EmployeeService from "../../../services/employee.service";
 import { TimeSlot } from "../../../interfaces/TimeSlot.interface";
@@ -112,7 +112,7 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
     <div className={styles.services}>
       <h1>Третмани</h1>
       {showTimeForm ? (
-        <TreatmentTimeAndEmployeeForm
+        <AppointmentAddForm
           salon={salon}
           treatment={selectedTreatmentId}
           employees={employees}

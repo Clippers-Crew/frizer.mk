@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./TreatmentTimeAndEmployeeChooseForm.module.scss";
+import styles from "./AppointmentAddForm.module.scss";
 import { Employee } from "../../../interfaces/Employee.interface";
 import { Salon } from "../../../interfaces/Salon.interface";
 import { TimeSlot } from "../../../interfaces/TimeSlot.interface";
