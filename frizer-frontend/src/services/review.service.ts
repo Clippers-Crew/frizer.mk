@@ -1,4 +1,5 @@
 import { Review } from '../interfaces/Review.interface';
+import { ReviewCreateRequest } from '../interfaces/ReviewCreateRequest.interface';
 import { ReviewDetails } from '../interfaces/ReviewDetails.interface';
 import axios from './config/axios';
 
@@ -17,6 +18,13 @@ const ReviewService = {
       getReviewBySalon: (id: number) => {
         return axios.get<Review []>(`/reviews/for-salon/${id}`);
     },
+    async createReview(review: ReviewCreateRequest) {
+        try {
+            const response = await axios.post('/reviews/add', review);
+            return response.data;
+        } catch (error) {
+        }
+        },
   
 };
 

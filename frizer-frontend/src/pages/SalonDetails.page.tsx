@@ -119,7 +119,7 @@ function SalonDetails() {
         <FeatureImages salon={salon} />
         <SalonBaseInfo salon={salon} />
         <TreatmentList salon={salon} user={user} />
-        <ReviewList salon={salon} />
+        <ReviewList salon={salon} user={user} />
         <EmployeeList salon={salon} />
         <EmployeeAddForm
           salon={salon}

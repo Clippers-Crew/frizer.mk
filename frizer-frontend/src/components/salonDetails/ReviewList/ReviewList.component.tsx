@@ -5,12 +5,16 @@ import { ReviewDetails } from "../../../interfaces/ReviewDetails.interface";
 import ReviewItem from "../ReviewItem/ReviewItem.component";
 import { Salon } from "../../../interfaces/Salon.interface";
 import { Review } from "../../../interfaces/Review.interface";
+import ReviewAddForm from "../ReviewAddForm/ReviewAddForm.component";
+import { User } from "../../../context/Context";
 
 interface ReviewListProps {
   salon?: Salon;
+  user?: User
+
 }
 
-const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
+const ReviewList: React.FC<ReviewListProps> = ({ salon, user }: ReviewListProps) => {
   const [reviews, setReviews] = useState<ReviewDetails[]>([]);
   const [reviewIds, setReviewIds] = useState<Review[]>([]);
 
@@ -56,6 +60,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
           <ReviewItem key={index} review={review} />
         ))
       )}
+      <ReviewAddForm salon={salon} user={user} />
     </div>
   );
 };
