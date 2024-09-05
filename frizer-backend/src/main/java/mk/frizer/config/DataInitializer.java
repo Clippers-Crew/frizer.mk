@@ -124,7 +124,8 @@ public class DataInitializer {
                     new SalonAddDTO("Фризерски салон Драган", "Фризерски салон", "Улица 17", "Кичево", "078123456", businessOwner3.getId(), 41.5122f, 20.9586f),
                     new SalonAddDTO("Спа Центар Бојана", "Спа центар", "Улица 18", "Крушево", "078876543", businessOwner3.getId(), 41.3683f, 21.2483f),
                     new SalonAddDTO("Фризерница Борис", "Фризерски салон", "Улица 19", "Виница", "079123456", businessOwner1.getId(),  41.8825f, 22.5097f),
-                    new SalonAddDTO("Салон за убавина Гордана", "Козметички салон", "Улица 20", "Делчево", "079654321", businessOwner1.getId(), 41.9675f, 22.7747f)
+                    new SalonAddDTO("Салон за убавина Гордана", "Козметички салон", "Улица 20", "Делчево", "079654321", businessOwner1.getId(), 41.9675f, 22.7747f),
+                    new SalonAddDTO("Салон за убавина Сања", "Фризерски салон", "Улица 21", "Скопје", "077377377", businessOwner1.getId(), 41.9752f, 21.7747f)
             );
 
             salons.forEach(salonService::createSalon);

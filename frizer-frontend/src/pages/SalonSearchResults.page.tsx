@@ -1,9 +1,9 @@
 import Navbar from "../components/fragments/Navbar/Navbar.component";
 import Footer from "../components/fragments/Footer/Footer.component";
 import styled from "styled-components";
-import SalonResultsParameters from "../components/salon-search-results/SalonResultsParameters/SalonResultsParameters.component";
+import SalonResultsParameters from "../components/SalonSearchResults/SalonResultsParameters/SalonResultsParameters.component";
 import Search from "../components/fragments/Search/Search.component";
-import SalonResults from "../components/salon-search-results/SalonResults/SalonResults.component";
+import SalonResults from "../components/SalonSearchResults/SalonResults/SalonResults.component";
 
 function SalonSearchResults() {
   return (

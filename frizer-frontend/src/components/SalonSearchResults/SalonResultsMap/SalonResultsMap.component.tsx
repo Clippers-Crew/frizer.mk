@@ -53,7 +53,7 @@ const SalonResultsMap: React.FC<SalonResultsMapProps> = ({ salons }) => {
       <div style="text-align: center;">
         <b>${name}</b></br>
         <button 
-          style="margin-top: 0.5em;" 
+          style="margin-top: 1em; padding: 0.5em 1em;" 
           class="secondaryButton" 
           onclick="window.navigateToDetails(${id})">Прегледај</button>
       </div>

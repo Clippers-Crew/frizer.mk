@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/Login.page';
 import Register from './pages/Register.page';
 import SalonDetails from './pages/SalonDetails.page';
+import Profile from "./pages/Profile.page";
+
 import { GlobalContext, GlobalContextProvider, User } from './context/Context'; 
 import PrivateRoute from './guard/PrivateRoute'; 
 import SalonSearchResults from './pages/SalonSearchResults.page';
@@ -14,13 +16,16 @@ import UserService from './services/user.service';
 
 
 function App() {
-    const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const response = UserService.getCurrentUser();
+      const fetchUser = async () => {
+        const response = await UserService.getCurrentUser();
         if (response) {
           setUser(response);
         }
+      };
+      fetchUser();
       }, []);
   return (
     <>
@@ -41,6 +46,10 @@ function App() {
              
             />
           }
+        />
+         <Route
+          path="/profile"
+          element={<PrivateRoute element={<Profile />} />}
         />
           <Route path="/salons" element={<SalonSearchResults/>} />
           <Route path="*" element={<div>Error: Page not found</div>} />

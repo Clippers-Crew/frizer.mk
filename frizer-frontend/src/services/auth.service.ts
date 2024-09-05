@@ -22,6 +22,9 @@ const AuthService =  {
     } catch (error) {
       throw new Error('Failed to create user');
     }
+  },
+  logout(): void{
+    localStorage.removeItem('token'); 
   }
 }
 export default AuthService; 

@@ -4,7 +4,7 @@ interface PrivateRouteProps {
   element: React.ReactElement;
 }
 
-function PrivateRoute({ element  }: PrivateRouteProps) {
+function PrivateRoute({ element }: PrivateRouteProps) {
   const auth = localStorage.getItem("token") != null;
   
   return (

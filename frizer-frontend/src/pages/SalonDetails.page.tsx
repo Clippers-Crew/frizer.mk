@@ -27,11 +27,14 @@ function SalonDetails() {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    const response = UserService.getCurrentUser();
-    if (response) {
-      setUser(response);
-    }
-  }, []);
+    const fetchUser = async () => {
+      const response = await UserService.getCurrentUser();
+      if (response) {
+        setUser(response);
+      }
+    };
+    fetchUser();
+    }, []);
 
   useEffect(() => {
     const fetchSalon = async () => {
