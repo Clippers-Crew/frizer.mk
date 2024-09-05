@@ -30,7 +30,6 @@ function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps
       price !== undefined &&
       durationMultiplier !== undefined
     ) {
-      console.log("uhi");
       const newTreatment: TreatmentCreateRequest = {
         name: name,
         price: price ?? 0,
@@ -41,7 +40,6 @@ function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps
       onTreatmentAdd(response);
       window.scrollTo(0, 0);
     }
-    console.log(durationMultiplier);
   };
 
   useEffect(() => {

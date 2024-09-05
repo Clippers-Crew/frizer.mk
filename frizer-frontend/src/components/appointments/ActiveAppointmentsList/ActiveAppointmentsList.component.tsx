@@ -110,7 +110,7 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                     appointment={appointment}
                     showActions={true}
                     onAppointmentRemove={handleAppointmentRemove}
-                    isEmployee={false}
+                    showEmployee={true}
                   />
                 ))}
               </tbody>
@@ -139,7 +139,7 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                     <ActiveAppointmentRow
                       appointment={appointment}
                       showActions={false}
-                      isEmployee={false}
+                      showEmployee={true}
                     />
                   ))}
                 </tbody>
@@ -188,7 +188,7 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                       appointment={appointment}
                       showActions={true}
                       onAppointmentRemove={handleAppointmentRemove}
-                      isEmployee={true}
+                      showEmployee={true}
                     />
                   ))}
                 </tbody>
@@ -226,7 +226,7 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                       key={appointment.id}
                       appointment={appointment}
                       showActions={false}
-                      isEmployee={true}
+                      showEmployee={true}
                     />
                   ))}
                 </tbody>

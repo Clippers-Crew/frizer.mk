@@ -30,6 +30,13 @@ public class CustomerRestController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/by")
+    public ResponseEntity<CustomerSimpleDTO> getCustomerByEmail(@RequestParam String email) {
+        return this.customerService.getCustomerByEmail(email)
+                .map(customer -> ResponseEntity.ok().body(customer.toDto()))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/add/{id}")
     public ResponseEntity<CustomerSimpleDTO> createCustomer(@PathVariable Long id) {
         return this.customerService.createCustomer(id)

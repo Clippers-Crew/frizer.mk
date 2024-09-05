@@ -17,10 +17,8 @@ const TreatmentService = {
     async createTreatment(treatment: TreatmentCreateRequest) {
     try {
         const response = await axios.post('/treatments/add', treatment);
-        console.log(response)
         return response.data;
     } catch (error) {
-        throw new Error('Failed to create treatment');
     }
     },
     async deleteTreatment(id: number) {

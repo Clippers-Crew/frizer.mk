@@ -9,5 +9,14 @@ export const DateUtils =  {
         const targetDate = new Date(now);
         targetDate.setDate(now.getDate() + days);
             return dateFromDate <= targetDate;
-      }
+      },
+     convertToUTC (date: Date) {
+      const utcIsoString = date.toISOString();
+      // Parse the ISO string back into a Date object
+      return new Date(utcIsoString);
+      },
+      formatDateTime(date: string | Date) {
+        const parsedDate = new Date(date); 
+        return parsedDate.toLocaleString();  
+     }
 };

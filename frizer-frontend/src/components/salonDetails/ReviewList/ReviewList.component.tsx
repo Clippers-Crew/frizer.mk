@@ -19,17 +19,16 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon }: ReviewListProps) => {
       if (!salon?.id) {
         return;
       }
-
       try {
         const response = await ReviewService.getReviewBySalon(salon?.id);
         setReviewIds(response.data);
       } catch (err) {
-        console.error("Failed to fetch reviews by salon");
       } 
     };
 
     fetchReviews();
   }, [salon]);
+
   useEffect(() => {
  if(reviewIds.length > 0) {
   const fetchReviews = async () => {

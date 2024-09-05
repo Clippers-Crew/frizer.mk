@@ -6,7 +6,7 @@ import AppointmentService from "../../../services/appointment.service";
 interface ActiveAppointmentRowProps {
   appointment: AppointmentDetails;
   showActions?: boolean;
-  isEmployee?: boolean;
+  showEmployee: boolean;
   onAppointmentRemove?: (appointment: number) => void;
 }
 
@@ -14,7 +14,7 @@ function ActiveAppointmentRow({
   appointment,
   showActions,
   onAppointmentRemove,
-  isEmployee,
+  showEmployee,
 }: ActiveAppointmentRowProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,13 +33,11 @@ function ActiveAppointmentRow({
 
   return (
     <tr key={appointment.id}>
-      <td>{DateUtils.formatDate(appointment.dateFrom)}</td>
-      <td>{DateUtils.formatDate(appointment.dateTo)}</td>
+      <td>{DateUtils.formatDateTime(appointment.dateFrom)}</td>
+      <td>{DateUtils.formatDateTime(appointment.dateTo)}</td>
       <td>{appointment.treatmentName}</td>
       <td>{appointment.salonName}</td>
-      {isEmployee && <td>{appointment.employeeName}</td>}
-      {isEmployee == false && <td>{appointment.customerName}</td>}
-
+      {showEmployee? <td>{appointment.employeeName}</td> : <td>{appointment.customerName}</td>}
       <td>{appointment.attended ? "Да" : "Не"}</td>
       {showActions && (
         <td>

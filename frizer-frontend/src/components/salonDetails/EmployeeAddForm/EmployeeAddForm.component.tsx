@@ -3,7 +3,6 @@ import styles from "./EmployeeAddForm.module.scss";
 import { Salon } from "../../../interfaces/Salon.interface";
 import BaseUserService from "../../../services/baseUser.service";
 import { BaseUser } from "../../../interfaces/BaseUser.interface";
-import UserService from "../../../services/user.service";
 import EmployeeService from "../../../services/employee.service";
 import { EmployeeCreate } from "../../../interfaces/EmployeeCreateRequest.interface";
 import { User } from "../../../context/Context";
@@ -23,7 +22,9 @@ function EmployeeAddForm({ salon, onEmployeeAdd, user }: EmployeeAddFormProps) {
       try {
         const response = await BaseUserService.getAvailableUsers();
         setUsers(response.data);
-      } catch (error) {}
+      } catch {
+        
+      }
     };
 
     fetchUsers();

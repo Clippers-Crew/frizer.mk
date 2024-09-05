@@ -78,7 +78,6 @@ function SalonDetails() {
   const handleTreatmentAdd = async (newTreatment: Treatment) => {
     if (salon) {
       try {
-        console.log("In salon details page", newTreatment.id);
         const updatedSalon = {
           ...salon,
           salonTreatmentsIds: [...salon.salonTreatmentsIds, newTreatment.id],
@@ -116,7 +115,7 @@ function SalonDetails() {
       <PageContainer>
         <FeatureImages salon={salon} />
         <SalonBaseInfo salon={salon} />
-        <TreatmentList salon={salon} />
+        <TreatmentList salon={salon} user={user} />
         <ReviewList salon={salon} />
         <EmployeeList salon={salon} />
         <EmployeeAddForm

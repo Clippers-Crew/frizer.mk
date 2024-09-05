@@ -1,3 +1,4 @@
+import { AppointmentCreateRequest } from '../interfaces/AppointmentCreateRequest.interface';
 import { AppointmentDetails } from '../interfaces/AppointmentDetails.interface';
 import axios from './config/axios';
 const AppointmentService = {
@@ -13,7 +14,15 @@ const AppointmentService = {
         } catch (error) {
           throw new Error('Failed to delete appointment');
         }
-      }
+      },
+      async createAppointments(appointmentCreate: AppointmentCreateRequest) {
+        try {
+          const response = await axios.post('/appointments/add', appointmentCreate);
+          return response.data;
+        } catch (error) {
+          throw new Error('Failed to create appointment');
+        }
+      },
 }
 
 export default AppointmentService;
