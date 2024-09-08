@@ -22,14 +22,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final SalonRepository salonRepository;
     private final EmployeeRepository employeeRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final EmailService emailService;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, TreatmentRepository treatmentRepository, CustomerRepository customerRepository, SalonRepository salonRepository, EmployeeRepository employeeRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, TreatmentRepository treatmentRepository, CustomerRepository customerRepository, SalonRepository salonRepository, EmployeeRepository employeeRepository, ApplicationEventPublisher applicationEventPublisher, EmailService emailService) {
         this.appointmentRepository = appointmentRepository;
         this.treatmentRepository = treatmentRepository;
         this.customerRepository = customerRepository;
         this.salonRepository = salonRepository;
         this.employeeRepository = employeeRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.emailService = emailService;
     }
 
     private boolean isDivisibleBy20Minutes(LocalDateTime dateTime) {
@@ -84,7 +86,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         applicationEventPublisher.publishEvent(new AppointmentCreatedEvent(appointment));
-
+        String body = emailService.createMessage(appointment);
+        emailService.sendAppointmentConfirmation(customer.getBaseUser().getEmail(),"Потврда на резервација",body);
         return Optional.of(appointment);
     }
 
@@ -119,6 +122,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(appointment.isEmpty())
             throw new AppointmentNotFoundException();
         appointmentRepository.deleteById(id);
+        String body = emailService.createCancellationMessage(appointment.get());
+        emailService.sendAppointmentCancellation(appointment.get().getCustomer().getBaseUser().getEmail(),"Откажување резервација за третман",body);
         return appointment;
     }
 

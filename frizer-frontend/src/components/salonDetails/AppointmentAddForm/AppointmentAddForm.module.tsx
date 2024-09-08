@@ -106,7 +106,6 @@ function TreatmentEmployeeChooseForm({
       }
       navigate("/appointments");
     } catch (error) {
-      console.error(error); // handle error
     }
   };
 

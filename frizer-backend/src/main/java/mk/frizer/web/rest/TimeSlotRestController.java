@@ -1,7 +1,6 @@
 package mk.frizer.web.rest;
 
 import mk.frizer.domain.AppointmentTimeSlot;
-import mk.frizer.domain.dto.TimeSlotDTO;
 import mk.frizer.utilities.TimeSlotGenerator;
 import org.springframework.web.bind.annotation.*;
 

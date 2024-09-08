@@ -66,7 +66,6 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
           const response = await TimeSlotService.getAvailableTimeSlots(
             salon.id, employees[0]?.id || -1, treatment?.durationMultiplier || 1 
           );
-          console.log(response)
           const timeSlots: TimeSlot[] = response.data.flat(); 
           const today = new Date();
           const days = Array.from({ length: 10 }, (_, index) => {

@@ -12,12 +12,9 @@ const UserService = {
   },
   setUserWithToken: async (): Promise<User | null> => {
     try {
-      console.log("Before axios call");
       const response = await axios.get<User>("/users/me");
-      console.log("After axios call: ", response.data);
       const user = response.data;
       UserService.setUser(user);
-      console.log("The user is ", user);
       return user;
     } catch (error) {
       console.error(
