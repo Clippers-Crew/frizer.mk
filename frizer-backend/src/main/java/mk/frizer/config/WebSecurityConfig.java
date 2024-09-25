@@ -36,7 +36,7 @@ public class WebSecurityConfig {
                                 "/api/salons/{id}",
                                 "/api/treatments/ids" ,
                                 "/api/reviews/ids","/api/reviews/for-salon/{id}",
-                                "/api/employees/ids","/api/cities/top","/api/users/me")
+                                "/api/employees/ids","/api/cities/top","/api/users/me","/api/salons/{id}/image/{imageId}")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

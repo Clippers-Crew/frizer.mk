@@ -1,5 +1,6 @@
 package mk.frizer.web.rest;
 
+import jakarta.mail.MessagingException;
 import mk.frizer.domain.Appointment;
 import mk.frizer.domain.dto.simple.AppointmentJoinDTO;
 import mk.frizer.domain.dto.simple.AppointmentSimpleDTO;
@@ -43,16 +44,24 @@ public class AppointmentRestController {
 
     @PostMapping("/add")
     public ResponseEntity<AppointmentSimpleDTO> createAppointment(@RequestBody AppointmentAddDTO appointmentAddDTO) {
-        return this.appointmentService.createAppointment(appointmentAddDTO)
-                .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+        try {
+            return this.appointmentService.createAppointment(appointmentAddDTO)
+                    .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
+                    .orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<AppointmentSimpleDTO> deleteAppointmentById(@PathVariable Long id) {
-        return this.appointmentService.deleteAppointmentById(id)
-                .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+        try {
+            return this.appointmentService.deleteAppointmentById(id)
+                    .map(appointment -> ResponseEntity.ok().body(appointment.toDto()))
+                    .orElseGet(() -> ResponseEntity.badRequest().build());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/attended/{id}")

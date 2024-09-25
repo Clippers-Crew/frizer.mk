@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
-import FeatureImages from "../components/salonDetails/FeatureImages/FeatureImages.component";
+import FeatureImages from "../components/SalonDetails/FeatureImages/FeatureImages.component";
 import { Salon } from "../interfaces/Salon.interface";
-import SalonBaseInfo from "../components/salonDetails/SalonBaseInfo/SalonBaseInfo.component";
+import SalonBaseInfo from "../components/SalonDetails/SalonBaseInfo/SalonBaseInfo.component";
 import styled from "styled-components";
-import TreatmentList from "../components/salonDetails/TreatmentList/TreatmenList.component";
+import TreatmentList from "../components/SalonDetails/TreatmentList/TreatmenList.component";
 import SalonService from "../services/salon.service";
 import { useParams } from "react-router-dom";
 import Footer from "../components/fragments/Footer/Footer.component";
 import Navbar from "../components/fragments/Navbar/Navbar.component";
-import SalonMap from "../components/salonDetails/SalonMap/SalonMap.component";
-import EmployeeList from "../components/salonDetails/EmployeeList/EmployeeList.component";
-import ReviewList from "../components/salonDetails/ReviewList/ReviewList.component";
-import EmployeeAddForm from "../components/salonDetails/EmployeeAddForm/EmployeeAddForm.component";
+import SalonMap from "../components/SalonDetails/SalonMap/SalonMap.component";
+import EmployeeList from "../components/SalonDetails/EmployeeList/EmployeeList.component";
+import ReviewList from "../components/SalonDetails/ReviewList/ReviewList.component";
+import EmployeeAddForm from "../components/SalonDetails/EmployeeAddForm/EmployeeAddForm.component";
 import { Employee } from "../interfaces/Employee.interface";
-import EmployeeRemoveForm from "../components/salonDetails/EmployeeRemoveForm/EmployeeRemoveForm.component";
-import TreatmentAddForm from "../components/salonDetails/TreatmentAddForm/TreatmentAddForm.component";
+import EmployeeRemoveForm from "../components/SalonDetails/EmployeeRemoveForm/EmployeeRemoveForm.component";
+import TreatmentAddForm from "../components/SalonDetails/TreatmentAddForm/TreatmentAddForm.component";
 import { Treatment } from "../interfaces/Treatment.interface";
-import TreatmentRemoveForm from "../components/salonDetails/TreatmentRemoveForm/TreatmentRemoveForm.module";
+import TreatmentRemoveForm from "../components/SalonDetails/TreatmentRemoveForm/TreatmentRemoveForm.module";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
+import ImageAddForm from "../components/SalonDetails/ImageAddForm/ImageAddForm.component";
 
 function SalonDetails() {
   const { id } = useParams();
@@ -91,6 +92,19 @@ function SalonDetails() {
       }
     }
   };
+  const handleImageAdd = async (salonWithImage: Salon) => {
+    if (salon) {
+      try {
+        const updatedSalon = {
+          ...salon,
+          images: salonWithImage.images,
+        };
+        setSalon(updatedSalon);
+      } catch (error) {
+        console.error("Error updating salon:", error);
+      }
+    }
+  };
   const handleTreatmentRemove = async (treatmentId: number) => {
     if (salon) {
       try {
@@ -108,6 +122,7 @@ function SalonDetails() {
     }
   };
 
+  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -117,6 +132,7 @@ function SalonDetails() {
       <Navbar />
       <PageContainer>
         <FeatureImages salon={salon} />
+        <ImageAddForm salon={salon} user={user} onImageAdd={handleImageAdd}/>
         <SalonBaseInfo salon={salon} />
         <TreatmentList salon={salon} user={user} />
         <ReviewList salon={salon} user={user} />

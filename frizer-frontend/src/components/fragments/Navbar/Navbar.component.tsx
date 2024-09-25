@@ -41,12 +41,15 @@ function Navbar() {
         const response = await UserService.getCurrentUser();
         setCurrentUser(response);
       } catch (error) {
-        console.error("Failed to fetch salons:", error);
       }
     };
 
     fetchCurrentUser();
   }, [state?.token]);
+
+  useEffect(() => {
+    setCurrentUser(state.user); 
+  }, [state.user]);
 
   window.addEventListener("resize", showMenu);
 

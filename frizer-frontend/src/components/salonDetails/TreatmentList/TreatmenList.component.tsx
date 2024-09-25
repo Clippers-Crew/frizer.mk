@@ -86,7 +86,6 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
               slots[dayIndex].push(timeSlot);
             }
           });
-          console.log(slots)
           setDays(days);
           setAvailableTimeSlots(slots);
         } catch (error) {
