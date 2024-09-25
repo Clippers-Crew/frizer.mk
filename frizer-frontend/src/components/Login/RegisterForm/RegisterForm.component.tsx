@@ -7,7 +7,7 @@ import {
   DecodedToken,
 } from "../../../context/Context";
 import AuthService from "../../../services/auth.service";
-import { BaseUserCreate } from "../../../interfaces/BaseUserCreate.interface";
+import { BaseUserCreate } from "../../../interfaces/BaseUserCreateRequest.interface";
 
 function RegisterForm() {
   const nav = useNavigate();

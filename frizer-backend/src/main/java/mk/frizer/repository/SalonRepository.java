@@ -11,4 +11,5 @@ public interface SalonRepository extends JpaRepository<Salon, Long> {
         List<Salon> findAllByRatingGreaterThanEqual(Float rating);
         List<Salon> findAllByLocationContaining(String location);
         List<Salon> findAllByOrderByRatingDesc(Pageable pageable);
+        List<Salon> findAllByOwnerId(Long id);
 }

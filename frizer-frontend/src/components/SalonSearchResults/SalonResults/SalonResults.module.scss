@@ -9,6 +9,7 @@
         border-radius: var(--border-radius);
         background-color: var(--lighter-color);
         transition: background-color 0.3s ease-in-out;
+        cursor: pointer;
     }
 
     .activeButton {

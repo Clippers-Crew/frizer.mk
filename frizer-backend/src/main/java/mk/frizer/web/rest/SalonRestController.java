@@ -1,5 +1,6 @@
 package mk.frizer.web.rest;
 
+import jdk.jfr.Frequency;
 import mk.frizer.domain.ImageEntity;
 import mk.frizer.domain.Salon;
 import mk.frizer.domain.dto.SalonAddDTO;
@@ -9,6 +10,7 @@ import mk.frizer.domain.dto.simple.SalonSimpleDTO;
 import mk.frizer.domain.exceptions.SalonNotFoundException;
 import mk.frizer.service.ImageService;
 import mk.frizer.service.SalonService;
+import mk.frizer.utilities.CurrentUserHelper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +44,15 @@ public class SalonRestController {
         }
         return salonService.getSalons().stream().map(Salon::toDto).toList();
     }
+
     @GetMapping("/ids")
     public List<SalonSimpleDTO> getAllSalonsByIds(@RequestParam List<Long> ids) {
         return salonService.getSalonsByIds(ids).stream().map(Salon::toDto).toList();
+    }
+
+    @GetMapping("/get-all-owned")
+    public List<SalonSimpleDTO> getAllOwnedSalons() {
+        return salonService.getOwnedSalons().stream().map(Salon::toDto).toList();
     }
 
     @GetMapping("/top")
@@ -61,6 +69,9 @@ public class SalonRestController {
 
     @PostMapping("/add")
     public ResponseEntity<SalonSimpleDTO> createSalon(@RequestBody SalonAddDTO salonAddDTO) {
+        if (salonAddDTO.getBusinessOwnerId() == null){
+            salonAddDTO.setBusinessOwnerId(CurrentUserHelper.getId());
+        }
         return this.salonService.createSalon(salonAddDTO)
                 .map(salon -> ResponseEntity.ok().body(salon.toDto()))
                 .orElseGet(() -> ResponseEntity.badRequest().build());

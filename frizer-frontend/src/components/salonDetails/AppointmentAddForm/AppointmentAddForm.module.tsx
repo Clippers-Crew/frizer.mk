@@ -178,14 +178,14 @@ function TreatmentEmployeeChooseForm({
         )}
       </select>
 
-      <button type="submit" className="primaryButton">
-        Резервирај
-      </button>
       {onClose && (
         <button type="button" className="secondaryButton" onClick={onClose}>
           Откажи
         </button>
       )}
+      <button type="submit" className="primaryButton">
+        Резервирај
+      </button>
     </form>
   );
 }

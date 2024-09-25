@@ -12,6 +12,7 @@ import mk.frizer.domain.exceptions.TagNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.repository.*;
 import mk.frizer.service.SalonService;
+import mk.frizer.utilities.CurrentUserHelper;
 import mk.frizer.utilities.DistanceCalculator;
 import mk.frizer.utilities.SalonAdapter;
 import org.springframework.context.ApplicationEventPublisher;
@@ -54,6 +55,16 @@ public class SalonServiceImpl implements SalonService {
     @Override
     public List<Salon> getSalonsByIds(List<Long> ids) {
         return salonRepository.findAllById(ids);
+    }
+
+    @Override
+    public List<Salon> getOwnedSalons() {
+        Optional<BusinessOwner> businessOwner = businessOwnerRepository
+                .findByBaseUserId(CurrentUserHelper.getId());
+        if (businessOwner.isPresent()) {
+            return salonRepository.findAllByOwnerId(businessOwner.get().getId());
+        }
+        return List.of();
     }
 
     @Override

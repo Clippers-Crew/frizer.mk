@@ -8,6 +8,8 @@ import Navbar from "../components/fragments/Navbar/Navbar.component";
 import Footer from "../components/fragments/Footer/Footer.component";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
+import ProfileOwnedSalons from "../components/Profile/ProfileOwnedSalons/ProfileOwnedSalons.component";
+import ProfileEditSalonForm from "../components/Profile/ProfileEditSalonForm/ProfileEditSalonForm.component";
 
 function Profile() {
 const [user, setUser] = useState<User | null>();
@@ -32,6 +34,8 @@ useEffect(() => {
       <ProfileContainer>
         {/* <ProfileInfo /> */}
         <ProfileEditDetailsForm currentUser={user}/>
+        <ProfileOwnedSalons />
+        <ProfileEditSalonForm />
         <ProfileAddSalonForm />
       </ProfileContainer>
       <Footer />
