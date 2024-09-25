@@ -37,7 +37,6 @@ function ImageAddForm({salon,user,onImageAdd}:ImageAddFormProps) {
         const response = await SalonService.addImageToSalon(salon?.id ?? -1, image);
         onImageAdd(response.data);
     } catch (error) {
-        setError('An error occurred while uploading the image.');
       }
     }
     };
