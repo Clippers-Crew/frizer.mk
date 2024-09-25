@@ -1,4 +1,5 @@
 import { Salon } from '../interfaces/Salon.interface';
+import { SalonCreateRequest} from "../interfaces/forms/SalonCreateRequest.interface";
 import axios from './config/axios';
 
 const SalonService = {
