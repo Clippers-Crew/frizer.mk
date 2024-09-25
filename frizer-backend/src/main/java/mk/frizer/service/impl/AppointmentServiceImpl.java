@@ -1,5 +1,6 @@
 package mk.frizer.service.impl;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import mk.frizer.domain.*;
 import mk.frizer.domain.dto.AppointmentAddDTO;
@@ -7,6 +8,7 @@ import mk.frizer.domain.events.AppointmentCreatedEvent;
 import mk.frizer.domain.exceptions.*;
 import mk.frizer.repository.*;
 import mk.frizer.service.AppointmentService;
+import mk.frizer.utilities.EmailGenerator;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final EmployeeRepository employeeRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final EmailService emailService;
+    private final EmailGenerator emailGenerator;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, TreatmentRepository treatmentRepository, CustomerRepository customerRepository, SalonRepository salonRepository, EmployeeRepository employeeRepository, ApplicationEventPublisher applicationEventPublisher, EmailService emailService) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, TreatmentRepository treatmentRepository, CustomerRepository customerRepository, SalonRepository salonRepository, EmployeeRepository employeeRepository, ApplicationEventPublisher applicationEventPublisher, EmailService emailService, EmailGenerator emailGenerator) {
         this.appointmentRepository = appointmentRepository;
         this.treatmentRepository = treatmentRepository;
         this.customerRepository = customerRepository;
@@ -32,6 +35,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.employeeRepository = employeeRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.emailService = emailService;
+        this.emailGenerator = emailGenerator;
     }
 
     private boolean isDivisibleBy20Minutes(LocalDateTime dateTime) {
@@ -63,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public Optional<Appointment> createAppointment(AppointmentAddDTO appointmentAddDTO) {
+    public Optional<Appointment> createAppointment(AppointmentAddDTO appointmentAddDTO) throws MessagingException {
         Customer customer = customerRepository.findById(appointmentAddDTO.getCustomerId())
                 .orElseThrow(CustomerNotFoundException::new);
         Salon salon = salonRepository.findById(appointmentAddDTO.getSalonId())
@@ -86,7 +90,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         applicationEventPublisher.publishEvent(new AppointmentCreatedEvent(appointment));
-        String body = emailService.createMessage(appointment);
+        String body = emailGenerator.createMessage(appointment);
         emailService.sendAppointmentConfirmation(customer.getBaseUser().getEmail(),"Потврда на резервација",body);
         return Optional.of(appointment);
     }
@@ -117,12 +121,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public Optional<Appointment> deleteAppointmentById(Long id) {
+    public Optional<Appointment> deleteAppointmentById(Long id) throws MessagingException {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         if(appointment.isEmpty())
             throw new AppointmentNotFoundException();
         appointmentRepository.deleteById(id);
-        String body = emailService.createCancellationMessage(appointment.get());
+        String body = emailGenerator.createCancellationMessage(appointment.get());
         emailService.sendAppointmentCancellation(appointment.get().getCustomer().getBaseUser().getEmail(),"Откажување резервација за третман",body);
         return appointment;
     }
