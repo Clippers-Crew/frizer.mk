@@ -6,6 +6,7 @@ import Navbar from "../components/fragments/Navbar/Navbar.component";
 import Footer from "../components/fragments/Footer/Footer.component";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
+import ProfileFavouriteSalons from "../components/Profile/ProfileFavouriteSalons/ProfileFavouriteSalons.component";
 import ProfileSalons from "../components/Profile/ProfileSalons/ProfileSalons.component";
 
 function Profile() {
@@ -31,6 +32,7 @@ useEffect(() => {
       <ProfileContainer>
         {/* <ProfileInfo /> */}
         <ProfileEditDetailsForm currentUser={user}/>
+        <ProfileFavouriteSalons currentUser={user} />
         <ProfileSalons />
       </ProfileContainer>
       <Footer />

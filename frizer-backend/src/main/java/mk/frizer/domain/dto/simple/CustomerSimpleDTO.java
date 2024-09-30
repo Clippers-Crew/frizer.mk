@@ -19,4 +19,6 @@ public class CustomerSimpleDTO {
     private String lastName;
     private String phoneNumber;
     private List<String> roles;
+    private List<Long> favouriteSalonsIds;
+
 }

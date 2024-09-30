@@ -30,10 +30,14 @@ public class Customer {
     @JoinColumn(name = "base_user_id")
     private BaseUser baseUser;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Salon> favouriteSalons;
+
     public Customer(BaseUser baseUser) {
         this.baseUser = baseUser;
         this.appointmentsActive = new ArrayList<>();
         this.appointmentsHistory = new ArrayList<>();
+        this.favouriteSalons = new ArrayList<>();
     }
 
     public String getFullName(){
@@ -51,6 +55,7 @@ public class Customer {
                 .lastName(this.baseUser.getLastName())
                 .phoneNumber(this.baseUser.getPhoneNumber())
                 .roles(this.baseUser.getRoles().stream().map(Enum::name).toList())
+                .favouriteSalonsIds(favouriteSalons.stream().map(Salon::getId).toList())
                 .build();
     }
 }

@@ -15,13 +15,16 @@ function ProfileOwnedSalons({
   setCurrentSalonEdit,
   updateSalonsAfterDelete
 }: ProfileOwnedSalonsProps) {
-  
+
   return (
-    <div className={styles.cardsContainer}>
-      {salons.map((salon, i) => (
-        <SalonProfileCard key={i} salon={salon} setCurrentSalonEdit={setCurrentSalonEdit} updateSalonsAfterDelete={updateSalonsAfterDelete}/>
-      ))}
-    </div>
+    <>
+      <h2>Сопствени салони</h2>
+      <div className={styles.cardsContainer}>
+        {salons.map((salon, i) => (
+            <SalonProfileCard key={i} salon={salon} setCurrentSalonEdit={setCurrentSalonEdit} updateSalonsAfterDelete={updateSalonsAfterDelete}/>
+        ))}
+      </div>
+    </>
   );
 }
 

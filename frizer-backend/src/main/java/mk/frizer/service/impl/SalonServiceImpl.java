@@ -14,7 +14,6 @@ import mk.frizer.repository.*;
 import mk.frizer.service.SalonService;
 import mk.frizer.utilities.CurrentUserHelper;
 import mk.frizer.utilities.DistanceCalculator;
-import mk.frizer.utilities.SalonAdapter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,8 +34,9 @@ public class SalonServiceImpl implements SalonService {
     private final DistanceCalculator distanceCalculator;
     private final CityRepository cityRepository;
     private final BaseUserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
-    public SalonServiceImpl(SalonRepository salonRepository, BusinessOwnerRepository businessOwnerRepository, EmployeeRepository employeeRepository, TagRepository tagRepository, ApplicationEventPublisher applicationEventPublisher, DistanceCalculator distanceCalculator, CityRepository cityRepository, BaseUserRepository userRepository) {
+    public SalonServiceImpl(SalonRepository salonRepository, BusinessOwnerRepository businessOwnerRepository, EmployeeRepository employeeRepository, TagRepository tagRepository, ApplicationEventPublisher applicationEventPublisher, DistanceCalculator distanceCalculator, CityRepository cityRepository, BaseUserRepository userRepository, CustomerRepository customerRepository) {
         this.salonRepository = salonRepository;
         this.businessOwnerRepository = businessOwnerRepository;
         this.employeeRepository = employeeRepository;
@@ -45,6 +45,7 @@ public class SalonServiceImpl implements SalonService {
         this.distanceCalculator = distanceCalculator;
         this.cityRepository = cityRepository;
         this.userRepository = userRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -66,6 +67,13 @@ public class SalonServiceImpl implements SalonService {
         }
         return List.of();
     }
+    @Override
+    public List<Salon> getFavouriteSalons() {
+        Optional<Customer> customer = customerRepository
+                .findByBaseUserId(CurrentUserHelper.getId());
+        return customer.map(value -> salonRepository.findAllById(value.getFavouriteSalons().stream().map(Salon::getId).collect(Collectors.toList()))).orElseGet(List::of);
+    }
+
 
     @Override
     public Optional<Salon> getSalonById(Long id) throws SalonNotFoundException {
@@ -129,6 +137,33 @@ public class SalonServiceImpl implements SalonService {
         salonRepository.save(salon);
         return Optional.of(salon);
     }
+
+    @Override
+    @Transactional
+    public Optional<Salon> addSalonToFavourites(Long id) {
+        Salon salon = getSalonById(id).get();
+        Optional<Customer> customer = customerRepository
+                .findByBaseUserId(CurrentUserHelper.getId());
+        if(customer.isPresent()) {
+            customer.get().getFavouriteSalons().add(salon);
+            customerRepository.save(customer.get());
+        }
+        return Optional.of(salon);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Salon> removeSalonFromFavourites(Long id) {
+        Salon salon = getSalonById(id).get();
+        Optional<Customer> customer = customerRepository
+                .findByBaseUserId(CurrentUserHelper.getId());
+        if(customer.isPresent()) {
+            customer.get().getFavouriteSalons().remove(salon);
+            customerRepository.save(customer.get());
+        }
+        return Optional.of(salon);
+    }
+
 
     @Override
     @Transactional
