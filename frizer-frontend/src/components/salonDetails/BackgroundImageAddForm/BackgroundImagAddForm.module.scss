@@ -1,0 +1,9 @@
+.buttonGroup {
+    justify-content: center;
+}
+.primaryButton {
+    padding: 0.8em 1em;
+    margin-top: 1em;
+    grid-column: 2/3;
+    justify-self: flex-end;
+}
