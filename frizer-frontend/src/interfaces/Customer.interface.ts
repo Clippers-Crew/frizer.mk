@@ -7,5 +7,6 @@ export interface Customer{
     firstName: string,
     lastName: string,
     phoneNumber: string,
-    roles: string[]
+    roles: string[],
+    favouriteSalonsIds: number[]
 }

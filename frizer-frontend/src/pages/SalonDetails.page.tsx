@@ -20,12 +20,15 @@ import TreatmentRemoveForm from "../components/SalonDetails/TreatmentRemoveForm/
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
 import ImageAddForm from "../components/SalonDetails/ImageAddForm/ImageAddForm.component";
+import CustomerService from "../services/customer.service";
+import { Customer } from "../interfaces/Customer.interface";
 
 function SalonDetails() {
   const { id } = useParams();
   const [salon, setSalon] = useState<Salon>();
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User>();
+  const [customer, setCustomer] = useState<Customer | null>();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -53,6 +56,23 @@ function SalonDetails() {
 
     fetchSalon();
   }, [id]);
+
+  useEffect(() => {
+    const getCustomer = async () => {
+      try {
+        if (user) {
+          const response = await CustomerService.getCustomerByEmail(
+            user?.email
+          );
+          setCustomer(response?.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch customer:", error);
+      }
+    };
+
+    getCustomer();
+  }, [user]);
   const handleEmployeeAdd = async (newEmployee: Employee) => {
     if (salon) {
       try {
@@ -105,6 +125,35 @@ function SalonDetails() {
       }
     }
   };
+
+  const handleAddToFavourites = async (favouriteSalon: Salon) => {
+    if (salon && customer) {
+      try {
+        const updatedCustomer = {
+          ...customer,
+          favouriteSalonsIds: [...customer.favouriteSalonsIds, favouriteSalon.id],
+        };
+        setCustomer(updatedCustomer);
+      } catch (error) {
+        console.error("Error updating salon:", error);
+      }
+    }
+  };
+
+  const handleRemoveFromFavourites = async (favouriteSalonId: number) => {
+    if (salon && customer) {
+      try {
+        const favouriteSalons = customer.favouriteSalonsIds.filter(s=> s !== favouriteSalonId);
+        const updatedCustomer = {
+          ...customer,
+          favouriteSalonsIds: favouriteSalons
+        };
+        setCustomer(updatedCustomer);
+      } catch (error) {
+        console.error("Error updating salon:", error);
+      }
+    }
+  };
   const handleTreatmentRemove = async (treatmentId: number) => {
     if (salon) {
       try {
@@ -133,7 +182,7 @@ function SalonDetails() {
       <PageContainer>
         <FeatureImages salon={salon} />
         <ImageAddForm salon={salon} user={user} onImageAdd={handleImageAdd}/>
-        <SalonBaseInfo salon={salon} />
+        <SalonBaseInfo salon={salon} user={user} onAddToFavourites={handleAddToFavourites} customer={customer} onRemoveFromFavourites={handleRemoveFromFavourites} />
         <TreatmentList salon={salon} user={user} />
         <ReviewList salon={salon} user={user} />
         <EmployeeList salon={salon} />

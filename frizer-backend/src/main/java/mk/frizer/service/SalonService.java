@@ -1,5 +1,6 @@
 package mk.frizer.service;
 
+import jakarta.transaction.Transactional;
 import mk.frizer.domain.Review;
 import mk.frizer.domain.Salon;
 import mk.frizer.domain.Treatment;
@@ -16,6 +17,9 @@ public interface SalonService {
     List<Salon> getSalons();
     List<Salon> getSalonsByIds(List<Long> ids);
     List<Salon> getOwnedSalons();
+
+    List<Salon> getFavouriteSalons();
+
     Optional<Salon> getSalonById(Long id);
 
     Optional<Salon> createSalon(SalonAddDTO salonAddDTO);
@@ -27,6 +31,10 @@ public interface SalonService {
     Optional<Salon> addTagToSalon(TagAddDTO tagAddDTO);
 
     Optional<Salon> addTreatmentToSalon(Treatment treatment);
+
+    Optional<Salon> addSalonToFavourites(Long id);
+
+    Optional<Salon> removeSalonFromFavourites(Long id);
 
     Optional<Salon> editTreatmentForSalon(Treatment treatment);
 
@@ -40,4 +48,5 @@ public interface SalonService {
     boolean isUserAuthorizedToAddTreatment(Long id, String name);
 
     boolean isUserAuthorizedToAddSalon(Long id, String email);
+
 }

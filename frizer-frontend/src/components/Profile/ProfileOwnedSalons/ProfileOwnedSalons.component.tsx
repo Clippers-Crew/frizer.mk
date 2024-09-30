@@ -20,11 +20,14 @@ function ProfileOwnedSalons() {
     getSalons();
   }, []);
   return (
-    <div className={styles.cardsContainer}>
-      {salons.map((salon, i) => (
-        <SalonProfileCard key={i} salon={salon} />
-      ))}
-    </div>
+    <>
+      <h2>Сопствени салони</h2>
+      <div className={styles.cardsContainer}>
+        {salons.map((salon, i) => (
+          <SalonProfileCard key={i} salon={salon} />
+        ))}
+      </div>
+    </>
   );
 }
 

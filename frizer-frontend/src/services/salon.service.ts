@@ -21,6 +21,9 @@ const SalonService = {
     getTopNSalons: (n: number) => {
         return axios.get<Salon[]>(`/salons/top?count=${n}`);
     },
+    getFavouriteSalons: () => {
+        return axios.get<Salon[]>('/salons/favourites');
+    },
     searchSalons: (queryParams: string) => {
         return axios.get<Salon[]>(`/salons?${queryParams}`);
     },
@@ -48,6 +51,21 @@ const SalonService = {
                 'Content-Type': 'multipart/form-data',
             },
         });
+    },
+    addBackgroundImageToSalon: async (salonId: number, image: File) => {
+        const formData = new FormData();
+        formData.append('image', image);
+        return await axios.post<Salon>(`/salons/${salonId}/upload-background-image`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
+    addSalonToFavourites: (salonId: number) => {
+        return axios.post<Salon>(`/salons/add-favourites/${salonId}`);
+    },
+    removeSalonFromFavourites: (salonId: number) => {
+        return axios.delete<Salon>(`/salons/delete-favourites/${salonId}`);
     }
 };
     

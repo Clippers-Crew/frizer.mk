@@ -11,7 +11,6 @@ function FeatureImages({ salon }: FeatureImagesProps) {
 
   function getSalonImageUrl( imageNumber: number): string {
     if(salon?.images != null && salon?.images.length > 0 && salon?.images[imageNumber-1] != null) {
-      console.log(imageNumber)
       return SalonService.getSalonImageUrl(salon.id,salon?.images[imageNumber-1]);
     }
     else {
@@ -23,9 +22,7 @@ function FeatureImages({ salon }: FeatureImagesProps) {
   return (
     <div className={styles.featuredImages}>
       <div className={styles.primaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(1)}
-         onLoad={() => console.log('Image loaded')}
-         onError={() => console.log('Error loading image')}  />
+        <img alt="Salon image" src={getSalonImageUrl(1)} />
       </div>
       <div className={styles.secondaryImage}>
       <img alt="Salon image" src={getSalonImageUrl(2)} />

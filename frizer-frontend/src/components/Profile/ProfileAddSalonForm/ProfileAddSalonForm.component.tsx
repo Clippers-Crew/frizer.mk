@@ -165,7 +165,7 @@ const ProfileAddSalonForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.addSalonForm}>
-      <h2>Додади фитнес центар</h2>
+      <h2>Додади салон</h2>
       <label htmlFor="name">Име</label>
       <input
         name="name"

@@ -54,6 +54,11 @@ public class SalonRestController {
     public List<SalonSimpleDTO> getAllOwnedSalons() {
         return salonService.getOwnedSalons().stream().map(Salon::toDto).toList();
     }
+    @GetMapping("/favourites")
+    public List<SalonSimpleDTO> getAllFavouriteSalons() {
+        return salonService.getFavouriteSalons().stream().map(Salon::toDto).toList();
+    }
+
 
     @GetMapping("/top")
     public List<SalonSimpleDTO> getTopNSalons(@RequestParam Integer count){
@@ -83,6 +88,21 @@ public class SalonRestController {
                 .map(salon -> ResponseEntity.ok().body(salon.toDto()))
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
+
+    @PostMapping("/add-favourites/{id}")
+    public ResponseEntity<SalonSimpleDTO> addSalonToFavourites(@PathVariable Long id) {
+        return this.salonService.addSalonToFavourites(id)
+                .map(salon -> ResponseEntity.ok().body(salon.toDto()))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
+    @DeleteMapping("/delete-favourites/{id}")
+    public ResponseEntity<SalonSimpleDTO> removeSalonFromFavourites(@PathVariable Long id) {
+        return this.salonService.removeSalonFromFavourites(id)
+                .map(salon -> ResponseEntity.ok().body(salon.toDto()))
+                .orElseGet(() -> ResponseEntity.badRequest().build());
+    }
+
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<SalonSimpleDTO> updateSalon(@PathVariable Long id, @RequestBody SalonUpdateDTO salonUpdateDTO) {
