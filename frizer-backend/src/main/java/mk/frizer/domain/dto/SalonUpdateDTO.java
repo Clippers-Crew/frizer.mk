@@ -9,6 +9,4 @@ public class SalonUpdateDTO {
     private String description;
     private String location;
     private String phoneNumber;
-    private Float latitude;
-    private Float longitude;
 }

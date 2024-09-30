@@ -4,6 +4,7 @@ import { User } from '../../../context/Context';
 import styles from './ImageAddForm.module.scss'
 import SalonService from '../../../services/salon.service';
 import { Image } from '../../../interfaces/Image.interface';
+
 interface ImageAddFormProps {
     salon?: Salon;
     user?: User;

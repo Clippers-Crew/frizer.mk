@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileBanner from "../components/Profile/ProfileBanner/ProfileBanner.component";
-import ProfileInfo from "../components/Profile/ProfileInfo/ProfileInfo.component";
 import ProfileEditDetailsForm from "../components/Profile/ProfileEditDetailsForm/ProfileEditDetailsForm.component";
-import ProfileAddSalonForm from "../components/Profile/ProfileAddSalonForm/ProfileAddSalonForm.component";
 import Navbar from "../components/fragments/Navbar/Navbar.component";
 import Footer from "../components/fragments/Footer/Footer.component";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
-import ProfileOwnedSalons from "../components/Profile/ProfileOwnedSalons/ProfileOwnedSalons.component";
-import ProfileEditSalonForm from "../components/Profile/ProfileEditSalonForm/ProfileEditSalonForm.component";
+import ProfileSalons from "../components/Profile/ProfileSalons/ProfileSalons.component";
 
 function Profile() {
 const [user, setUser] = useState<User | null>();
@@ -34,9 +31,7 @@ useEffect(() => {
       <ProfileContainer>
         {/* <ProfileInfo /> */}
         <ProfileEditDetailsForm currentUser={user}/>
-        <ProfileOwnedSalons />
-        <ProfileEditSalonForm />
-        <ProfileAddSalonForm />
+        <ProfileSalons />
       </ProfileContainer>
       <Footer />
     </>

@@ -52,11 +52,14 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
     e.preventDefault();
     if (validate() && currentUser) {
       try {
-        const updatedUser = await UserService.updateUserDetails(currentUser.id, formData);
-        
-        dispatch({ type: ACTION_TYPE.SET_USER, payload: updatedUser });        
+        const updatedUser = await UserService.updateUserDetails(
+          currentUser.id,
+          formData
+        );
+        dispatch({ type: ACTION_TYPE.SET_USER, payload: updatedUser });
+        console.log("Успешно променети податоци");
       } catch (error) {
-        console.error("Failed to update user details:", error);
+        console.error("Грешка при промената на податоците: ", error);
       }
     }
   };
@@ -85,7 +88,7 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
           <small className={styles.error}>{errors.firstName}</small>
         )}
 
-         <label htmlFor="lastName">Презиме</label>
+        <label htmlFor="lastName">Презиме</label>
         <input
           type="text"
           name="lastName"
@@ -120,7 +123,10 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
           value={currentUser?.email || ""}
           readOnly
         />
-        <button type="submit" className={`primaryButton ${styles.primaryButton}`}>
+        <button
+          type="submit"
+          className={`primaryButton ${styles.primaryButton}`}
+        >
           Промени
         </button>
       </form>
