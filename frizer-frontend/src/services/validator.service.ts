@@ -1,6 +1,11 @@
 import { Coordinate } from "../interfaces/Coordinate.interface";
 
 const ValidatorService = {
+  isEmailValid(email: string) {
+    const emailRegex = /\S+@\S+\.\S+/;
+    console.log(email)
+    return email.trim() && emailRegex.test(email.trim());
+  },
   isPhoneValid: (phoneNumber: string): boolean => {
     if (!phoneNumber) return false;
 
@@ -12,7 +17,19 @@ const ValidatorService = {
   isNameOrSurnameValid: (name: string) => {
     const hasOnlyLettersAndSpaces =
       /^[A-Za-zА-Яа-яЁё\u0400-\u04FF\u0500-\u052F\s]+$/.test(name);
-    return name !== null && name.length > 3 && hasOnlyLettersAndSpaces;
+    return name !== null && name.length >= 3 && hasOnlyLettersAndSpaces;
+  },
+  hasUpperCase: (text: string) => {
+    return /[A-Z]/.test(text);
+  },
+  hasLowerCase: (text: string) => {
+    return /[a-z]/.test(text);
+  },
+  hasNumber: (text: string) => {
+    return /[0-9]/.test(text);
+  },
+  hasSpecialCharacter: (text: string) => {
+    return /[!@#$%^&*(),.?":{}|<>]/.test(text);
   },
   isPasswordValid: (password: string) => {
     const minLength = 8;
