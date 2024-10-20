@@ -10,9 +10,17 @@
     margin: 0.5em 0;
 }
 
-.reviewStars i {
-    color: var(--star-color);
+.reviewStars {
+    .star {
+        display: block;
+        color: var(--empty-star-color);
+    }
+
+    .star.full {
+        color: var(--full-star-color);
+    }
 }
+
 
 .review .row:first-of-type {
     justify-content: space-between;
@@ -28,6 +36,7 @@
         width: 100%;
     }
 }
+
 .reviewStars {
     display: flex;
     gap: 0.3em;

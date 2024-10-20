@@ -3,10 +3,12 @@
     border-radius: var(--border-radius);
     text-align: center;
     padding: 1em;
+    display: grid;
 
     .image {
-        aspect-ratio: 1/1;
         width: 6em;
+        height: 6em;
+        // aspect-ratio: 1/1;
         object-fit: cover;
         border-radius: var(--border-radius);
         justify-self: center;
@@ -19,14 +21,14 @@
 
     .rating {
         margin-top: 1em;
+
+        svg{
+            color: var(--full-star-color);
+        }
     }
 
     .rating > :first-child{
         margin-right: 0.5em;
-    }
-    
-    .rating svg {
-        color: var(--star-color);
     }
 
     .location{
@@ -38,7 +40,7 @@
     }
     
     .primaryButton {
-        margin-top: 1em;
+        margin-top: 2em;
     }
 }
 
