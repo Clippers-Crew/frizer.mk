@@ -7,11 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mk.frizer.domain.dto.simple.SalonSimpleDTO;
+import mk.frizer.domain.enums.ImagePosition;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity
@@ -47,7 +50,11 @@ public class Salon {
     private Long backgroundImage = null;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<Long> images = new ArrayList<Long>();
+    @CollectionTable(name = "salon_images", joinColumns = @JoinColumn(name = "salon_id"))
+    @MapKeyColumn(name = "image_id")
+    @Column(name = "position")
+    @Enumerated(EnumType.STRING)
+    Map<Long, ImagePosition> images = new HashMap<>();
 
     private Double rating;
     private Integer numberOfReviews;
@@ -67,7 +74,7 @@ public class Salon {
         this.tags = new ArrayList<>();
         this.owner = owner;
         this.backgroundImage = null;
-        this.images = new ArrayList<>();
+        this.images = new HashMap<>();
         this.rating = 0.0;
         this.numberOfReviews = 0;
         this.latitude = latitude;

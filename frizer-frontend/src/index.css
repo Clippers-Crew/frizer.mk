@@ -11,9 +11,11 @@
   --background-color: #ececec;
   --darker-color: #c0c0c0;
   --lighter-color: #d9d9d9;
+  --light-color: #fff;
   --off-white: #f7f7f7;
   --dark-color: #20232e;
-  --star-color: rgb(205, 205, 0);
+  --full-star-color: #f5b301;
+  --empty-star-color: #ccc;
   --primary-color: #ff0b23;
   --secondary-color: #333;
   --secondary-accent-color: #757575;

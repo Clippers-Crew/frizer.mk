@@ -4,9 +4,12 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import mk.frizer.domain.enums.ImagePosition;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -29,7 +32,7 @@ public class SalonSimpleDTO {
     @Builder.Default
     private Long backgroundImage = null;
     @Builder.Default
-    List<Long> images = new ArrayList<>();
+    Map<Long, ImagePosition> images = new HashMap<>();
 
     private Double rating;
     private Integer numberOfReviews;

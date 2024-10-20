@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import mk.frizer.domain.ImageEntity;
 import mk.frizer.domain.Salon;
+import mk.frizer.domain.enums.ImagePosition;
 import mk.frizer.repository.ImageRepository;
 import mk.frizer.repository.SalonRepository;
 import mk.frizer.service.ImageService;
@@ -20,16 +21,19 @@ public class ImageServiceImpl implements ImageService {
     private final SalonRepository salonRepository;
 
     @Transactional
-    public Optional<Salon> saveImage(Long id, MultipartFile file) throws IOException {
+    public Optional<Salon> saveImage(Long id, MultipartFile file, Integer imageNo) throws IOException {
+        //TODO delete previous image on the same position
         Optional<Salon> salon = salonRepository.findById(id);
-        if (salon.isPresent()) {
+            if (salon.isPresent()) {
             byte[] imageBytes = file.getBytes();
-            ImageEntity imageEntity = new ImageEntity(imageBytes, salon.get().getId());
+            ImagePosition imagePosition = ImagePosition.fromInt(imageNo);
+            ImageEntity imageEntity = new ImageEntity(imageBytes, salon.get().getId(), imagePosition);
             imageEntity = imageRepository.save(imageEntity);
 
             // TODO Create an event here for the next functionallity?
-            salon.get().getImages().add(imageEntity.getId());
+            salon.get().getImages().put(imageEntity.getId(), imagePosition);
             return Optional.of(salonRepository.save(salon.get()));
+            
         }
         return Optional.empty();
     }
@@ -44,7 +48,7 @@ public class ImageServiceImpl implements ImageService {
             imageEntity = imageRepository.save(imageEntity);
 
             salon.get().setBackgroundImage(imageEntity.getId());
-//
+
             if (oldImageId != null) {
                 imageRepository.deleteById(oldImageId);
             }
@@ -64,7 +68,7 @@ public class ImageServiceImpl implements ImageService {
                     return imageEntity.get().getImage();
                 }
             }
-            Long newImageId = salon.getImages().stream().filter(i -> i.equals(imageId)).findFirst().orElse(null);
+            Long newImageId = salon.getImages().keySet().stream().filter(i -> i.equals(imageId)).findFirst().orElse(null);
             if (newImageId != null) {
                 Optional<ImageEntity> imageEntity = imageRepository.findById(newImageId);
                 if (imageEntity.isPresent()) {

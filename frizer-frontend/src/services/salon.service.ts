@@ -1,3 +1,4 @@
+import { Image } from '../interfaces/Image.interface';
 import { Salon } from '../interfaces/Salon.interface';
 import { SalonCreateRequest} from "../interfaces/forms/SalonCreateRequest.interface";
 import { SalonEditRequest } from '../interfaces/forms/SalonEditRequest.interface';
@@ -37,19 +38,28 @@ const SalonService = {
     deleteSalon: (salonId: number) => {
         return axios.delete<Salon>(`/salons/delete/${salonId}`);
     },
-    getImage: async (salonId: number, imageId: number): Promise<Blob> => {
+    // getImage: async (salonId: number, imageId: number): Promise<Blob> => {
+    //     const response = await axios.get(`/salons/${salonId}/image/${imageId}`, {
+    //         responseType: 'blob',
+    //     });
+    //     return response.data;
+    // },
+    getImage: async (salonId: number, imageId: number): Promise<Image> => {
         const response = await axios.get(`/salons/${salonId}/image/${imageId}`, {
-            responseType: 'blob',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
-        return response.data;
+        return response.data; 
     },
     getSalonImageUrl(salonId: number, imageId: number): string {
         const baseUrl = 'http://localhost:8080/api/salons';
         return `${baseUrl}/${salonId}/image/${imageId}`;
     },
-    addImageToSalon: async (salonId: number, image: File) => {
+    addImageToSalon: async (salonId: number, image: File, imageNo: number) => {
         const formData = new FormData();
         formData.append('image', image);
+        formData.append('imageNo', imageNo.toString());
 
         return await axios.post<Salon>(`/salons/${salonId}/upload-image`, formData, {
             headers: {

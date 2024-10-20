@@ -1,7 +1,5 @@
 package mk.frizer.web.rest;
 
-import jdk.jfr.Frequency;
-import mk.frizer.domain.ImageEntity;
 import mk.frizer.domain.Salon;
 import mk.frizer.domain.dto.SalonAddDTO;
 import mk.frizer.domain.dto.SalonUpdateDTO;
@@ -38,8 +36,8 @@ public class SalonRestController {
                                              @RequestParam(required = false) Float distance,
                                              @RequestParam(required = false) Float rating,
                                              @RequestParam(required = false) Double latitude,
-                                             @RequestParam(required = false) Double longitude){
-        if (name != null || city != null || distance!=null || rating!=null || latitude != null || longitude != null) {
+                                             @RequestParam(required = false) Double longitude) {
+        if (name != null || city != null || distance != null || rating != null || latitude != null || longitude != null) {
             return salonService.filterSalons(name, city, distance, rating, latitude, longitude).stream().map(Salon::toDto).toList();
         }
         return salonService.getSalons().stream().map(Salon::toDto).toList();
@@ -54,6 +52,7 @@ public class SalonRestController {
     public List<SalonSimpleDTO> getAllOwnedSalons() {
         return salonService.getOwnedSalons().stream().map(Salon::toDto).toList();
     }
+
     @GetMapping("/favourites")
     public List<SalonSimpleDTO> getAllFavouriteSalons() {
         return salonService.getFavouriteSalons().stream().map(Salon::toDto).toList();
@@ -61,12 +60,12 @@ public class SalonRestController {
 
 
     @GetMapping("/top")
-    public List<SalonSimpleDTO> getTopNSalons(@RequestParam Integer count){
+    public List<SalonSimpleDTO> getTopNSalons(@RequestParam Integer count) {
         return salonService.getTopNSalons(count).stream().map(Salon::toDto).toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SalonSimpleDTO> getSalon(@PathVariable Long id){
+    public ResponseEntity<SalonSimpleDTO> getSalon(@PathVariable Long id) {
         return this.salonService.getSalonById(id)
                 .map(salon -> ResponseEntity.ok().body(salon.toDto()))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -74,7 +73,7 @@ public class SalonRestController {
 
     @PostMapping("/add")
     public ResponseEntity<SalonSimpleDTO> createSalon(@RequestBody SalonAddDTO salonAddDTO) {
-        if (salonAddDTO.getBusinessOwnerId() == null){
+        if (salonAddDTO.getBusinessOwnerId() == null) {
             salonAddDTO.setBusinessOwnerId(CurrentUserHelper.getId());
         }
         return this.salonService.createSalon(salonAddDTO)
@@ -114,24 +113,24 @@ public class SalonRestController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<SalonSimpleDTO> deleteSalonById(@PathVariable Long id) {
         Optional<Salon> salon = this.salonService.deleteSalonById(id);
-        try{
+        try {
             this.salonService.getSalonById(id);
             return ResponseEntity.badRequest().build();
-        }
-        catch(SalonNotFoundException exception){
+        } catch (SalonNotFoundException exception) {
             return ResponseEntity.ok().body(salon.get().toDto());
         }
     }
 
 
     @PostMapping("/{id}/upload-image")
-    public ResponseEntity<SalonSimpleDTO> uploadImage(@PathVariable Long id, @RequestParam("image") MultipartFile image){
-        try{
-            Optional<Salon> salon = imageService.saveImage(id, image);
+    public ResponseEntity<SalonSimpleDTO> uploadImage(@PathVariable Long id,
+                                                      @RequestParam("image") MultipartFile image,
+                                                      @RequestParam Integer imageNo) {
+        try {
+            Optional<Salon> salon = imageService.saveImage(id, image, imageNo);
             if (salon.isPresent())
                 return ResponseEntity.ok().body(salon.get().toDto());
-        }
-        catch (IOException exception){
+        } catch (IOException exception) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.badRequest().build();
@@ -139,7 +138,7 @@ public class SalonRestController {
 
     @PostMapping("/{id}/upload-background-image")
     public ResponseEntity<SalonSimpleDTO> uploadBackgroundImage(@PathVariable Long id,
-                              @RequestParam("image") MultipartFile image) {
+                                                                @RequestParam("image") MultipartFile image) {
         try {
             Optional<Salon> salon = imageService.saveBackgroundImage(id, image);
             if (salon.isPresent())
@@ -156,9 +155,15 @@ public class SalonRestController {
         byte[] image = imageService.getImage(id, imageId);
         if (image != null) {
             return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .body(image);
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(image);
         }
-            return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
+//    @GetMapping("/{id}/image/{imageId}")
+//    public ResponseEntity<ImageEntitySimpleDTO> getImage(@PathVariable Long id, @PathVariable Long imageId) {
+//        Optional<ImageEntity> imageEntity = imageService.getImage(id, imageId);
+//        return imageEntity.map(entity -> ResponseEntity.ok()
+//                .body(entity.toDto())).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 }
