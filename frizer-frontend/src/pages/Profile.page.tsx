@@ -8,6 +8,7 @@ import { User } from "../context/Context";
 import UserService from "../services/user.service";
 import ProfileFavouriteSalons from "../components/Profile/ProfileFavouriteSalons/ProfileFavouriteSalons.component";
 import ProfileSalons from "../components/Profile/ProfileSalons/ProfileSalons.component";
+import ProfileLogout from "../components/Profile/ProfileLogout/ProfileLogout.component";
 
 function Profile() {
 const [user, setUser] = useState<User | null>();
@@ -34,6 +35,7 @@ useEffect(() => {
         <ProfileEditDetailsForm currentUser={user}/>
         <ProfileFavouriteSalons currentUser={user} />
         <ProfileSalons />
+        <ProfileLogout />
       </ProfileContainer>
       <Footer />
     </>

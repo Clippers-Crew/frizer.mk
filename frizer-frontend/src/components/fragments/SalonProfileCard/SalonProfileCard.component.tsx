@@ -9,8 +9,8 @@ import SalonService from "../../../services/salon.service";
 
 interface SalonProfileCardProps {
   salon: Salon;
-  setCurrentSalonEdit: (salon: Salon) => void;
-  updateSalonsAfterDelete: (salonId: number) => void;
+  setCurrentSalonEdit?: (salon: Salon) => void;
+  updateSalonsAfterDelete?: (salonId: number) => void;
 }
 
 function SalonProfileCard({
@@ -34,14 +34,14 @@ function SalonProfileCard({
     // eslint-disable-next-line
   }, []);
 
-  const handleEdit = (salon: Salon) => setCurrentSalonEdit(salon);
+  const handleEdit = (salon: Salon) => {setCurrentSalonEdit && setCurrentSalonEdit(salon)};
 
   const handleDelete = (salonId: number) => {
     const shouldDelete = window.confirm(
       `Дали сте сигурни дека сакате да го избришете салонот со ID ${salonId}`
     );
     {
-      shouldDelete &&
+      shouldDelete && updateSalonsAfterDelete && 
         SalonService.deleteSalon(salonId)
           .then((response) => {
             updateSalonsAfterDelete(response.data.id);
