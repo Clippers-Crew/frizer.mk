@@ -7,8 +7,15 @@ import L from "leaflet";
 import DistanceService from "../../../services/distance.service";
 import SalonService from "../../../services/salon.service";
 import ValidatorService from "../../../services/validator.service";
+import { Salon } from "../../../interfaces/Salon.interface";
 
-const ProfileAddSalonForm = () => {
+interface ProfileAddSalonFormProps {
+  updateSalonsAfterCreate: (createdSalon: Salon) => void;
+}
+
+const ProfileAddSalonForm = ({
+  updateSalonsAfterCreate,
+}: ProfileAddSalonFormProps) => {
   const [cities, setCities] = useState<City[]>([]);
 
   const [formData, setFormData] = useState<SalonCreateRequest>({
@@ -147,19 +154,42 @@ const ProfileAddSalonForm = () => {
     e.preventDefault();
 
     if (!ValidatorService.isPhoneValid(formData.phoneNumber)) {
-      alert("Внесете валиден телефонски број.\nТелефонскиот број треба да почнува со 07 или +3897.");
+      alert(
+        "Внесете валиден телефонски број.\nТелефонскиот број треба да почнува со 07 или +3897."
+      );
       return;
     }
-    
-    if (ValidatorService.isCorrdinateInValid({latitude: formData.latitude, longitude: formData.longitude})) {
+
+    if (
+      ValidatorService.isCorrdinateInValid({
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+      })
+    ) {
       alert("Изберете валидна локација на мапата.");
       return;
     }
-    
-    SalonService.createSalon(formData).then(response => {
-      console.log("Salon created successfully:", response.data);
-    }).catch(error => {
-      console.error("Error creating salon:", error);
+
+    SalonService.createSalon(formData)
+      .then((response) => {
+        updateSalonsAfterCreate(response.data);
+        alert("Успешно креиран салон");
+        clearForm();
+      })
+      .catch((error) => {
+        console.error("Error creating salon:", error);
+      });
+  };
+
+  const clearForm = () => {
+    setFormData({
+      name: "",
+      description: "",
+      phoneNumber: "",
+      latitude: -1,
+      longitude: -1,
+      city: "Берово",
+      location: "",
     });
   };
 

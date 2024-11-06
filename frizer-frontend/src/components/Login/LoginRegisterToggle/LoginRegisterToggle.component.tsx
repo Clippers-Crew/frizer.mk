@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import RegisterForm from "../RegisterForm/RegisterForm.component";
 import styles from "./LoginRegisterToggle.module.scss";
 import LoginForm from "../LoginForm/LoginForm.component";
@@ -9,41 +9,29 @@ function LoginRegisterToggle() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(location.pathname === "/login");
 
-  // useEffect(() => {
-  //   if (location.pathname === '/login') {
-  //     setIsLogin(true);
-  //   } else if (location.pathname === '/register') {
-  //     setIsLogin(false);
-  //   }
-  // }, [location]);
-
   const toggleForm = (targetPath: string) => {
     navigate(targetPath);
-    // setIsLogin(targetPath === "/login");
   };
-
 
   return (
     <div className={styles.toggleContainer}>
+      <h1 className={styles.title}>
+        {isLogin ? "Најави се" : "Регистрирај се"}
+      </h1>
       <div className={styles.toggleButtons}>
-        <NavLink to="/login">
-          <button
-            className={isLogin ? styles.activeButton : ""}
-            // onClick={() =>toggleForm("/login")}
-          >
-            Login
-          </button>{" "}
+        <NavLink
+          to="/login"
+          className={isLogin ? styles.activeButton : styles.inactiveButton}
+        >
+          Најава
         </NavLink>
-        <NavLink to="/register">
-          <button
-            className={!isLogin ? styles.activeButton : ""}
-            // onClick={() => toggleForm("/register")}
-          >
-            Register
-          </button>
+        <NavLink
+          to="/register"
+          className={!isLogin ? styles.activeButton : styles.inactiveButton}
+        >
+          Регистрација
         </NavLink>
       </div>
-      <h1>{isLogin ? "Најави се" : "Регистрирај се"}</h1>
       {isLogin ? <LoginForm /> : <RegisterForm />}
     </div>
   );

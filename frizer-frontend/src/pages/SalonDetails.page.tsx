@@ -73,6 +73,7 @@ function SalonDetails() {
 
     getCustomer();
   }, [user]);
+
   const handleEmployeeAdd = async (newEmployee: Employee) => {
     if (salon) {
       try {
@@ -86,6 +87,7 @@ function SalonDetails() {
       }
     }
   };
+
   const handleEmployeeRemove = async (employeeId: number) => {
     if (salon) {
       try {
@@ -99,6 +101,7 @@ function SalonDetails() {
       }
     }
   };
+
   const handleTreatmentAdd = async (newTreatment: Treatment) => {
     if (salon) {
       try {
@@ -112,6 +115,7 @@ function SalonDetails() {
       }
     }
   };
+
   const handleImageAdd = async (salonWithImage: Salon) => {
     if (salon) {
       try {
@@ -171,7 +175,6 @@ function SalonDetails() {
     }
   };
 
-  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -180,8 +183,7 @@ function SalonDetails() {
     <>
       <Navbar />
       <PageContainer>
-        <FeatureImages salon={salon} />
-        <ImageAddForm salon={salon} user={user} onImageAdd={handleImageAdd}/>
+        <FeatureImages salon={salon} user={user} onImageAdd={handleImageAdd}/>
         <SalonBaseInfo salon={salon} user={user} onAddToFavourites={handleAddToFavourites} customer={customer} onRemoveFromFavourites={handleRemoveFromFavourites} />
         <TreatmentList salon={salon} user={user} />
         <ReviewList salon={salon} user={user} />

@@ -4,6 +4,7 @@ import { Salon } from "../../../interfaces/Salon.interface";
 import { Link } from "react-router-dom";
 import { FaStar, FaLocationDot } from "react-icons/fa6";
 import DistanceService from "../../../services/distance.service";
+import ImageService from "../../../services/image.service";
 
 interface SalonCardProps {
   salon?: Salon;
@@ -21,15 +22,17 @@ function SalonCard({ salon }: SalonCardProps) {
       });
   }, [salon]);
 
+  const getLogoImage = (): string => {
+    if (salon && salon.backgroundImage) {
+      return ImageService.getFullSalonImageUrl(salon.id, salon.backgroundImage);
+            <img src={getLogoImage()} alt="Logo" />
+}
+    return "./assets/images/salon_default_image.png";
+  };
+
   return (
     <div className={`${styles.card}`}>
-      <div>
-        {/* [src]="getLogoImage()" */}
-        <img
-          className={`${styles.image}`}
-          src="./raspored.jpg"
-          alt="Fitness center"
-        />
+        <img src={getLogoImage()} alt="Salon" className={styles.image} />
         <h3 className={`${styles.title}`}>{salon?.name}</h3>
         <p className={`${styles.rating}`}>
           <FaStar />
@@ -42,14 +45,11 @@ function SalonCard({ salon }: SalonCardProps) {
           </span>
         </p>
         {distance && <p>{distance.toFixed(2)} km</p>}
-      </div>
-      <div>
         <Link to={"/salons/" + salon?.id}>
           <button className={`primaryButton ${styles.primaryButton}`}>
             Прегледај
           </button>
         </Link>
-      </div>
     </div>
   );
 }

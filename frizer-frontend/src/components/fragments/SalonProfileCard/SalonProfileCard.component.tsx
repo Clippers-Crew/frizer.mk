@@ -5,12 +5,19 @@ import ImageService from "../../../services/image.service";
 import UserService from "../../../services/user.service";
 import styles from "./SalonProfileCard.module.scss";
 import { Link } from "react-router-dom";
+import SalonService from "../../../services/salon.service";
 
 interface SalonProfileCardProps {
   salon: Salon;
+  setCurrentSalonEdit?: (salon: Salon) => void;
+  updateSalonsAfterDelete?: (salonId: number) => void;
 }
 
-function SalonProfileCard({ salon }: SalonProfileCardProps) {
+function SalonProfileCard({
+  salon,
+  setCurrentSalonEdit,
+  updateSalonsAfterDelete,
+}: SalonProfileCardProps) {
   const [canEdit, setCanEdit] = useState<Boolean>(false);
 
   useEffect(() => {
@@ -27,9 +34,24 @@ function SalonProfileCard({ salon }: SalonProfileCardProps) {
     // eslint-disable-next-line
   }, []);
 
-  const handleEdit = () => {};
+  const handleEdit = (salon: Salon) => {setCurrentSalonEdit && setCurrentSalonEdit(salon)};
 
-  const handleDelete = () => {};
+  const handleDelete = (salonId: number) => {
+    const shouldDelete = window.confirm(
+      `Дали сте сигурни дека сакате да го избришете салонот со ID ${salonId}`
+    );
+    {
+      shouldDelete && updateSalonsAfterDelete && 
+        SalonService.deleteSalon(salonId)
+          .then((response) => {
+            updateSalonsAfterDelete(response.data.id);
+            alert("Упсешно избришан салон");
+          })
+          .catch((error) =>
+            console.error("Грешка при бришењето на салонот: ", error)
+          );
+    }
+  };
 
   const getLogoImage = (): string => {
     if (salon && salon.backgroundImage) {
@@ -50,10 +72,13 @@ function SalonProfileCard({ salon }: SalonProfileCardProps) {
       <div className={styles.actions}>
         {canEdit && (
           <>
-            <button onClick={handleEdit} title="Промени салон">
+            <button onClick={() => handleEdit(salon)} title="Промени салон">
               <RiEditLine size={20} />
             </button>
-            <button onClick={handleDelete} title="Избриши салон">
+            <button
+              onClick={() => handleDelete(salon.id)}
+              title="Избриши салон"
+            >
               <RiDeleteBinLine size={20} />
             </button>
           </>

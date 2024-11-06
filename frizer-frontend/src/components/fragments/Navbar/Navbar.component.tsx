@@ -91,20 +91,15 @@ function Navbar() {
           >
             <NavLink to="/" onClick={closeMenu}>
               <li className={styles.navlink}>
-                <span>Home</span>
+                <span>Почетна</span>
               </li>
             </NavLink>
             <NavLink to="/appointments" onClick={closeMenu}>
               <li className={styles.navlink}>
-                <span>Appointments</span>
+                <span>Термини</span>
               </li>
             </NavLink>
 
-            {/* <NavLink to={isAuth ? '#' : '/login'} onClick={isAuth ? handleLogout : closeMenu}>
-                <li className={styles.navlink}>
-                  {isAuth ? 'Logout' : <>Login <FaArrowRightLong/></>}
-                </li>
-              </NavLink> */}
             {currentUser && (
               <NavLink to={"/profile"} onClick={closeMenu}>
                 <li className={styles.navlink}>
@@ -112,20 +107,22 @@ function Navbar() {
                 </li>
               </NavLink>
             )}
-            <NavLink
-              to={currentUser ? "#" : "/login"}
-              onClick={currentUser ? handleLogout : closeMenu}
-            >
-              <li className={styles.navlink}>
-                {currentUser ? (
-                  "Logout"
-                ) : (
-                  <>
-                    Login <FaArrowRightLong />
-                  </>
-                )}
-              </li>
-            </NavLink>
+            {!currentUser && 
+              <NavLink
+                to={currentUser ? "#" : "/login"}
+                onClick={currentUser ? handleLogout : closeMenu}
+              >
+                <li className={styles.navlink}>
+                  {currentUser ? (
+                    "Logout"
+                  ) : (
+                    <>
+                      Најави се <FaArrowRightLong />
+                    </>
+                  )}
+                </li>
+              </NavLink>
+            }
           </motion.ul>
         )}
       </AnimatePresence>

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface ImageService {
-    public Optional<Salon> saveImage(Long id, MultipartFile file) throws IOException;
-    public Optional<Salon> saveBackgroundImage(Long id, MultipartFile file) throws IOException;
-    public byte[] getImage(Long id, Long imageId);
+    Optional<Salon> saveImage(Long id, MultipartFile file, Integer imageNo) throws IOException;
+    Optional<Salon> saveBackgroundImage(Long id, MultipartFile file) throws IOException;
+    byte[] getImage(Long id, Long imageId);
 }

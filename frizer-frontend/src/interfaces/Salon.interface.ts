@@ -1,3 +1,5 @@
+import { ImagePosition } from "../enums/ImagePosition.enum";
+
 export interface Salon{
     id: number,
     name: string,
@@ -10,7 +12,7 @@ export interface Salon{
     tagsIds: number[],
     ownerId: number,
     backgroundImage: number | null,
-    images: number[],
+    images: Map<number, ImagePosition>,
     rating: number,
     numberOfReviews: number,
     latitude: number,

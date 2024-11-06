@@ -56,6 +56,9 @@ function ReviewForm({ salon, user }: ReviewAddFormProps) {
   }, [user]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    //TODO should add the result to the list above...
+    event.preventDefault();
+
     if (!user) {
       navigate("/login");
       return;

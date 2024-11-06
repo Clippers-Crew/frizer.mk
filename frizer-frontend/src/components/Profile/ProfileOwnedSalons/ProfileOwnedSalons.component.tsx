@@ -4,27 +4,24 @@ import SalonService from "../../../services/salon.service";
 import SalonProfileCard from "../../fragments/SalonProfileCard/SalonProfileCard.component";
 import styles from "./ProfileOwnedSalons.module.scss";
 
-function ProfileOwnedSalons() {
-  const [salons, setSalons] = useState<Salon[]>([]);
+interface ProfileOwnedSalonsProps {
+  salons: Salon[];
+  setCurrentSalonEdit: (salon: Salon | null) => void;
+  updateSalonsAfterDelete: (salonId: number) => void;
+}
 
-  useEffect(() => {
-    const getSalons = async () => {
-      try {
-        const response = await SalonService.getAllOwnedSalons();
-        setSalons(response.data);
-      } catch (error) {
-        console.error("Failed to fetch salons:", error);
-      }
-    };
+function ProfileOwnedSalons({
+  salons,
+  setCurrentSalonEdit,
+  updateSalonsAfterDelete
+}: ProfileOwnedSalonsProps) {
 
-    getSalons();
-  }, []);
   return (
     <>
       <h2>Сопствени салони</h2>
       <div className={styles.cardsContainer}>
         {salons.map((salon, i) => (
-          <SalonProfileCard key={i} salon={salon} />
+            <SalonProfileCard key={i} salon={salon} setCurrentSalonEdit={setCurrentSalonEdit} updateSalonsAfterDelete={updateSalonsAfterDelete}/>
         ))}
       </div>
     </>

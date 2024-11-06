@@ -19,7 +19,7 @@ export const SALON_MOCK: Salon = {
     ],
     ownerId: 2,
     backgroundImage: 1,
-    images: [],
+    images: new Map(),
     rating: 0.0,
     numberOfReviews: 0,
     latitude: 41.436047,

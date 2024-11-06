@@ -1,6 +1,9 @@
+import { ImagePosition } from "../enums/ImagePosition.enum";
+
 export interface Image{
-    id: number,
+    id?: number,
     image : Uint8Array,
     salonId: number,
-    isBackgroundImage: boolean
+    isBackgroundImage: false,
+    imagePositon?: ImagePosition
 }

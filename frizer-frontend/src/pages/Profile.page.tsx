@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProfileBanner from "../components/Profile/ProfileBanner/ProfileBanner.component";
-import ProfileInfo from "../components/Profile/ProfileInfo/ProfileInfo.component";
 import ProfileEditDetailsForm from "../components/Profile/ProfileEditDetailsForm/ProfileEditDetailsForm.component";
-import ProfileAddSalonForm from "../components/Profile/ProfileAddSalonForm/ProfileAddSalonForm.component";
 import Navbar from "../components/fragments/Navbar/Navbar.component";
 import Footer from "../components/fragments/Footer/Footer.component";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
-import ProfileOwnedSalons from "../components/Profile/ProfileOwnedSalons/ProfileOwnedSalons.component";
-import ProfileEditSalonForm from "../components/Profile/ProfileEditSalonForm/ProfileEditSalonForm.component";
 import ProfileFavouriteSalons from "../components/Profile/ProfileFavouriteSalons/ProfileFavouriteSalons.component";
+import ProfileSalons from "../components/Profile/ProfileSalons/ProfileSalons.component";
+import ProfileLogout from "../components/Profile/ProfileLogout/ProfileLogout.component";
 
 function Profile() {
 const [user, setUser] = useState<User | null>();
@@ -36,9 +34,8 @@ useEffect(() => {
         {/* <ProfileInfo /> */}
         <ProfileEditDetailsForm currentUser={user}/>
         <ProfileFavouriteSalons currentUser={user} />
-        <ProfileOwnedSalons />
-        <ProfileEditSalonForm />
-        <ProfileAddSalonForm />
+        <ProfileSalons />
+        <ProfileLogout />
       </ProfileContainer>
       <Footer />
     </>

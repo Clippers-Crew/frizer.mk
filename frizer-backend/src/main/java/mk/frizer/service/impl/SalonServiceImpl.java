@@ -105,8 +105,6 @@ public class SalonServiceImpl implements SalonService {
         salon.setDescription(salonUpdateDTO.getDescription());
         salon.setLocation(salonUpdateDTO.getLocation());
         salon.setPhoneNumber(salonUpdateDTO.getPhoneNumber());
-        salon.setLatitude(salonUpdateDTO.getLatitude());
-        salon.setLongitude(salonUpdateDTO.getLongitude());
         salonRepository.save(salon);
 
         applicationEventPublisher.publishEvent(new SalonUpdatedEvent(salon));
