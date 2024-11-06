@@ -32,6 +32,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/ws/**",
+                                "/api/messages/**",
                                 "/api/salons",
                                 "/api/salons/{id}",
                                 "/api/treatments/ids" ,
@@ -39,7 +41,7 @@ public class WebSecurityConfig {
                                 "/api/employees/ids",
                                 "/api/cities/top",
                                 "/api/users/me",
-                                "/api/salons/*/image/*")
+                                "/api/salons/*/image/*","/api/messages/send")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -61,6 +63,8 @@ public class WebSecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/ws/**", configuration);
+
         return source;
     }
 }

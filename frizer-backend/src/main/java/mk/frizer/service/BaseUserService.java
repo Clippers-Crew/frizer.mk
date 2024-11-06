@@ -17,4 +17,6 @@ public interface BaseUserService {
     Optional<BaseUser> changeBaseUserPassword(Long id, String password);
     Optional<BaseUser> deleteBaseUserById(Long id);
     Optional<BaseUser> getUserFromAuthentication(Authentication authentication);
+
+    List<BaseUser> searchByUsername(String query);
 }

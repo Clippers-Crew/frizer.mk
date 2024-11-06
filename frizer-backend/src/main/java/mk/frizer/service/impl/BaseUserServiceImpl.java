@@ -108,4 +108,10 @@ public class BaseUserServiceImpl implements BaseUserService {
             return Optional.of((BaseUser) authentication.getPrincipal());
         return Optional.empty();
     }
+
+    @Override
+    public List<BaseUser> searchByUsername(String query) {
+        return baseUserRepository.findByEmailContaining(query);
+
+    }
 }

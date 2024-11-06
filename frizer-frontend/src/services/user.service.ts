@@ -39,13 +39,8 @@ const UserService = {
     data: UserEditRequest
   ): Promise<User | null> => {
     try {
-      console.log("Before axios call");
       const response = await axios.put<User>(`/users/edit/${id}`, data);
-
-      console.log("After axios call: ", response.data);
       const updatedUser = response.data;
-      UserService.setUser(updatedUser);
-      console.log("The updated user is ", updatedUser);
       UserService.setUser(updatedUser);
       return updatedUser;
     } catch (error) {
@@ -56,5 +51,19 @@ const UserService = {
       return null;
     }
   },
+  searchUsers: async (query: string): Promise<User[]> => {
+    try {
+      const response = await axios.get<User[]>(`/users/search?query=${query}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      return [];
+    }
+  },
+  getUserById: async (id: number): Promise<User> => {
+      const response = await axios.get<User>(`/users/${id}`);
+      return response.data;
+   
+  }
 };
 export default UserService;

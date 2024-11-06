@@ -13,6 +13,7 @@ import ScrollToTop from "./utils/ScrollToTop";
 import Appointments from "./pages/Appointments.page";
 import { useContext, useEffect, useState } from "react";
 import UserService from "./services/user.service";
+import MessagesPage from "./pages/Messaging.page";
 
 function App() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -46,6 +47,10 @@ function App() {
         <Route
           path="/profile"
           element={<PrivateRoute element={<Profile />} />}
+        />
+         <Route
+          path="/messages"
+          element={<PrivateRoute element={<MessagesPage user={user} />} />}
         />
         <Route path="/salons" element={<SalonSearchResults />} />
         <Route path="*" element={<div>Error: Page not found</div>} />

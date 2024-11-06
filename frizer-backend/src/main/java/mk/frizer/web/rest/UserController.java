@@ -87,4 +87,11 @@ public class UserController {
                 .map(BaseUser::toDto).toList();
          }
 
+    @GetMapping("/search")
+    public List<BaseUserSimpleDTO> searchUsers(@RequestParam("query") String query) {
+        return baseUserService.searchByUsername(query).stream()
+                .map(BaseUser::toDto)
+                .toList();
+    }
+
 }
