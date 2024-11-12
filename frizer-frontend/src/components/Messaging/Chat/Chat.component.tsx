@@ -269,7 +269,7 @@ function Chat({ user }: ChatProps) {
     disabled={!receiverId}
     className={styles.sendButton}
   >
-    <FaPaperPlane size={20} /> {/* Use the send icon */}
+    <FaPaperPlane size={20} />
   </button>
         </div>
       </div>

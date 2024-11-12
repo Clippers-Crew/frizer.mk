@@ -38,6 +38,7 @@ function FeatureImages({ salon, user, onImageAdd }: FeatureImagesProps) {
 
       setImages(updatedImagesMap);
     }
+    // eslint-disable-next-line
   }, [salon]);
 
   function getSalonImageUrl(position: ImagePosition): string {
@@ -64,16 +65,16 @@ function FeatureImages({ salon, user, onImageAdd }: FeatureImagesProps) {
       </>
     )}
       <div className={styles.primaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(ImagePosition.FIRST)} />
+        <img alt="Salon" src={getSalonImageUrl(ImagePosition.FIRST)} />
       </div>
       <div className={styles.secondaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(ImagePosition.SECOND)} />
+        <img alt="Salon" src={getSalonImageUrl(ImagePosition.SECOND)} />
       </div>
       <div className={styles.secondaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(ImagePosition.THIRD)} />
+        <img alt="Salon" src={getSalonImageUrl(ImagePosition.THIRD)} />
       </div>
       <div className={styles.teritaryImage}>
-        <img alt="Salon image" src={getSalonImageUrl(ImagePosition.FOURTH)} />
+        <img alt="Salon" src={getSalonImageUrl(ImagePosition.FOURTH)} />
       </div>
       {isModalOpen && (
         <ImageAddForm
