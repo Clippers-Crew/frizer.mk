@@ -6,6 +6,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { ACTION_TYPE, GlobalContext, User } from "../../../context/Context";
 import AuthService from "../../../services/auth.service";
 import UserService from "../../../services/user.service";
+import { AiFillMessage } from "react-icons/ai";
 
 function Navbar() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -40,15 +41,14 @@ function Navbar() {
       try {
         const response = await UserService.getCurrentUser();
         setCurrentUser(response);
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchCurrentUser();
   }, [state?.token]);
 
   useEffect(() => {
-    setCurrentUser(state.user); 
+    setCurrentUser(state.user);
   }, [state.user]);
 
   window.addEventListener("resize", showMenu);
@@ -107,7 +107,20 @@ function Navbar() {
                 </li>
               </NavLink>
             )}
-            {!currentUser && 
+
+            {currentUser && (
+              <NavLink to={"/messages"} onClick={closeMenu}>
+                <li className={styles.navlink}>
+                  <span className={styles.iconWrapper}>
+                    <AiFillMessage size={24} />
+                    <div className={styles.notificationBadge}>{state.unreadMessages}</div>
+                    {/* Dynamic value */}
+                  </span>
+                </li>
+              </NavLink>
+            )}
+
+            {!currentUser && (
               <NavLink
                 to={currentUser ? "#" : "/login"}
                 onClick={currentUser ? handleLogout : closeMenu}
@@ -122,7 +135,7 @@ function Navbar() {
                   )}
                 </li>
               </NavLink>
-            }
+            )}
           </motion.ul>
         )}
       </AnimatePresence>

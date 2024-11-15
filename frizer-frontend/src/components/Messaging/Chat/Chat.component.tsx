@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import axios from "axios";
-import { User } from "../../../context/Context";
+import { ACTION_TYPE, GlobalContext, User } from "../../../context/Context";
 import { BaseUser } from "../../../interfaces/BaseUser.interface";
 import UserService from "../../../services/user.service";
 import MessageService from "../../../services/message.service";
@@ -16,16 +16,35 @@ interface ChatProps {
 }
 
 function Chat({ user }: ChatProps) {
-  const [receiverId, setReceiverId] = useState<number | null>(null);
+  const receiverIdRef = useRef<number | null>(null);
+
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<MessageDetails[]>([]);
   const stompClient = useRef<Client | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<BaseUser[]>([]);
+  const { dispatch } = useContext(GlobalContext);
 
   const [messagesDictionary, setMessagesDictionary] = useState<{
     [key: number]: { message: MessageSimpleDTO; user: BaseUser }[];
   }>({});
+
+  const countUnreadMessages = () => {
+    return Object.values(messagesDictionary).reduce((total, messages) => {
+      const unreadCount = messages.filter(
+        (entry) => !entry.message.read && entry.message.receiverId === user?.id
+      ).length;
+      return total + unreadCount;
+    }, 0);
+  };
+
+  useEffect(() => {
+    const unreadMessages = countUnreadMessages();
+    dispatch({
+      type: ACTION_TYPE.SET_UNREAD_MESSAGES,
+      payload: unreadMessages,
+    });
+  }, [messagesDictionary]);
 
   useEffect(() => {
     if (searchQuery.trim()) {
@@ -35,7 +54,7 @@ function Chat({ user }: ChatProps) {
           .catch((error) =>
             console.error("Error fetching search results:", error)
           );
-      }, 300); 
+      }, 300);
 
       return () => clearTimeout(timeoutId);
     } else {
@@ -47,7 +66,7 @@ function Chat({ user }: ChatProps) {
     try {
       const userId = user?.id;
       const response = await MessageService.getAllConversation(user?.id ?? -1);
-      const messages = response.data; 
+      const messages = response.data;
 
       const messagesDictionary: {
         [key: number]: { message: MessageSimpleDTO; user: BaseUser }[];
@@ -57,7 +76,7 @@ function Chat({ user }: ChatProps) {
         const otherUserId =
           message.senderId === userId ? message.receiverId : message.senderId;
 
-          if (otherUserId !== userId) {
+        if (otherUserId !== userId) {
           if (!messagesDictionary[otherUserId]) {
             messagesDictionary[otherUserId] = [];
           }
@@ -91,7 +110,6 @@ function Chat({ user }: ChatProps) {
     const client = new Client({
       webSocketFactory: () => socket as any,
       debug: (str) => {
-        console.log(str);
       },
 
       onConnect: () => {
@@ -102,10 +120,14 @@ function Chat({ user }: ChatProps) {
             (message) => {
               const newMessage = JSON.parse(message.body) as MessageDetails;
               getConversations();
-              if(receiverId && receiverId === newMessage.senderId) {
-                openConversation(newMessage.senderId)
+
+              if (
+                receiverIdRef.current &&
+                receiverIdRef.current === newMessage.senderId
+              ) {
+                openConversation(newMessage.senderId);
               }
-              
+              countUnreadMessages();
             }
           );
         }
@@ -125,25 +147,25 @@ function Chat({ user }: ChatProps) {
     };
   }, [user]);
 
-  const openConversation = (userId: number) => {
-    setReceiverId(userId);
-    const response = MessageService.getAllConversationBetween(
+  const openConversation = async (userId: number) => {
+    receiverIdRef.current = userId;
+    const response = await MessageService.getAllConversationBetween(
       userId,
       user?.id ?? -1
     );
-    response.then((data) => setMessages(data.data));
-    const updatedMessagesWithReadStatus = messages.map((msg) => {
+    setMessages(response.data);
+
+    const updatedMessagesWithReadStatus = response.data.map((msg) => {
       if (msg.senderId === user?.id && !msg.read) {
-        msg.read = true; 
+        msg.read = true;
       }
       return msg;
     });
-
     setMessages(updatedMessagesWithReadStatus);
 
     MessageService.markMessagesAsRead(userId, user?.id ?? -1)
       .then(() => {
-        getConversations();
+        getConversations(); 
       })
       .catch((error) => {
         console.error("Error marking messages as read:", error);
@@ -155,13 +177,13 @@ function Chat({ user }: ChatProps) {
       const userMessage: MessageDetails = {
         timestamp: new Date(),
         content: message,
-        receiverId: receiverId ?? -1,
+        receiverId: receiverIdRef.current ?? -1,
         senderId: user?.id ?? -1,
         read: false,
       };
 
       stompClient.current.publish({
-        destination: "/app/chat", 
+        destination: "/app/chat",
         body: JSON.stringify(userMessage),
       });
 
@@ -264,13 +286,13 @@ function Chat({ user }: ChatProps) {
             placeholder="Enter your message"
             className={styles.inputText}
           />
-            <button
-    onClick={sendMessage}
-    disabled={!receiverId}
-    className={styles.sendButton}
-  >
-    <FaPaperPlane size={20} />
-  </button>
+          <button
+            onClick={sendMessage}
+            disabled={!receiverIdRef.current}
+            className={styles.sendButton}
+          >
+            <FaPaperPlane size={20} />
+          </button>
         </div>
       </div>
     </div>

@@ -26,12 +26,15 @@ export interface User {
 export interface State {
   user: User | null;
   token: string | null;
+  unreadMessages: number; 
 }
 
 export const ACTION_TYPE = {
   SET_USER: 'SET_USER',
   SET_TOKEN: 'SET_TOKEN',
   LOAD_STATE: 'LOAD_STATE',
+  SET_UNREAD_MESSAGES: 'SET_UNREAD_MESSAGES', 
+
 } as const;
 
 type ActionType = (typeof ACTION_TYPE)[keyof typeof ACTION_TYPE];
@@ -50,6 +53,7 @@ export interface AuthResponse {
 const initialState: State = {
   user: null,
   token: null,
+  unreadMessages: 0
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
@@ -60,7 +64,11 @@ const reducer = (state: State = initialState, action: Action): State => {
       return { ...state, user: action.payload };
     case ACTION_TYPE.SET_TOKEN:
       return { ...state, token: action.payload };
-
+      case ACTION_TYPE.SET_UNREAD_MESSAGES:
+        return {
+          ...state,
+          unreadMessages: action.payload
+        };
     default:
       return state;
   }
