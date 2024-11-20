@@ -17,7 +17,7 @@ interface ChatProps {
 
 function Chat({ user }: ChatProps) {
   const receiverIdRef = useRef<number | null>(null);
-
+  const [currentChatUser, setCurrentChatUser] = useState<BaseUser | null>(null);
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<MessageDetails[]>([]);
   const stompClient = useRef<Client | null>(null);
@@ -109,8 +109,7 @@ function Chat({ user }: ChatProps) {
     const socket = new SockJS("http://localhost:8080/ws");
     const client = new Client({
       webSocketFactory: () => socket as any,
-      debug: (str) => {
-      },
+      debug: (str) => {},
 
       onConnect: () => {
         stompClient.current = client;
@@ -154,7 +153,9 @@ function Chat({ user }: ChatProps) {
       user?.id ?? -1
     );
     setMessages(response.data);
-
+    var currentUser = UserService.getUserById(userId);
+    console.log((await currentUser).firstName);
+    setCurrentChatUser(await currentUser);
     const updatedMessagesWithReadStatus = response.data.map((msg) => {
       if (msg.senderId === user?.id && !msg.read) {
         msg.read = true;
@@ -165,7 +166,7 @@ function Chat({ user }: ChatProps) {
 
     MessageService.markMessagesAsRead(userId, user?.id ?? -1)
       .then(() => {
-        getConversations(); 
+        getConversations();
       })
       .catch((error) => {
         console.error("Error marking messages as read:", error);
@@ -257,6 +258,15 @@ function Chat({ user }: ChatProps) {
       </div>
 
       <div className={styles.chatWindow}>
+        <div className={styles.chatHeader}>
+          {currentChatUser ? (
+            <h2>
+              {currentChatUser.firstName} {currentChatUser.lastName}
+            </h2>
+          ) : (
+            <h2>Chat</h2>
+          )}
+        </div>
         <div className={styles.messages}>
           {messages.map((msg, index) => (
             <div
