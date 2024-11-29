@@ -31,7 +31,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon, user }: ReviewListProps)
     };
 
     fetchReviews();
-  }, [salon]);
+  }, [salon,reviews]);
 
   useEffect(() => {
  if(reviewIds.length > 0) {
@@ -50,6 +50,11 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon, user }: ReviewListProps)
  }
   }, [reviewIds]);
 
+  const addReviewToList = (newReview: ReviewDetails) => {
+    setReviews((prevReviews) => [newReview, ...prevReviews]);
+    
+  };
+
   return (
     <div className={styles.reviews}>
       <h1>Резиме на рецензии</h1>
@@ -60,7 +65,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ salon, user }: ReviewListProps)
           <ReviewItem key={index} review={review} />
         ))
       )}
-      <ReviewAddForm salon={salon} user={user} />
+      <ReviewAddForm salon={salon} user={user} onReviewAdd={addReviewToList} />
     </div>
   );
 };
