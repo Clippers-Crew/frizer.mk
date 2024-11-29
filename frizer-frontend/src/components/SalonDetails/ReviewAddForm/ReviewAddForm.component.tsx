@@ -75,7 +75,6 @@ function ReviewForm({ salon, user, onReviewAdd }: ReviewAddFormProps) {
 
     try {
       const response = await ReviewService.createReview(review);
-      console.log(response);
       const newReview: ReviewDetails = {
         id: response.id,
         comment,

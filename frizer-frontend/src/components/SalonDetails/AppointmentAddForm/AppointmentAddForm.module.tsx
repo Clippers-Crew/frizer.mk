@@ -66,13 +66,11 @@ function TreatmentEmployeeChooseForm({
     event.preventDefault();
 
     if (selectedDay === "" || selectedTime === "" || selectedEmployee === "") {
-      console.log("Please fill in all required fields.");
       return;
     }
 
     const timeSlot = availableTimeSlots[selectedDay][selectedTime];
     if (!timeSlot) {
-      console.log("Invalid time slot selected.");
       return;
     }
 

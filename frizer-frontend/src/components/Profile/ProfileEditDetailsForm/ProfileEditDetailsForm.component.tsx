@@ -57,7 +57,6 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
           formData
         );
         dispatch({ type: ACTION_TYPE.SET_USER, payload: updatedUser });
-        console.log("Успешно променети податоци");
       } catch (error) {
         console.error("Грешка при промената на податоците: ", error);
       }

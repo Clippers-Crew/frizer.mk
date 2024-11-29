@@ -25,7 +25,6 @@ function FeatureImages({ salon, user, onImageAdd }: FeatureImagesProps) {
   });
 
   useEffect(() => {
-    console.log(salon);
     if (salon?.images && Object.keys(salon.images).length > 0) {
       const updatedImagesMap: ImageMap = { ...images };
 
