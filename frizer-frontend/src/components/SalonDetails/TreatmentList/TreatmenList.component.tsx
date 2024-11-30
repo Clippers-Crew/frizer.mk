@@ -37,7 +37,8 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
       }
     };
 
-    fetchEmployees();
+      fetchEmployees();
+   
   }, [employeesIds]);
 
   useEffect(() => {
@@ -71,13 +72,13 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
           const days = Array.from({ length: 10 }, (_, index) => {
             const date = new Date(today);
             date.setDate(today.getDate() + index);
-            return date.toISOString().split('T')[0]; 
+            return date.toDateString()
           });
           
           const slots: Record<number, TimeSlot[]> = {};
     
           timeSlots.forEach((timeSlot) => {
-            const slotDate = new Date(timeSlot.from).toISOString().split('T')[0];
+            const slotDate = new Date(timeSlot.from).toDateString().split('T')[0];
             
             const dayIndex = days.indexOf(slotDate);
     
@@ -94,7 +95,7 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
     };
   
     fetchTimeSlots();
-  }, [selectedTreatmentId, salon, employees]);
+  }, [treatment, salon, employees]);
 
   const handleReserveClick = (treatmentId: number) => {
     setSelectedTreatmentId(treatmentId);

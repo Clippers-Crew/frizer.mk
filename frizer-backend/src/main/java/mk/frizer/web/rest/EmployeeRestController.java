@@ -8,6 +8,8 @@ import mk.frizer.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -25,7 +27,10 @@ public class EmployeeRestController {
         return employeeService.getEmployees().stream().map(Employee::toDto).toList();
     }
     @GetMapping("/ids")
-    public List<EmployeeSimpleDTO> getAllEmployeesByIds(@RequestParam List<Long> ids) {
+    public List<EmployeeSimpleDTO> getAllEmployeesByIds(@RequestParam(required = false) List<Long> ids) {
+       if(ids == null || ids.isEmpty()) {
+           return new ArrayList<>();
+       }
         return employeeService.getEmployeesByIds(ids).stream().map(Employee::toDto).toList();
     }
 

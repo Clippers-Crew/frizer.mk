@@ -9,18 +9,21 @@ import { Customer } from "../../../interfaces/Customer.interface";
 import CustomerService from "../../../services/customer.service";
 import { User } from "../../../context/Context";
 import { useNavigate } from "react-router-dom";
+import { ReviewDetails } from "../../../interfaces/ReviewDetails.interface";
 interface ReviewAddFormProps {
   salon?: Salon;
   user?: User;
+  onReviewAdd: (newReview: ReviewDetails) => void;
 }
 
-function ReviewForm({ salon, user }: ReviewAddFormProps) {
+function ReviewForm({ salon, user, onReviewAdd }: ReviewAddFormProps) {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
   const [employeeId, setEmployeeId] = useState("");
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds = salon?.employeesIds || [];
   const [customer, setCustomer] = useState<Customer | null>(null);
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -32,6 +35,7 @@ function ReviewForm({ salon, user }: ReviewAddFormProps) {
 
     fetchEmployees();
   }, []);
+
   useEffect(() => {
     if (employeeId === "" && employees.length > 0) {
       setEmployeeId(employees[0].id.toLocaleString());
@@ -56,7 +60,6 @@ function ReviewForm({ salon, user }: ReviewAddFormProps) {
   }, [user]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    //TODO should add the result to the list above...
     event.preventDefault();
 
     if (!user) {
@@ -72,14 +75,24 @@ function ReviewForm({ salon, user }: ReviewAddFormProps) {
 
     try {
       const response = await ReviewService.createReview(review);
-      if (response) {
-        alert("Review submitted successfully");
-        setComment("");
-        setRating("");
-        setEmployeeId("");
-      } else {
-        alert("Failed to submit review");
-      }
+      const newReview: ReviewDetails = {
+        id: response.id,
+        comment,
+        rating: Number(rating),
+        employeeId: Number(employeeId),
+        employeeFullName:
+          employees.find((e) => e.id === Number(employeeId))?.firstName ??
+          "Unknown",
+        date: new Date(),
+        authorFirstName: user.firstName,
+        authorLastName: user.lastName,
+        authorId: 0,
+      };
+      onReviewAdd(newReview);
+      alert("Успешно креиравте рецензија!");
+      setComment("");
+      setRating("");
+      setEmployeeId("");
     } catch (error) {}
   };
 
