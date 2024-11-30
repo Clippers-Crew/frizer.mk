@@ -12,9 +12,9 @@ export const DateUtils =  {
       },
      convertToUTC (date: Date) {
       const utcIsoString = date.toISOString();
-      // Parse the ISO string back into a Date object
       return new Date(utcIsoString);
       },
+
       formatDateTime(date: string | Date) {
         const parsedDate = new Date(date); 
         return parsedDate.toLocaleString();  

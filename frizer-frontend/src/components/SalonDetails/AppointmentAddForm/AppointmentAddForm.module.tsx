@@ -10,7 +10,7 @@ import { User } from "../../../context/Context";
 import CustomerService from "../../../services/customer.service";
 import { Customer } from "../../../interfaces/Customer.interface";
 
-interface TreatmentChooseTimeFormProps {
+interface AppointmentAddFormProps {
   salon?: Salon;
   treatment?: number | null;
   employees: Employee[];
@@ -20,7 +20,7 @@ interface TreatmentChooseTimeFormProps {
   user?: User;
 }
 
-function TreatmentEmployeeChooseForm({
+function AppointmentAddForm({
   salon,
   treatment,
   employees,
@@ -28,7 +28,7 @@ function TreatmentEmployeeChooseForm({
   onClose,
   availableTimeSlots: initialAvailableTimeSlots,
   user,
-}: TreatmentChooseTimeFormProps) {
+}: AppointmentAddFormProps) {
   const [selectedDay, setSelectedDay] = useState<number | "">("");
   const [selectedTime, setSelectedTime] = useState<number | "">("");
   const [selectedEmployee, setSelectedEmployee] = useState<number | "">("");
@@ -75,8 +75,8 @@ function TreatmentEmployeeChooseForm({
     }
 
     const appointmentData: AppointmentCreateRequest = {
-      dateFrom: adjustTime(timeSlot.from, 2), 
-      dateTo: adjustTime(timeSlot.to, 2), 
+      dateFrom: adjustTime(timeSlot.from, 1), 
+      dateTo: adjustTime(timeSlot.to, 1), 
       treatmentId: treatment || -1,
       salonId: salon?.id || -1,
       employeeId: selectedEmployee,
@@ -188,4 +188,4 @@ function TreatmentEmployeeChooseForm({
   );
 }
 
-export default TreatmentEmployeeChooseForm;
+export default AppointmentAddForm;

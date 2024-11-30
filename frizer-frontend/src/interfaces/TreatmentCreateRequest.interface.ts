@@ -1,6 +1,6 @@
 export interface TreatmentCreateRequest {
     name: string,
-    durationMultiplier: number,
+    duration: number,
     salonId: number,
     price: number
 }

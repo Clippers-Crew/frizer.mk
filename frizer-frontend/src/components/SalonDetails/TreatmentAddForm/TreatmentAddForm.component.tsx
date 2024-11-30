@@ -12,17 +12,22 @@ import { Employee } from "../../../interfaces/Employee.interface";
 interface TreatmentAddFormProps {
   salon?: Salon;
   onTreatmentAdd: (treatment: Treatment) => void;
-  user?: User
+  user?: User;
 }
-function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps) {
+function TreatmentAddForm({
+  salon,
+  onTreatmentAdd,
+  user,
+}: TreatmentAddFormProps) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number | undefined>(undefined);
   const [durationMultiplier, setDurationMultiplier] = useState<
-    number | undefined>(undefined);
+    number | undefined
+  >(undefined);
   const durationOptions = Array.from({ length: 6 }, (_, i) => i + 1);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const employeesIds =  salon?.employeesIds || [];
-  
+  const employeesIds = salon?.employeesIds || [];
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
@@ -33,7 +38,7 @@ function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps
       const newTreatment: TreatmentCreateRequest = {
         name: name,
         price: price ?? 0,
-        durationMultiplier: durationMultiplier,
+        duration: durationMultiplier,
         salonId: salon?.id ?? -1,
       };
       const response = await TreatmentService.createTreatment(newTreatment);
@@ -44,63 +49,63 @@ function TreatmentAddForm({ salon, onTreatmentAdd, user }: TreatmentAddFormProps
 
   useEffect(() => {
     const fetchEmployees = async () => {
-      try { 
+      try {
         const response = await EmployeeService.getEmployeesByIds(employeesIds);
         setEmployees(response.data);
-      } catch (error) {
-    }
+      } catch (error) {}
     };
 
     fetchEmployees();
   }, [employeesIds]);
   return (
     <>
-      {user && (user.id === salon?.ownerId ||
-      employees.map(e=> e.baseUserId).includes(user.id)) && (
-        <form onSubmit={handleSubmit} className={styles.treatmentAddForm}>
-          <h2>Додади третман</h2>
-          <input type="hidden" name="salonId" value={salon?.id} />
-          <label htmlFor="name">Име</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <label htmlFor="price">Цена</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            required
-          />
-          <label htmlFor="durationMultiplier">Времетраење</label>
-          <select
-            name="durationMultiplier"
-            id="durationMultiplier"
-            value={durationMultiplier ?? ""}
-            onChange={(e) => setDurationMultiplier(Number(e.target.value))}
-            required
-          >
-            <option value="">Избери времетраење</option>
-            {durationOptions.map((number) => (
-              <option key={number} value={number}>
-                {number * 20} минути
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className={`${styles.primaryButton} primaryButton`}
-          >
-            Додади третман
-          </button>
-        </form>
-      )}
+      {user &&
+        (user.id === salon?.ownerId ||
+          employees.map((e) => e.baseUserId).includes(user.id)) && (
+          <form onSubmit={handleSubmit} className={styles.treatmentAddForm}>
+            <h2>Додади третман</h2>
+            <input type="hidden" name="salonId" value={salon?.id} />
+            <label htmlFor="name">Име</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <label htmlFor="price">Цена</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={price}
+              onChange={(e) => setPrice(Number(e.target.value))}
+              required
+            />
+            <label htmlFor="durationMultiplier">Времетраење</label>
+            <select
+              name="durationMultiplier"
+              id="durationMultiplier"
+              value={durationMultiplier ?? ""}
+              onChange={(e) => setDurationMultiplier(Number(e.target.value))}
+              required
+            >
+              <option value="">Избери времетраење</option>
+              {durationOptions.map((number) => (
+                <option key={number} value={number}>
+                  {number * 20} минути
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className={`${styles.primaryButton} primaryButton`}
+            >
+              Додади третман
+            </button>
+          </form>
+        )}
     </>
   );
 }
