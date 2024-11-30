@@ -43,7 +43,7 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
 
   useEffect(() => {
     const fetchTreatments = async () => {
-      if (salon?.salonTreatmentsIds && salon?.salonTreatmentsIds.length > 0) {
+      if (salon?.salonTreatmentsIds) {
         try {
           const response = await TreatmentService.getTreatmentsByIds(salon?.salonTreatmentsIds);
           setTreatments(response.data);

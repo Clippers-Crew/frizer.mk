@@ -25,6 +25,8 @@ public class Appointment {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime dateTo;
     @ManyToOne
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Treatment treatment;
 
     @ManyToOne

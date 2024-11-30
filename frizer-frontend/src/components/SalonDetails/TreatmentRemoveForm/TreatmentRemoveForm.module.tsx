@@ -18,28 +18,27 @@ function TreatmentRemoveForm({ salon, onTreatmentRemove, user }: TreatmentRemove
   const [employees, setEmployees] = useState<Employee[]>([]);
   const employeesIds =  salon?.employeesIds || [];
   const [treatments, setTreatments] = useState<Treatment[]>([]);
+  
+  const fetchTreatments = async () => {
+    try {
+      const response = await TreatmentService.getTreatmentsByIds(salon?.salonTreatmentsIds??[]);
+      setTreatments(response.data);
+    } catch (error) {
 
+  }
+};
   useEffect(() => {
-    const fetchTreatments = async () => {
-      if (salon?.salonTreatmentsIds && salon?.salonTreatmentsIds.length > 0) {
-        try {
-          const response = await TreatmentService.getTreatmentsByIds(salon?.salonTreatmentsIds);
-          setTreatments(response.data);
-        } catch (error) {
-        }
-      }
-    };
-
     fetchTreatments();
-  }, [salon?.salonTreatmentsIds]);
+  }, [salon]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(treatmentId !== "") {
-        try {
+    if(treatmentId) {
+        try {          
             const response = await TreatmentService.deleteTreatment(+treatmentId);
             onTreatmentRemove(+treatmentId);
             setTreatmentId("");
+            fetchTreatments()
             window.scrollTo(0, 0);
           } catch (error) {
           }
