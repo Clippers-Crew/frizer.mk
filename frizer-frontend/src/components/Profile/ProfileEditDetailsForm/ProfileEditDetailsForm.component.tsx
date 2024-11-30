@@ -30,8 +30,11 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
     if (!formData.lastName) errors.lastName = "Презимето е задолжително.";
     if (!formData.phoneNumber) {
       errors.phoneNumber = "Телефонскиот број е задолжителен.";
-    } else if (!/^\d+$/.test(formData.phoneNumber)) {
-      errors.phoneNumber = "Внесете валиден телефонски број.";
+    } else if (
+      !/^((\+3897\d{7})|(07\d{7}))$/.test(formData.phoneNumber)
+    ) {
+      errors.phoneNumber =
+        "Телефонскиот број мора да започнува со +3897 или 07 и да има точно 9 или 12 знаци.";
     }
 
     setErrors(errors);
@@ -57,6 +60,7 @@ function ProfileEditDetailsForm({ currentUser }: ProfileEditDetailsFormProps) {
           formData
         );
         dispatch({ type: ACTION_TYPE.SET_USER, payload: updatedUser });
+        alert("Успешно променети податоци");
       } catch (error) {
         console.error("Грешка при промената на податоците: ", error);
       }

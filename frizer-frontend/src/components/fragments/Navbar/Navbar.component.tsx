@@ -94,11 +94,14 @@ function Navbar() {
                 <span>Почетна</span>
               </li>
             </NavLink>
-            <NavLink to="/appointments" onClick={closeMenu}>
+            
+            {currentUser && (
+              <NavLink to="/appointments" onClick={closeMenu}>
               <li className={styles.navlink}>
                 <span>Термини</span>
               </li>
             </NavLink>
+            )}
 
             {currentUser && (
               <NavLink to={"/profile"} onClick={closeMenu}>

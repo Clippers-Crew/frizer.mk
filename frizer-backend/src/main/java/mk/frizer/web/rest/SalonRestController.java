@@ -73,9 +73,10 @@ public class SalonRestController {
 
     @PostMapping("/add")
     public ResponseEntity<SalonSimpleDTO> createSalon(@RequestBody SalonAddDTO salonAddDTO) {
-        if (salonAddDTO.getBusinessOwnerId() == null) {
-            salonAddDTO.setBusinessOwnerId(CurrentUserHelper.getId());
-        }
+//        if (salonAddDTO.getBusinessOwnerId() == null) {
+//        }
+        // businessOwnerId is baseUserId
+        salonAddDTO.setBusinessOwnerId(CurrentUserHelper.getId());
         return this.salonService.createSalon(salonAddDTO)
                 .map(salon -> ResponseEntity.ok().body(salon.toDto()))
                 .orElseGet(() -> ResponseEntity.badRequest().build());

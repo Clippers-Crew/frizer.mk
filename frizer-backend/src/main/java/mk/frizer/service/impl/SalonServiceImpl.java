@@ -11,6 +11,7 @@ import mk.frizer.domain.exceptions.SalonNotFoundException;
 import mk.frizer.domain.exceptions.TagNotFoundException;
 import mk.frizer.domain.exceptions.UserNotFoundException;
 import mk.frizer.repository.*;
+import mk.frizer.service.BusinessOwnerService;
 import mk.frizer.service.SalonService;
 import mk.frizer.utilities.CurrentUserHelper;
 import mk.frizer.utilities.DistanceCalculator;
@@ -35,8 +36,9 @@ public class SalonServiceImpl implements SalonService {
     private final CityRepository cityRepository;
     private final BaseUserRepository userRepository;
     private final CustomerRepository customerRepository;
+    private final BusinessOwnerService businessOwnerService;
 
-    public SalonServiceImpl(SalonRepository salonRepository, BusinessOwnerRepository businessOwnerRepository, EmployeeRepository employeeRepository, TagRepository tagRepository, ApplicationEventPublisher applicationEventPublisher, DistanceCalculator distanceCalculator, CityRepository cityRepository, BaseUserRepository userRepository, CustomerRepository customerRepository) {
+    public SalonServiceImpl(SalonRepository salonRepository, BusinessOwnerRepository businessOwnerRepository, EmployeeRepository employeeRepository, TagRepository tagRepository, ApplicationEventPublisher applicationEventPublisher, DistanceCalculator distanceCalculator, CityRepository cityRepository, BaseUserRepository userRepository, CustomerRepository customerRepository, BusinessOwnerService businessOwnerService) {
         this.salonRepository = salonRepository;
         this.businessOwnerRepository = businessOwnerRepository;
         this.employeeRepository = employeeRepository;
@@ -46,6 +48,7 @@ public class SalonServiceImpl implements SalonService {
         this.cityRepository = cityRepository;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
+        this.businessOwnerService = businessOwnerService;
     }
 
     @Override
@@ -84,7 +87,8 @@ public class SalonServiceImpl implements SalonService {
     @Override
     @Transactional
     public Optional<Salon> createSalon(SalonAddDTO salonAddDTO) {
-        BusinessOwner businessOwner = businessOwnerRepository.findById(salonAddDTO.getBusinessOwnerId()).orElseThrow(UserNotFoundException::new);
+        BusinessOwner businessOwner = businessOwnerRepository.findByBaseUserId(salonAddDTO.getBusinessOwnerId())
+                .orElse(businessOwnerService.createBusinessOwner(salonAddDTO.getBusinessOwnerId()).orElseThrow(UserNotFoundException::new));
         City city = cityRepository.findByName(salonAddDTO.getCity())
                 .orElseThrow(CityNotFoundException::new);
 
