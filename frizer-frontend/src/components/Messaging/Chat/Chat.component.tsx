@@ -154,7 +154,6 @@ function Chat({ user }: ChatProps) {
     );
     setMessages(response.data);
     var currentUser = UserService.getUserById(userId);
-    console.log((await currentUser).firstName);
     setCurrentChatUser(await currentUser);
     const updatedMessagesWithReadStatus = response.data.map((msg) => {
       if (msg.senderId === user?.id && !msg.read) {

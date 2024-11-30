@@ -92,7 +92,7 @@ public class Salon {
                 .employeesIds(employees.stream().map(Employee::getId).toList())
                 .salonTreatmentsIds(salonTreatments.stream().map(Treatment::getId).toList())
                 .tagsIds(tags.stream().map(Tag::getId).toList())
-                .ownerId(owner != null ? owner.getId() : -1)
+                .ownerId(owner != null ? owner.getBaseUser().getId() : -1)
                 .backgroundImage(this.backgroundImage)
                 .images(this.images)
                 .rating(this.rating)

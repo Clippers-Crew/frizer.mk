@@ -18,6 +18,8 @@ function ProfileEditSalonForm({ currentSalonEdit, setCurrentSalonEdit, updateSal
     location: "",
   });
 
+  const [errors, setErrors] = useState<{ phoneNumber?: string }>({});
+
   useEffect(() => {
     if (currentSalonEdit) {
       setFormData({
@@ -42,7 +44,7 @@ function ProfileEditSalonForm({ currentSalonEdit, setCurrentSalonEdit, updateSal
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (currentSalonEdit)
+    if (validate() && currentSalonEdit)
       SalonService.editSalon(currentSalonEdit.id, formData)
         .then((response) => {
           alert("Успешно променет салон");
@@ -50,7 +52,6 @@ function ProfileEditSalonForm({ currentSalonEdit, setCurrentSalonEdit, updateSal
           clearForm();
         })
         .catch((error) => console.error("Грешка во промените на салонот: ", error));
-        
   };
 
   const clearForm = () => {
@@ -63,6 +64,22 @@ function ProfileEditSalonForm({ currentSalonEdit, setCurrentSalonEdit, updateSal
     
     setCurrentSalonEdit(null);
   }
+
+  const validate = (): boolean => {
+    let errors: { phoneNumber?: string } = {};
+
+    if (!formData.phoneNumber) {
+      errors.phoneNumber = "Телефонскиот број е задолжителен.";
+    } else if (
+      !/^((\+3897\d{7})|(07\d{7}))$/.test(formData.phoneNumber)
+    ) {
+      errors.phoneNumber =
+        "Телефонскиот број мора да започнува со +3897 или 07 и да има точно 9 или 12 знаци.";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   return (
     <>
@@ -99,6 +116,10 @@ function ProfileEditSalonForm({ currentSalonEdit, setCurrentSalonEdit, updateSal
             onChange={handleChange}
             required
           />
+
+          {errors.phoneNumber && (
+            <small className={styles.error}>{errors.phoneNumber}</small>
+          )}
 
           <label htmlFor="location">Локација</label>
           <input

@@ -3,7 +3,6 @@ import { Coordinate } from "../interfaces/Coordinate.interface";
 const ValidatorService = {
   isEmailValid(email: string) {
     const emailRegex = /\S+@\S+\.\S+/;
-    console.log(email)
     return email.trim() && emailRegex.test(email.trim());
   },
   isPhoneValid: (phoneNumber: string): boolean => {
