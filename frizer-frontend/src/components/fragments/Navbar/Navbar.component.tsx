@@ -1,7 +1,7 @@
 import styles from "./Navbar.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { ACTION_TYPE, GlobalContext, User } from "../../../context/Context";
 import AuthService from "../../../services/auth.service";
@@ -15,6 +15,7 @@ function Navbar() {
   const [menuState, setMenuState] = useState(false);
   const [rotation, setRotation] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const showMenu = () => {
     window.innerWidth <= 650 ? setMenuState(false) : setMenuState(true);
@@ -115,9 +116,12 @@ function Navbar() {
               <NavLink to={"/messages"} onClick={closeMenu}>
                 <li className={styles.navlink}>
                   <span className={styles.iconWrapper}>
-                    <AiFillMessage size={24} />
-                    <div className={styles.notificationBadge}>{state.unreadMessages}</div>
-                    {/* Dynamic value */}
+                      <AiFillMessage size={24} />
+                    {location.pathname === "/messages" && (
+                      <div className={styles.notificationBadge}>
+                        {state.unreadMessages}
+                      </div>
+                    )}
                   </span>
                 </li>
               </NavLink>
