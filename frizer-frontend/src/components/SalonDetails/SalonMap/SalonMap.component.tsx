@@ -13,7 +13,6 @@ const SalonMap: React.FC<SalonMapProps> = ({ salon }) => {
 
   useEffect(() => {
     if (mapRef.current && !mapInstanceRef.current) {
-      // Initialize the map when the component mounts
       mapInstanceRef.current = L.map(mapRef.current, {
         center: [41.6086, 21.7453],
         zoom: 9,
@@ -26,21 +25,18 @@ const SalonMap: React.FC<SalonMapProps> = ({ salon }) => {
 
       addMarkerForUserLocation();
     } else {
-      // Update the map markers when the salon prop changes
       updateMap();
     }
   }, [salon]);
 
   const updateMap = () => {
     if (mapInstanceRef.current) {
-      // Remove existing markers
       mapInstanceRef.current.eachLayer((layer) => {
         if (layer instanceof L.Marker) {
           mapInstanceRef.current?.removeLayer(layer);
         }
       });
 
-      // Add new markers
       addMarkerForUserLocation();
       addMarkersForCenter();
     }

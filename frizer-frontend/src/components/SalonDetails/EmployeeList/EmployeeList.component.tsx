@@ -4,6 +4,7 @@ import { Employee } from "../../../interfaces/Employee.interface";
 import EmployeeService from "../../../services/employee.service";
 import styles from "./EmployeeList.module.scss";
 import EmployeeItem from "../EmployeeItem/EmployeeItem.component";
+
 interface EmployeeListProps {
   salon?: Salon;
 }

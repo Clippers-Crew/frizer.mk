@@ -31,7 +31,6 @@ useEffect(() => {
       <Navbar />
       <ProfileBanner />
       <ProfileContainer>
-        {/* <ProfileInfo /> */}
         <ProfileEditDetailsForm currentUser={user}/>
         <ProfileFavouriteSalons currentUser={user} />
         <ProfileSalons />

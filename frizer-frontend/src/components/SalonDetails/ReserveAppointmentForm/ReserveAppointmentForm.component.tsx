@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './ReserveAppointmentForm.module.scss'
 import { User } from '../../../context/Context';
 import { useNavigate } from 'react-router-dom';
+
 interface ReserveAppointmentFormProps {
   salonId?: number;
   treatmentId: number;

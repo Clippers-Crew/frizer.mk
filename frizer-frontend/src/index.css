@@ -100,7 +100,6 @@ code {
   border-radius: var(--border-radius);
   background-color: var(--secondary-color);
   color: var(--off-white);
-  /*font-weight: bold;*/
   cursor: pointer;
 }
 .secondaryButton:hover{

@@ -5,7 +5,6 @@ import { Treatment } from "../../../interfaces/Treatment.interface";
 import TreatmentService from "../../../services/treatment.service";
 import { TreatmentCreateRequest } from "../../../interfaces/TreatmentCreateRequest.interface";
 import { User } from "../../../context/Context";
-import UserService from "../../../services/user.service";
 import EmployeeService from "../../../services/employee.service";
 import { Employee } from "../../../interfaces/Employee.interface";
 

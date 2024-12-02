@@ -7,6 +7,7 @@ import EmployeeService from "../../../services/employee.service";
 import { EmployeeCreate } from "../../../interfaces/EmployeeCreateRequest.interface";
 import { User } from "../../../context/Context";
 import { Employee } from "../../../interfaces/Employee.interface";
+
 interface EmployeeAddFormProps {
   salon?: Salon;
   onEmployeeAdd: (employee: Employee) => void;

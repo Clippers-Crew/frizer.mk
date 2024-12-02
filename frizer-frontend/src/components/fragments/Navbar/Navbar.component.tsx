@@ -10,7 +10,6 @@ import { AiFillMessage } from "react-icons/ai";
 
 function Navbar() {
   const { state, dispatch } = useContext(GlobalContext);
-  // const [ isAuth, setIsAuth ] = useState(!!state?.token);
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [menuState, setMenuState] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -29,11 +28,6 @@ function Navbar() {
     setMenuState(!menuState);
     rotation === 0 ? setRotation(180) : setRotation(0);
   };
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   setIsAuth(!!token);
-  // }, [state?.token]);
 
   useEffect(() => {
     showMenu();
@@ -57,6 +51,8 @@ function Navbar() {
   const handleLogout = () => {
     dispatch({ type: ACTION_TYPE.SET_USER, payload: null });
     dispatch({ type: ACTION_TYPE.SET_TOKEN, payload: null });
+    dispatch({ type: ACTION_TYPE.SET_UNREAD_MESSAGES, payload: 0 });
+
     AuthService.logout();
     UserService.removeUser();
 
@@ -117,7 +113,7 @@ function Navbar() {
                 <li className={styles.navlink}>
                   <span className={styles.iconWrapper}>
                       <AiFillMessage size={24} />
-                    {location.pathname === "/messages" && (
+                    {location.pathname === "/messages" && state.unreadMessages != 0 && (
                       <div className={styles.notificationBadge}>
                         {state.unreadMessages}
                       </div>

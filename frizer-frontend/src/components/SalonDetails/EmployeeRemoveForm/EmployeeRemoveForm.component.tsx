@@ -4,7 +4,6 @@ import { Employee } from "../../../interfaces/Employee.interface";
 import { Salon } from "../../../interfaces/Salon.interface";
 import EmployeeService from "../../../services/employee.service";
 import { User } from "../../../context/Context";
-import UserService from "../../../services/user.service";
 
 interface EmployeeRemoveFormProps {
   salon?: Salon;
@@ -28,6 +27,7 @@ const EmployeeRemoveForm: React.FC<EmployeeRemoveFormProps> = ({
         setEmployees(response.data);
       } catch (error) {}
     };
+    console.log("fetching")
 
     fetchEmployees();
   }, [employeesIds]);

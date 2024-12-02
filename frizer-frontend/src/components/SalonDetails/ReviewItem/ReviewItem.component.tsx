@@ -22,7 +22,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
           <FaStar key={i} className={`${styles.star} ${styles.full}`} />
         );
       } else {
-        stars.push(<FaStar key={i} className={styles.star} />); // Empty star
+        stars.push(<FaStar key={i} className={styles.star} />); 
       }
     }
 

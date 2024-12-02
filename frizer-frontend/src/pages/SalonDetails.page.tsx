@@ -19,7 +19,6 @@ import { Treatment } from "../interfaces/Treatment.interface";
 import TreatmentRemoveForm from "../components/SalonDetails/TreatmentRemoveForm/TreatmentRemoveForm.module";
 import { User } from "../context/Context";
 import UserService from "../services/user.service";
-import ImageAddForm from "../components/SalonDetails/ImageAddForm/ImageAddForm.component";
 import CustomerService from "../services/customer.service";
 import { Customer } from "../interfaces/Customer.interface";
 

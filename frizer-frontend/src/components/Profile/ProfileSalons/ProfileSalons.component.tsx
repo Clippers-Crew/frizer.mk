@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styles from "./ProfileSalons.module.scss";
 import ProfileOwnedSalons from "../ProfileOwnedSalons/ProfileOwnedSalons.component";
 import ProfileEditSalonForm from "../ProfileEditSalonForm/ProfileEditSalonForm.component";
 import ProfileAddSalonForm from "../ProfileAddSalonForm/ProfileAddSalonForm.component";
