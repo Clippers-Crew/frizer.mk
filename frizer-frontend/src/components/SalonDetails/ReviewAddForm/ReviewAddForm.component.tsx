@@ -28,13 +28,13 @@ function ReviewForm({ salon, user, onReviewAdd }: ReviewAddFormProps) {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await EmployeeService.getEmployeesByIds(employeesIds);
+        const response = await EmployeeService.getEmployeesByIds(salon?.employeesIds || []);
         setEmployees(response.data);
       } catch (error) {}
     };
 
     fetchEmployees();
-  }, []);
+  }, [salon]);
 
   useEffect(() => {
     if (employeeId === "" && employees.length > 0) {

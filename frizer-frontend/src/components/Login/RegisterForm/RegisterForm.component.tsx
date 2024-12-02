@@ -1,11 +1,7 @@
 import React, { useContext, useState } from "react";
 import styles from "./RegisterForm.module.scss";
 import { useNavigate } from "react-router-dom";
-import {
-  GlobalContext,
-  ACTION_TYPE,
-  DecodedToken,
-} from "../../../context/Context";
+import { GlobalContext } from "../../../context/Context";
 import AuthService from "../../../services/auth.service";
 import { BaseUserCreate } from "../../../interfaces/BaseUserCreateRequest.interface";
 import ValidatorService from "../../../services/validator.service";
@@ -48,45 +44,19 @@ function RegisterForm() {
     setPhoneNumber(event.target.value);
   }
 
-  // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  //   const newErrors: string[] = [];
-
-  //   if (!isValidEmail(email)) {
-  //     newErrors.push("Invalid email format.");
-  //   }
-  //   if (password !== confirmedPassword) {
-  //     newErrors.push("Passwords do not match.");
-  //   }
-  //   if (newErrors.length > 0) {
-  //     setErrorMsgs(newErrors);
-  //     return;
-  //   }
-
-  //   try {
-  //     const user: BaseUserCreate = {
-  //       firstName: firstName,
-  //       lastName: lastName,
-  //       email: email,
-  //       password: password,
-  //       phoneNumber: phoneNumber,
-  //     };
-  //     const response = await AuthService.register(user);
-  //     if (response.message == "Successfully registered.") {
-  //       navigate("/login");
-  //     }
-  //   } catch (error) {
-  //     setErrorMsgs(["Registration failed. Please try again."]);
-  //   }
-  // }
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitted(true);
 
-    const hasError = !ValidatorService.isNameOrSurnameValid(firstName) || !ValidatorService.isNameOrSurnameValid(lastName) || !ValidatorService.isPhoneValid(phoneNumber) || !ValidatorService.isEmailValid(email) || !ValidatorService.isPasswordValid(password) || password !== confirmedPassword;
+    const hasError =
+      !ValidatorService.isNameOrSurnameValid(firstName) ||
+      !ValidatorService.isNameOrSurnameValid(lastName) ||
+      !ValidatorService.isPhoneValid(phoneNumber) ||
+      !ValidatorService.isEmailValid(email) ||
+      !ValidatorService.isPasswordValid(password) ||
+      password !== confirmedPassword;
 
-    if(hasError) return;
+    if (hasError) return;
 
     try {
       const user: BaseUserCreate = {
@@ -102,7 +72,7 @@ function RegisterForm() {
             navigate("/login");
           }
         })
-        .catch((error) => {
+        .catch(_ => {
           setErrorMsg("Веќе постои профил со истата е-маил адреса.");
         });
     } catch (error) {
@@ -124,9 +94,13 @@ function RegisterForm() {
       {submitted && !firstName && (
         <small className={styles.error}>Името е задолжително.</small>
       )}
-      {submitted && firstName && !ValidatorService.isNameOrSurnameValid(firstName) && (
-        <small className={styles.error}>Името треба да има минимум 3 карактери и само букви.</small>
-      )}
+      {submitted &&
+        firstName &&
+        !ValidatorService.isNameOrSurnameValid(firstName) && (
+          <small className={styles.error}>
+            Името треба да има минимум 3 карактери и само букви.
+          </small>
+        )}
 
       <label htmlFor="lastName">Презиме</label>
       <input
@@ -140,9 +114,13 @@ function RegisterForm() {
       {submitted && !lastName && (
         <small className={styles.error}>Презимето е задолжително.</small>
       )}
-      {submitted && lastName && !ValidatorService.isNameOrSurnameValid(lastName) && (
-        <small className={styles.error}>Презимето треба да има минимум 3 карактери и само букви.</small>
-      )}
+      {submitted &&
+        lastName &&
+        !ValidatorService.isNameOrSurnameValid(lastName) && (
+          <small className={styles.error}>
+            Презимето треба да има минимум 3 карактери и само букви.
+          </small>
+        )}
 
       <label htmlFor="phoneNumber">Телефонски број</label>
       <input
@@ -165,7 +143,7 @@ function RegisterForm() {
         placeholder="Емаил"
         onChange={handleChangeEmail}
       />
-      {submitted && !ValidatorService.isEmailValid(email)&& (
+      {submitted && !ValidatorService.isEmailValid(email) && (
         <small className={styles.error}>Внесете валидна емаил адреса.</small>
       )}
       <label htmlFor="password">Лозинка</label>
@@ -215,9 +193,7 @@ function RegisterForm() {
         <small className={styles.error}>Лозинките не се исти.</small>
       )}
       {submitted && errorMsg && (
-        <small className={styles.error}>
-          {errorMsg}
-        </small>
+        <small className={styles.error}>{errorMsg}</small>
       )}
       <button className={`primaryButton ${styles.primaryButton}`} type="submit">
         Регистрирај се

@@ -38,12 +38,6 @@ const SalonService = {
     deleteSalon: (salonId: number) => {
         return axios.delete<Salon>(`/salons/delete/${salonId}`);
     },
-    // getImage: async (salonId: number, imageId: number): Promise<Blob> => {
-    //     const response = await axios.get(`/salons/${salonId}/image/${imageId}`, {
-    //         responseType: 'blob',
-    //     });
-    //     return response.data;
-    // },
     getImage: async (salonId: number, imageId: number): Promise<Image> => {
         const response = await axios.get(`/salons/${salonId}/image/${imageId}`, {
             headers: {

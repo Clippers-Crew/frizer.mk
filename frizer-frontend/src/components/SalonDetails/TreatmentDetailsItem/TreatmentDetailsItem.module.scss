@@ -1,6 +1,11 @@
-.serviceTitle {
-    margin-left: 0.2vw;
+.separateElements{
+    display: flex;
+    justify-content: space-between;
+    gap: 10em;  
 }
-.servicePrice{
-    margin-left: 48vw;
-}
+// .serviceTitle {
+//     margin-left: 0.2vw;
+// }
+// .servicePrice{
+//     margin-left: 48vw;
+// }

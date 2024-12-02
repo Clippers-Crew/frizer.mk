@@ -2,7 +2,7 @@ import axios from './config/axios';
 import { TimeSlot } from "../interfaces/TimeSlot.interface";
 
 const TimeSlotService = {
-     getAvailableTimeSlots: (salonId: number,employeeId: number,durationMultiplier: number) => {
+     getAvailableTimeSlots: (salonId: number, employeeId: number, durationMultiplier: number) => {
         try {
           return axios.get<TimeSlot[][]>(`/time-slots`, {
             params: {

@@ -55,7 +55,7 @@ function SalonResults() {
             }`}
             onClick={toggleList}
           >
-            Листа од центри
+            Листа од салони
           </button>
           <button
             className={`${styles.mapButton} ${

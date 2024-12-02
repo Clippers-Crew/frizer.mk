@@ -21,7 +21,7 @@ function SalonSearchResults() {
 }
 
 const SalonSearchResultsContainer = styled.div`
-  min-height: calc(100vh - 55px);
+  min-height: calc(100vh - 55px - 72px - 80px - 55px);
   padding: 0 8vw 10vh;
   gap: 1em;
 

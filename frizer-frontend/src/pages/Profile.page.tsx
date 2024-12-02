@@ -44,6 +44,7 @@ useEffect(() => {
 const ProfileContainer = styled.div`
   padding: 0 8vw;
   min-height: calc(100vh - 55px);
+  margin-bottom: 3em;
 `;
 
 export default Profile;

@@ -266,42 +266,44 @@ function Chat({ user }: ChatProps) {
             <h2>Chat</h2>
           )}
         </div>
-        <div className={styles.messages}>
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`${styles.messageItem} ${
-                msg.senderId === user?.id ? styles.sent : styles.received
-              }`}
+        <div className={styles.separateElements}>
+          <div className={styles.messages}>
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`${styles.messageItem} ${
+                  msg.senderId === user?.id ? styles.sent : styles.received
+                }`}
+              >
+                <strong>
+                  {msg.senderId === user?.id
+                    ? "You"
+                    : `${
+                        messagesDictionary[msg.senderId]?.[0]?.user?.firstName
+                      } ${
+                        messagesDictionary[msg.senderId]?.[0]?.user?.lastName
+                      }` || "User"}
+                </strong>
+                : {msg.content}
+              </div>
+            ))}
+          </div>
+          <div className={styles.messageInput}>
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Enter your message"
+              className={styles.inputText}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={!receiverIdRef.current}
+              className={styles.sendButton}
             >
-              <strong>
-                {msg.senderId === user?.id
-                  ? "You"
-                  : `${
-                      messagesDictionary[msg.senderId]?.[0]?.user?.firstName
-                    } ${
-                      messagesDictionary[msg.senderId]?.[0]?.user?.lastName
-                    }` || "User"}
-              </strong>
-              : {msg.content}
-            </div>
-          ))}
-        </div>
-        <div className={styles.messageInput}>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Enter your message"
-            className={styles.inputText}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={!receiverIdRef.current}
-            className={styles.sendButton}
-          >
-            <FaPaperPlane size={20} />
-          </button>
+              <FaPaperPlane size={20} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -105,8 +105,9 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                 </tr>
               </thead>
               <tbody>
-                {activeAppointments.map((appointment) => (
+                {activeAppointments.map((appointment, i) => (
                   <ActiveAppointmentRow
+                    key={i}
                     appointment={appointment}
                     showActions={true}
                     onAppointmentRemove={handleAppointmentRemove}
@@ -221,9 +222,9 @@ function ActiveAppointmentsList({ userId }: ActiveAppointmentsListProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {pastEmployeeAppointments.map((appointment) => (
+                  {pastEmployeeAppointments.map((appointment, i) => (
                     <ActiveAppointmentRow
-                      key={appointment.id}
+                      key={i}
                       appointment={appointment}
                       showActions={false}
                       showEmployee={true}

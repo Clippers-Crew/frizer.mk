@@ -25,8 +25,7 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
   const [selectedTreatmentId, setSelectedTreatmentId] = useState<number | null>(null);
   const [showTimeForm, setShowTimeForm] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [days, setDays] = useState<string[]>([]);
-  const [availableTimeSlots, setAvailableTimeSlots] = useState<Record<string, TimeSlot[]>>({});
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<TimeSlot[][]>([]);
   const employeesIds = salon?.employeesIds || [];
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -63,32 +62,11 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
     const fetchTimeSlots = async () => {
       if (selectedTreatmentId && salon) {
         try {
-
           const response = await TimeSlotService.getAvailableTimeSlots(
             salon.id, employees[0]?.id || -1, treatment?.durationMultiplier || 1 
           );
-          const timeSlots: TimeSlot[] = response.data.flat(); 
-          const today = new Date();
-          const days = Array.from({ length: 10 }, (_, index) => {
-            const date = new Date(today);
-            date.setDate(today.getDate() + index);
-            return date.toDateString()
-          });
-          
-          const slots: Record<number, TimeSlot[]> = {};
-    
-          timeSlots.forEach((timeSlot) => {
-            const slotDate = new Date(timeSlot.from).toDateString().split('T')[0];
-            
-            const dayIndex = days.indexOf(slotDate);
-    
-            if (dayIndex !== -1) {
-              if (!slots[dayIndex]) slots[dayIndex] = [];
-              slots[dayIndex].push(timeSlot);
-            }
-          });
-          setDays(days);
-          setAvailableTimeSlots(slots);
+
+          setAvailableTimeSlots(response.data);
         } catch (error) {
         }
       }
@@ -115,7 +93,6 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
           salon={salon}
           treatment={selectedTreatmentId}
           employees={employees}
-          days={days}
           availableTimeSlots={availableTimeSlots}
           onClose={handleCloseTimeForm}
           user={user}
@@ -144,7 +121,6 @@ function TreatmentList({ salon, user }: TreatmentListProps) {
                       onReserveClick={handleReserveClick}
                       user={user}
                     />
-                    <hr />
                   </div>
                 ))}
               </div>

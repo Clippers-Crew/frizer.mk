@@ -14,9 +14,8 @@ interface AppointmentAddFormProps {
   salon?: Salon;
   treatment?: number | null;
   employees: Employee[];
-  days: string[];
   onClose?: () => void;
-  availableTimeSlots: Record<number, TimeSlot[]>;
+  availableTimeSlots: TimeSlot[][];
   user?: User;
 }
 
@@ -24,33 +23,28 @@ function AppointmentAddForm({
   salon,
   treatment,
   employees,
-  days,
   onClose,
   availableTimeSlots: initialAvailableTimeSlots,
   user,
 }: AppointmentAddFormProps) {
-  const [selectedDay, setSelectedDay] = useState<number | "">("");
-  const [selectedTime, setSelectedTime] = useState<number | "">("");
+  const [selectedDay, setSelectedDay] = useState<number>(-1);
+  const [selectedTime, setSelectedTime] = useState<number>(-1);
   const [selectedEmployee, setSelectedEmployee] = useState<number | "">("");
   const [customer, setCustomer] = useState<Customer | null>(null);
   const navigate = useNavigate();
-  const [availableTimeSlots, setAvailableTimeSlots] = useState<Record<number, TimeSlot[]>>(initialAvailableTimeSlots);
-
-  useEffect(() => {
-    setAvailableTimeSlots(initialAvailableTimeSlots);
-  }, [initialAvailableTimeSlots]);
 
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const response = await CustomerService.getCustomerByEmail(user?.email ?? '');
+        const response = await CustomerService.getCustomerByEmail(
+          user?.email ?? ""
+        );
         if (response) {
-          setCustomer(response.data); 
+          setCustomer(response.data);
         } else {
           setCustomer(null);
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     };
 
     fetchCustomer();
@@ -65,46 +59,28 @@ function AppointmentAddForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (selectedDay === "" || selectedTime === "" || selectedEmployee === "") {
+    if (selectedDay < 0 || selectedTime < 0 || selectedEmployee === "") {
       return;
     }
 
-    const timeSlot = availableTimeSlots[selectedDay][selectedTime];
+    const timeSlot = initialAvailableTimeSlots[selectedDay][selectedTime];
     if (!timeSlot) {
       return;
     }
 
     const appointmentData: AppointmentCreateRequest = {
-      dateFrom: adjustTime(timeSlot.from, 1), 
-      dateTo: adjustTime(timeSlot.to, 1), 
+      dateFrom: adjustTime(timeSlot.from, 1),
+      dateTo: adjustTime(timeSlot.to, 1),
       treatmentId: treatment || -1,
       salonId: salon?.id || -1,
       employeeId: selectedEmployee,
-      customerId: customer?.id || -1
+      customerId: customer?.id || -1,
     };
 
     try {
       await AppointmentService.createAppointments(appointmentData);
-      
-      setAvailableTimeSlots((prevSlots) => {
-        const updatedSlots = { ...prevSlots };
-        updatedSlots[selectedDay] = updatedSlots[selectedDay].filter(
-          (_, index) => index !== selectedTime
-        );
-     
-        if (updatedSlots[selectedDay].length === 0) {
-          delete updatedSlots[selectedDay];
-        }
-
-        return updatedSlots;
-      });
-
-      if (onClose) {
-        onClose();
-      }
       navigate("/appointments");
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
@@ -135,16 +111,30 @@ function AppointmentAddForm({
       <p>Одбери датум</p>
       <select
         id="chooseDay"
-        value={selectedDay}
         required
         onChange={(e) => setSelectedDay(Number(e.target.value))}
       >
         <option value="">Датум</option>
-        {days.map((day, index) => (
-          <option key={index} value={index}>
-            {day}
-          </option>
-        ))}
+        {selectedEmployee !== "" &&
+          initialAvailableTimeSlots.map((el, i) => {
+            const currentDatePlusDays = new Date();
+            currentDatePlusDays.setDate(currentDatePlusDays.getDate() + i);
+
+            const formattedDate = currentDatePlusDays.toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }
+            );
+
+            return (
+              <option value={i} key={i}>
+                {formattedDate}
+              </option>
+            );
+          })}
       </select>
 
       <p>Одбери термин</p>
@@ -156,24 +146,22 @@ function AppointmentAddForm({
         onChange={(e) => setSelectedTime(Number(e.target.value))}
       >
         <option value="">Термин</option>
-        {typeof selectedDay === "number" &&
-        availableTimeSlots[selectedDay] &&
-        availableTimeSlots[selectedDay].length > 0 ? (
-          availableTimeSlots[selectedDay].map((timeSlot, index) => (
-            <option key={index} value={index}>
-              {new Date(timeSlot.from)
-                .toLocaleTimeString("en-GB", {
+        {selectedDay > -1 &&
+          initialAvailableTimeSlots[selectedDay].map((timeSlot, i) => {
+            return (
+              <option value={i} key={i}>
+                {new Date(timeSlot.from).toLocaleTimeString("en-GB", {
                   hour: "2-digit",
                   minute: "2-digit",
-                })} - {new Date(timeSlot.to).toLocaleTimeString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </option>
-          ))
-        ) : (
-          <option value="">Нема достапни термини</option>
-        )}
+                })}{" "}
+                -{" "}
+                {new Date(timeSlot.to).toLocaleTimeString("en-GB", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}{" "}
+              </option>
+            );
+          })}
       </select>
 
       {onClose && (

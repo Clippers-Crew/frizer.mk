@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping({ "/api/time-slots", "/api/time-slot" })
+@RequestMapping({"/api/time-slots", "/api/time-slot"})
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class TimeSlotRestController {
     private final TimeSlotGenerator timeSlotGenerator;
@@ -17,8 +17,7 @@ public class TimeSlotRestController {
     }
 
     @GetMapping()
-    public List<List<AppointmentTimeSlot>> getAvailableTimeSlots(@RequestParam Long salonId,@RequestParam Long employeeId,@RequestParam Integer durationMultiplier)
-                                                                {
+    public List<List<AppointmentTimeSlot>> getAvailableTimeSlots(@RequestParam Long salonId, @RequestParam Long employeeId, @RequestParam Integer durationMultiplier) {
         return timeSlotGenerator.generateAvailableTimeSlots(salonId, employeeId, durationMultiplier);
     }
 }

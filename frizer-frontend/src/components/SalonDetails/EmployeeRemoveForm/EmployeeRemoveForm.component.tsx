@@ -27,7 +27,6 @@ const EmployeeRemoveForm: React.FC<EmployeeRemoveFormProps> = ({
         setEmployees(response.data);
       } catch (error) {}
     };
-    console.log("fetching")
 
     fetchEmployees();
   }, [employeesIds]);
